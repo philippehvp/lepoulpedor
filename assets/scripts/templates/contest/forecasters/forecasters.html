@@ -1,0 +1,16 @@
+<div class="col-sm-12 content-all-forecasters content-scrollable">
+  <div class="col-sm-6 col-md-2" ng-repeat="forecasterLight in ctrl.contestCentreService.forecastersLight track by $index"
+    ng-click="ctrl.selectForecaster(forecasterLight)" ng-class="{'active': forecasterLight == ctrl.contestCentreService.currentForecasterLight}">
+    <span class="col-sm-3">
+      <img class="forecaster-photo" ng-if="forecasterLight.Pronostiqueurs_Photo" ng-src="dist/images/pronostiqueurs/{{forecasterLight.Pronostiqueurs_Photo}}" alt="Photo du pronostiqueur">
+      <img class="forecaster-photo" ng-if="!forecasterLight.Pronostiqueurs_Photo" ng-src="dist/images/pronostiqueurs/_inconnu.png" alt="Photo du pronostiqueur">
+    </span>
+    <span class="col-sm-9">
+      {{forecasterLight.Pronostiqueurs_NomUtilisateur}}
+    </span>
+  </div>
+</div>
+
+<div class="col-sm-12">
+  <div ui-view></div>
+</div>

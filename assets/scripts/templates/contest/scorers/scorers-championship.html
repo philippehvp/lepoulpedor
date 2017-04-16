@@ -1,0 +1,24 @@
+<div class="content-scorers content-scrollable">
+  <div class="table-responsive col-sm-12">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th class="col-sm-1">Rang</th>
+          <th class="col-sm-5">Joueurs</th>
+          <th class="col-sm-2">Pronostics</th>
+          <th class="col-sm-2">Réalité</th>
+          <th class="col-sm-2">Ratio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="scorer in ctrl.contestCentreService.getScorers() track by $index">
+          <td class="col-sm-1">{{$index + 1}}</td>
+          <td class="col-sm-5">{{scorer.Pronostiqueurs_NomUtilisateur}}</td>
+          <td class="col-sm-2">{{scorer.Nombre_Pronostics_Buteur}}</td>
+          <td class="col-sm-2">{{scorer.Nombre_Buteurs_Trouves}}</td>
+          <td class="col-sm-2">{{scorer.Ratio_Buteur | number:2}}%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+<div class="content-win-draw-loss content-scrollable">
+  <div class="table-responsive col-sm-12">
+    <table class="table table-striped table-hover table-condensed">
+      <tdead>
+        <tr class="header-sm">
+          <th class="col-sm-1">&nbsp;</th>
+          <th class="col-sm-2">&nbsp;</th>
+          <th colspan="3"><button popover-placement="bottom" uib-popover="Victoires" type="button" class="btn btn-default">V</button></th>
+          <th colspan="3"><button popover-placement="bottom" uib-popover="Matchs nuls" type="button" class="btn btn-default">N</button></th>
+          <th colspan="3"><button popover-placement="bottom" uib-popover="Défaites" type="button" class="btn btn-default">D</button></th>
+        </tr>
+        <tr class="header-sm">
+          <th class="col-sm-1">Rang</th>
+          <th class="col-sm-2">Joueurs</th>
+          <th><button popover-placement="bottom" uib-popover="Pronostics" type="button" class="btn btn-default">P</button></th>
+          <th><button popover-placement="bottom" uib-popover="Réalité" type="button" class="btn btn-default">Ré</button></th>
+          <th><button popover-placement="bottom" uib-popover="Ratio" type="button" class="btn btn-default">%</button></th>
+          <th><button popover-placement="bottom" uib-popover="Pronostics" type="button" class="btn btn-default">P</button></th>
+          <th><button popover-placement="bottom" uib-popover="Réalité" type="button" class="btn btn-default">Ré</button></th>
+          <th><button popover-placement="bottom" uib-popover="Ratio" type="button" class="btn btn-default">%</button></th>
+          <th><button popover-placement="bottom" uib-popover="Pronostics" type="button" class="btn btn-default">P</button></th>
+          <th><button popover-placement="bottom" uib-popover="Réalité" type="button" class="btn btn-default">Ré</button></th>
+          <th><button popover-placement="bottom" uib-popover="Ratio" type="button" class="btn btn-default">%</button></th>
+        </tr>
+        <tr class="header-lg">
+          <th class="col-sm-1">&nbsp;</th>
+          <th class="col-sm-2">&nbsp;</th>
+          <th colspan="3">Victoires</th>
+          <th colspan="3">Matchs nuls</th>
+          <th colspan="3">Défaites</th>
+        </tr>
+        <tr class="header-lg">
+          <th class="col-sm-1">Rang</th>
+          <th class="col-sm-3">Joueurs</th>
+          <th>Pronostics</th>
+          <th>Réalité</th>
+          <th>Ratio</th>
+          <th>Pronostics</th>
+          <th>Réalité</th>
+          <th>Ratio</th>
+          <th>Pronostics</th>
+          <th>Réalité</th>
+          <th>Ratio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="forecaster in ctrl.contestCentreService.getWinDrawLossForecasters() track by $index">
+          <td class="col-sm-1">{{$index + 1}}</td>
+          <td class="col-sm-3">{{forecaster.Pronostiqueurs_NomUtilisateur}}</td>
+          <td>{{ctrl.contestCentreService.getWinDrawLossData($index).Nombre_Victoires_Pronostiquees}}</td>
+          <td>{{ctrl.contestCentreService.getWinDrawLossData($index).Nombre_Victoires_Reelles}}</td>
+          <td>{{ctrl.contestCentreService.getWinDrawLossData($index).Ratio_Victoires | number:2}} %</td>
+          <td>{{ctrl.contestCentreService.getWinDrawLossData($index).Nombre_Nuls_Pronostiques}}</td>
+          <td>{{ctrl.contestCentreService.getWinDrawLossData($index).Nombre_Nuls_Reels}}</td>
+          <td>{{ctrl.contestCentreService.getWinDrawLossData($index).Ratio_Nuls | number:2}} %</td>
+          <td>{{ctrl.contestCentreService.getWinDrawLossData($index).Nombre_Defaites_Pronostiquees}}</td>
+          <td>{{ctrl.contestCentreService.getWinDrawLossData($index).Nombre_Defaites_Reelles}}</td>
+          <td>{{ctrl.contestCentreService.getWinDrawLossData($index).Ratio_Defaites | number:2}} %</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

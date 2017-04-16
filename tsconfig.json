@@ -1,0 +1,34 @@
+[{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "removeComments": false
+  }
+  ,"files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.DS_Store": true,
+        "**/*.js": { "when": "$(basename).ts"},
+        "**/dist": true,
+        "**/obj": true,
+        "**/GCL": true,
+        "**/$tf": true,
+        "**/node_modules": true,
+        "**/bin": true,
+        "**/*.sln": true,
+        "**/*.vssscc": true,
+        "**/*.ps1": true,
+        "**/*.suo": true,
+        "**/*.csproj": true,
+        "**/*.user": true,
+        "**/*.vspscc": true,
+        "**/declarations": true,
+        "**/_dependances": true,
+        "**/debug": true,
+        "**/assets/scripts/.gitignore": true
+    }
+}]

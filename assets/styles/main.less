@@ -1,0 +1,259 @@
+@import "partials/_variables.less";
+@import "partials/_navbar.less";
+
+
+// Commun (équivalent ici à ordinateur et tablette)
+body {
+  color: @body-color;
+}
+
+.centered {
+  text-align: center;
+}
+
+.left {
+  text-align: left;
+}
+
+.right {
+  text-align: right;
+}
+
+.resize-none {
+  textarea {
+    resize: none;
+  }
+}
+
+.form-horizontal .form-group {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.standing-photo {
+  width: @standing-photo;
+}
+
+.forecaster-photo {
+  width: @forecaster-photo-lg;
+}
+
+.weeks-numbers {
+  display: flex;
+  overflow-x: auto;
+  padding: @weeks-numbers-padding;
+  margin-top: @weeks-numbers-margin-top;
+  margin-bottom: @weeks-numbers-margin-bottom;
+}
+
+.subthemes {
+  margin-top: @subthemes-margin-top;
+  margin-bottom: @subthemes-margin-bottom;
+}
+
+.left-right-forecaster {
+  margin-bottom: @left-right-margin-bottom;
+}
+
+.content-all-standings {
+  height: 100%;
+}
+
+.content-scrollable {
+  overflow-y: auto;
+}
+
+.content-forecast {
+  width: 100%;
+}
+
+.content-one-standing, .content-scorers, .content-win-draw-loss, .content-awards, .content-ratio, .content-team-points, .content-best-teams, .conten-canal
+, .content-standings, .content-forecast {
+  height: ~"calc(100vh - 190px)";
+}
+
+.content-general-standings {
+  height: ~"calc(100vh - 190px)";
+}
+
+.content-all-forecasters, .content-all-teams {
+  max-height: ~"calc(35vh - 85px)";
+
+  margin-bottom: @content-all-forecasters-margin-bottom;
+}
+
+.content-forecaster-id, .content-forecaster-awards, .content-forecaster-stats, .content-forecaster-standings {
+  height: ~"calc(40vh)";
+}
+
+.content-forecaster-awards, .content-forecaster-stats, .content-forecaster-standings {
+  height: ~"calc(50vh)";
+}
+
+.content-forecaster-id-photo {
+  width: 80px;
+  margin-right: @contest-forecaster-id-photo;
+}
+
+.standings-svg,
+.content-all-players {
+  height: ~"calc(65vh - 85px)";
+}
+
+.visible-in-sm {
+  display: none;
+  margin-bottom: @navigation-list-margin-bottom;
+}
+
+.header-sm {
+  display: none;
+}
+
+.team-flag {
+  width: @team-flag-lg;
+}
+
+svg {
+  width: 100%;
+  height: 100%;
+
+  rect {
+    z-index: 9;
+    &.general {
+      fill: @histogram-general-color;
+    }
+
+    &.goal {
+      fill: @histogram-goal-color;
+    }
+
+    &.week {
+      fill: @histogram-week-color;
+    }
+
+    &.left {
+      fill: @histogram-general-left;
+    }
+
+    &.right {
+      fill: @histogram-general-right;
+    }
+  }
+
+  rect:hover {
+    fill: @histogram-hover-color;
+    z-index: 11;
+  }
+
+  path {
+    stroke-width: 1px;
+    stroke: @path-stroke-color;
+    fill: none;
+    z-index: 10;
+  }
+
+  circle {
+    fill: @path-stroke-color;
+  }
+}
+
+.matches-light {
+  display: flex;
+  overflow-x: auto;
+  padding: @matches-light-padding;
+  margin-top: @matches-light-margin-top;
+  margin-bottom: @matches-light-margin-bottom;
+}
+
+.success {
+  color: @match-logistics-color-success;
+}
+
+.danger {
+  color: @match-logistics-color-danger;
+}
+
+.right {
+  .radio-inline {
+    padding-left: @radio-inline-right-padding-left;
+    padding-right: @radio-inline-right-padding-right;
+  }
+}
+
+.forward, .midfielder, .defender {
+  padding: @player-position-padding;
+  display: inline-block;
+  color: @player-position-color;
+  font-size: 0.9rem;
+}
+
+.forward {
+  background-color: @player-position-forward-background-color;
+}
+
+.midfielder {
+  background-color: @player-position-midfielder-background-color;
+}
+
+.defender {
+  background-color: @player-position-defender-background-color;
+}
+
+.nowrap {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.player-position {
+  width: @player-position-width;
+  float: left;
+}
+
+// Personnalisation de l'interface
+
+// Mobile
+@media screen and (max-width: 767px) {
+  .form-horizontal {
+    label {
+      width: 100%;
+    }
+  }
+
+  .standing-photo {
+    width: @standing-photo-mobile;
+  }
+
+  .forecaster-photo {
+    width: @forecaster-photo-sm;
+  }
+
+  .content-all-standings {
+    width: 100%;
+    height: ~"calc(100vh - 150px)";
+    overflow-y: auto;
+  }
+
+  .content-one-standing {
+    height: 100%;
+  }
+
+  .themes-lg, .subthemes-lg, .championships-lg, .weeks-lg, .header-lg {
+    display: none;
+  }
+
+  .visible-in-sm {
+    display: block;
+  }
+
+  .header-sm {
+    display: table-row;
+  }
+
+  .contest-breadcrumb {
+    display: none;
+  }
+
+  .team-flag {
+    width: @team-flag-sm;
+  }
+}
