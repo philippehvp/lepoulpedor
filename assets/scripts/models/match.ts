@@ -74,7 +74,7 @@ module LPO {
     Pronostics_ScoreEquipeVisiteur: number;
     Pronostics_ScoreAPEquipeDomicile: number;
     Pronostics_ScoreAPEquipeVisiteur: number;
-    Pronostics_Vainqueur: number;
+    Pronostics_Vainqueur: string;
 
     Matches_CoteEquipeDomicile: number;
     Matches_CoteNul: number;

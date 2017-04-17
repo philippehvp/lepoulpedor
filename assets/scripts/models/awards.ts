@@ -7,7 +7,7 @@ module LPO {
   }
 
   export interface IAwards {
-    Pronostiqueurs: IForecaster;
+    Pronostiqueurs: Array<IForecaster>;
     Donnees: IAwardsData[];
   }
 }

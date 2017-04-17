@@ -12,19 +12,16 @@ module LPO {
     $onInit() {
     }
 
-    public onChange(forecastActionCode: number, matchNumber: number): void {
-      this.forecastService.checkExtraAndShootingFaceOff();
-      this.forecastService.updateForecast(forecastActionCode);
+    public onChangeScoreFaceOff(forecastActionCode: number): void {
+      this.forecastService.changeScoreFaceOff(forecastActionCode);
     }
 
     public onDeleteScorerFaceOff($index: number, forecastScorer: IForecastScorer, matchFirstOrSecond: number, teamAOrB: number): void {
       this.forecastService.deleteScorerFaceOff($index, forecastScorer, matchFirstOrSecond, teamAOrB);
-      this.forecastService.updateForecast(enumForecastActionCode.Pronostics_SuppressionButeur);
     }
 
     public onAddScorerFaceOff(player: IPlayer, matchFirstOrSecond: number, teamAOrB: number): void {
       this.forecastService.addScorerFaceOff(player, matchFirstOrSecond, teamAOrB);
-      this.forecastService.updateForecast(enumForecastActionCode.Pronostics_SuppressionButeur);
     }
   }
 }

@@ -8,7 +8,9 @@ module LPO {
     private currentChampionshipAndWeek: IChampionshipAndWeek;
     private matchesLight: Array<IMatchLight>;
     private currentMatchLight: IMatchLight;
+
     private currentMatch: IMatch;
+
     private currentFirstMatch: IMatchFirst;
     private currentSecondMatch: IMatchSecond;
 
@@ -54,15 +56,6 @@ module LPO {
 
     public getScoresExtraB(): Array<number> {
       return this.scoresExtraB;
-    }
-
-    public getDateAndMaxDateDifferent(): boolean {
-      let ret: boolean = false;
-      if(this.currentMatchLight !== undefined)
-        if(this.currentMatchLight.Matches_TypeMatch == 2)
-          ret = true;
-
-      return ret;
     }
 
     public getCurrentMatchLight(): IMatchLight {
@@ -113,12 +106,11 @@ module LPO {
       return this.currentSecondMatchPlayersB;
     }
 
-
-    // Lecture des championnats et journées à pronostiquer
     public readWeeks(): ng.IPromise<Array<IChampionshipAndWeek>> {
+      // Lecture des championnats et journées à pronostiquer
+      // Tous les championnats sont concernés
       let d: ng.IDeferred<Array<IChampionshipAndWeek>> = this.$q.defer<Array<IChampionshipAndWeek>>();
 
-      // Lecture des championnats Ligue 1 et Europe
       let url = "./dist/forecast-weeks.php";
 
       this.$http({
@@ -144,13 +136,13 @@ module LPO {
       return d.promise;
     }
 
-    // Sélection d'un championnat
     public setCurrentChampionshipAndWeek(championshipAndWeek: IChampionshipAndWeek): void {
+      // Sélection d'un championnat
       this.currentChampionshipAndWeek = championshipAndWeek;
     }
 
-    // Lecture des matches de la journée (informations minimales)
     public readMatchesLight(championshipAndWeek: IChampionshipAndWeek): ng.IPromise<Array<IMatchLight>> {
+      // Lecture des matches de la journée (informations minimales)
       let d: ng.IDeferred<Array<IMatchLight>> = this.$q.defer<Array<IMatchLight>>();
 
       // Lecture des matches de la journée
@@ -176,11 +168,11 @@ module LPO {
       return d.promise;
     }
 
-    // Sélection d'un match
     public selectMatchLight(matchLight: IMatchLight): void {
+      // Sélection d'un match
       this.currentMatchLight = matchLight;
 
-      if(this.currentMatchLight.Matches_TypeMatch == 2) {
+      if (this.currentMatchLight.Matches_TypeMatch == 2) {
         this.readMatchFaceOff(matchLight).then((ret: boolean) => {
           // Logistique du match
           let dateFirstMatch: any = this.moment(this.currentFirstMatch.Matches_Date);
@@ -190,43 +182,19 @@ module LPO {
           this.checkExtraAndShootingFaceOff();
         });
       }
-      /*this.readMatch(matchLight).then((ret: boolean) => {
-
-        for (let i: number = 0; i < MatchName.matchNames.length; i++) {
-          if (this.currentMatch.Matches_TypeMatch == MatchName.matchNames[i].type) {
-            this.matchLabel = MatchName.matchNames[i].name;
-            break;
-          }
-        }
-
-        // Logistique du match
-        let date: any = this.moment(this.currentFirstMatch.Matches_Date);
-        let dateMax: any = this.moment(this.currentSecondMatch.Matches_Date);
-        if (this.currentFirstMatch.Matches_Date === this.currentFirstMatch.Matches_DateMax) {
-          this.limitDateLabel = "Match et limite de pronostic le " + date.format("dddd D MMMM à HH:mm");
-        }
-        else {
-          this.limitDateLabel = "Match le " + date.format("dddd D MMMM à HH:mm") + " et date limite de pronostic le " + dateMax.format("dddd D MMMM à HH:mm");
-        }
-
-        this.checkExtraAndShooting();
-      });*/
     }
 
-    public checkExtraAndShootingFaceOff(): void {
+    public checkExtraAndShootingFaceOff(forecastActionCode?: number): void {
       // Doit-on afficher les scores AP et les TAB ?
       this.mustDisplayScoresExtraFaceOff();
       this.mustDisplayShootingFaceOff();
+
+      if (forecastActionCode !== null && forecastActionCode !== undefined)
+        this.updateForecastFaceOff(forecastActionCode);
     }
 
-    public checkExtraAndShootingNormal(): void {
-      // Doit-on afficher les scores AP et les TAB ?
-      this.mustDisplayScoresExtraNormal();
-      this.mustDisplayShootingNormal();
-    }
-
-    // Vérification de la nécessité d'afficher les scores AP ou non
     private mustDisplayScoresExtraFaceOff(): void {
+      // Vérification de la nécessité d'afficher les scores AP ou non
       this.displayScoresExtra = false;
 
       // Match retour de confrontation directe
@@ -251,21 +219,25 @@ module LPO {
           for(i = Number(this.currentSecondMatch.Pronostics_ScoreEquipeVisiteur); i <= 15; i++)
             this.scoresExtraB.push(i);
 
-          if(this.currentSecondMatch.Pronostics_ScoreAPEquipeDomicile === null)
+          if (this.currentSecondMatch.Pronostics_ScoreAPEquipeDomicile === null)
             this.currentSecondMatch.Pronostics_ScoreAPEquipeDomicile = this.currentSecondMatch.Pronostics_ScoreEquipeDomicile;
 
-          if(this.currentSecondMatch.Pronostics_ScoreAPEquipeVisiteur === null)
+          if (this.currentSecondMatch.Pronostics_ScoreAPEquipeVisiteur === null)
             this.currentSecondMatch.Pronostics_ScoreAPEquipeVisiteur = this.currentSecondMatch.Pronostics_ScoreEquipeVisiteur;
 
           this.displayScoresExtra = true;
+        }
+        else {
+          // Sinon, on remet les scores AP à null
+          this.currentSecondMatch.Pronostics_ScoreAPEquipeDomicile = null;
+          this.currentSecondMatch.Pronostics_ScoreAPEquipeVisiteur = null;
+          this.currentSecondMatch.Pronostics_Vainqueur = "0";
         }
       }
     }
 
     private mustDisplayShootingFaceOff(): void {
-      if(this.displayShooting === false)
-        this.currentSecondMatch.Pronostics_Vainqueur = 0;
-
+      // Vérification de la nécessité d'afficher les TAB ou non
       this.displayShooting = false;
 
       if (
@@ -282,159 +254,13 @@ module LPO {
           this.displayShooting = true;
         }
       }
+
+      if (this.displayShooting === false)
+        this.currentSecondMatch.Pronostics_Vainqueur = "0";
     }
 
-    // Vérification de la nécessité d'afficher les scores AP ou non
-    private mustDisplayScoresExtraNormal(): void {
-      this.displayScoresExtra = false;
-
-      // Seuls les matches de type 3 et 4 sont concernés
-      if (this.currentMatch.Matches_TypeMatch == 3 || this.currentMatch.Matches_TypeMatch == 4) {
-        // Match retour de confrontation directe
-        if(this.currentMatch.Matches_TypeMatch == 3) {
-          if (
-            this.currentMatch.Pronostics_ScoreEquipeDomicile != null &&
-            this.currentMatch.Pronostics_ScoreEquipeVisiteur != null &&
-            this.currentMatch.PronosticsLies_ScoreEquipeDomicile != null &&
-            this.currentMatch.PronosticsLies_ScoreEquipeVisiteur != null
-          ) {
-            // Si le score aller est le même que le score retour, alors on affiche le score AP
-            if (
-              this.currentMatch.Pronostics_ScoreEquipeDomicile == this.currentMatch.PronosticsLies_ScoreEquipeDomicile &&
-              this.currentMatch.Pronostics_ScoreEquipeVisiteur == this.currentMatch.PronosticsLies_ScoreEquipeVisiteur
-            ) {
-              // On remplit le score minimal de chaque équipe avec celui de la fin du temps règlementaire
-              this.scoresExtraA = [];
-              this.scoresExtraB = [];
-              let i: number;
-              for(i = Number(this.currentMatch.Pronostics_ScoreEquipeDomicile); i <= 15; i++)
-                this.scoresExtraA.push(i);
-
-              for(i = Number(this.currentMatch.Pronostics_ScoreEquipeVisiteur); i <= 15; i++)
-                this.scoresExtraB.push(i);
-
-              if(this.currentMatch.Pronostics_ScoreAPEquipeDomicile === null)
-                this.currentMatch.Pronostics_ScoreAPEquipeDomicile = this.currentMatch.Pronostics_ScoreEquipeDomicile;
-
-              if(this.currentMatch.Pronostics_ScoreAPEquipeVisiteur === null)
-                this.currentMatch.Pronostics_ScoreAPEquipeVisiteur = this.currentMatch.Pronostics_ScoreEquipeVisiteur;
-
-              this.displayScoresExtra = true;
-            }
-          }
-        }
-        // Finale de coupe
-        else if (this.currentMatch.Matches_TypeMatch == 4) {
-          if (this.currentMatch.Pronostics_ScoreEquipeDomicile != null && this.currentMatch.Pronostics_ScoreEquipeVisiteur != null) {
-            // Si les scores 90' sont les mêmes, alors on affiche le score AP
-            if (this.currentMatch.Pronostics_ScoreEquipeDomicile == this.currentMatch.Pronostics_ScoreEquipeDomicile) {
-              // On remplit le score minimal de chaque équipe avec celui de la fin du temps règlementaire
-              this.scoresExtraA = [];
-              this.scoresExtraB = [];
-              let i: number;
-              for (i = Number(this.currentMatch.Pronostics_ScoreEquipeDomicile); i <= 15; i++)
-                this.scoresExtraA.push(i);
-
-              for (i = Number(this.currentMatch.Pronostics_ScoreEquipeVisiteur); i <= 15; i++)
-                this.scoresExtraB.push(i);
-
-              if (this.currentMatch.Pronostics_ScoreAPEquipeDomicile === null)
-                this.currentMatch.Pronostics_ScoreAPEquipeDomicile = this.currentMatch.Pronostics_ScoreEquipeDomicile;
-
-              if (this.currentMatch.Pronostics_ScoreAPEquipeVisiteur === null)
-                this.currentMatch.Pronostics_ScoreAPEquipeVisiteur = this.currentMatch.Pronostics_ScoreEquipeVisiteur;
-
-              this.displayScoresExtra = true;
-            }
-          }
-        }
-      }
-    }
-
-    private mustDisplayShootingNormal(): void {
-      if(this.displayShooting === false)
-        this.currentMatch.Pronostics_Vainqueur = 0;
-
-      this.displayShooting = false;
-
-      // Seuls les matches de type 3, 4 et 5 sont concernés
-      if (this.currentMatch.Matches_TypeMatch >= 3 && this.currentMatch.Matches_TypeMatch <= 5) {
-        // Match retour de confrontation directe
-        if (this.currentMatch.Matches_TypeMatch == 3) {
-          if (
-            this.currentMatch.Pronostics_ScoreEquipeDomicile != null &&
-            this.currentMatch.Pronostics_ScoreEquipeVisiteur != null &&
-            this.currentMatch.PronosticsLies_ScoreEquipeDomicile != null &&
-            this.currentMatch.PronosticsLies_ScoreEquipeVisiteur != null
-          ) {
-            // Si le score aller est le même que le score retour, alors on affiche la zone des TAB
-            if (
-              this.currentMatch.Pronostics_ScoreEquipeDomicile == this.currentMatch.Pronostics_ScoreAPEquipeDomicile &&
-              this.currentMatch.Pronostics_ScoreEquipeVisiteur == this.currentMatch.Pronostics_ScoreAPEquipeVisiteur
-            ) {
-              this.displayShooting = true;
-            }
-          }
-        }
-        // Finale de coupe
-        else if (this.currentMatch.Matches_TypeMatch == 4) {
-          if (
-            this.currentMatch.Pronostics_ScoreEquipeDomicile != null &&
-            this.currentMatch.Pronostics_ScoreEquipeVisiteur != null &&
-            this.currentMatch.Pronostics_ScoreAPEquipeDomicile != null &&
-            this.currentMatch.Pronostics_ScoreAPEquipeVisiteur != null
-          ) {
-            // Si les scores 90' sont les mêmes et idem pour les scores AP, alors on affiche la zone des TAB
-            if (
-              this.currentMatch.Pronostics_ScoreEquipeDomicile == this.currentMatch.Pronostics_ScoreEquipeVisiteur &&
-              this.currentMatch.Pronostics_ScoreAPEquipeDomicile == this.currentMatch.Pronostics_ScoreAPEquipeVisiteur
-            ) {
-              this.displayShooting = true;
-            }
-          }
-        }
-        // Charity Shield
-        else if(this.currentMatch.Matches_TypeMatch == 5) {
-          if (
-            this.currentMatch.Pronostics_ScoreEquipeDomicile != null &&
-            this.currentMatch.Pronostics_ScoreEquipeVisiteur != null
-          ) {
-            // Si les scores 90' sont les mêmes, alors on affiche la zone des TAB
-            if (this.currentMatch.Pronostics_ScoreEquipeDomicile == this.currentMatch.Pronostics_ScoreEquipeVisiteur) {
-              this.displayShooting = true;
-            }
-          }
-        }
-      }
-
-    }
-
-    // Lecture d'un match
-    public readMatch(matchLight: IMatchLight): ng.IPromise<boolean> {
-      let d: ng.IDeferred<boolean> = this.$q.defer<boolean>();
-
-      // Lecture des informations d'un match
-      let url = "./dist/forecast-match-face-off.php";
-
-      this.$http({
-        method: "POST",
-        url: url,
-        data: JSON.stringify({ "pronostiqueur" : this.generalService.getUser().Pronostiqueur, "match": matchLight.Match })
-      }).then((response: { data: any }) => {
-        this.currentFirstMatch = response.data[0].aller[0];
-        this.currentSecondMatch = response.data[0].retour[0];
-        d.resolve(true);
-      }, function errorCallback(error) {
-        let errMsg = (error.message) ? error.message :
-          error.status ? `${error.status} - ${error.statusText}` : "forecast-service readMatch: Server error";
-        console.error(errMsg);
-        d.reject(errMsg);
-      });
-      return d.promise;
-    }
-
-    // Lecture d'un match de confrontation directe
     public readMatchFaceOff(matchLight: IMatchLight): ng.IPromise<boolean> {
+      // Lecture d'un match de confrontation directe
       let d: ng.IDeferred<boolean> = this.$q.defer<boolean>();
 
       // Lecture des informations d'un match
@@ -455,7 +281,6 @@ module LPO {
         this.currentFirstMatchPlayersB = response.data[0].aller_joueurs_visiteur;
         this.currentSecondMatchPlayersA = response.data[0].retour_joueurs_domicile;
         this.currentSecondMatchPlayersB = response.data[0].retour_joueurs_visiteur;
-
         d.resolve(true);
       }, function errorCallback(error) {
         let errMsg = (error.message) ? error.message :
@@ -472,15 +297,26 @@ module LPO {
     }
 
     public deleteScorerFaceOff($index: number, forecastScorer: IForecastScorer, matchFirstOrSecond: number, teamAOrB: number): void {
-      if(matchFirstOrSecond === 0) {
+      if (matchFirstOrSecond === 0) {
+        if (new Date(this.currentFirstMatch.Matches_Date).getTime() < new Date().getTime())
+          return;
+      }
+      else if (matchFirstOrSecond === 1) {
+        if (new Date(this.currentSecondMatch.Matches_Date).getTime() < new Date().getTime())
+          return;
+      }
+
+      if (matchFirstOrSecond === 0) {
         // Match aller
-        if(teamAOrB === 0) {
+        if (teamAOrB === 0) {
           // Equipe domicile
           this.currentFirstMatchScorersA.splice($index, 1);
+          this.removeScorer(enumForecastActionCode.AllerSuppressionButeurDomicile, forecastScorer, this.currentFirstMatch.Match, this.currentFirstMatch.Matches_Date);
         }
-        else if(teamAOrB === 1) {
+        else if (teamAOrB === 1) {
           // Equipe visiteur
           this.currentFirstMatchScorersB.splice($index, 1);
+          this.removeScorer(enumForecastActionCode.AllerSuppressionButeurVisiteur, forecastScorer, this.currentFirstMatch.Match, this.currentFirstMatch.Matches_Date);
         }
       }
       else {
@@ -488,15 +324,26 @@ module LPO {
         if (teamAOrB === 0) {
           // Equipe domicile
           this.currentSecondMatchScorersA.splice($index, 1);
+          this.removeScorer(enumForecastActionCode.RetourSuppressionButeurDomicile, forecastScorer, this.currentSecondMatch.Match, this.currentSecondMatch.Matches_Date);
         }
         else if (teamAOrB === 1) {
           // Equipe visiteur
           this.currentSecondMatchScorersB.splice($index, 1);
+          this.removeScorer(enumForecastActionCode.RetourSuppressionButeurVisiteur, forecastScorer, this.currentSecondMatch.Match, this.currentSecondMatch.Matches_Date);
         }
       }
     }
 
     public addScorerFaceOff(player: IPlayer, matchFirstOrSecond: number, teamAOrB: number): void {
+      if (matchFirstOrSecond === 0) {
+        if (new Date(this.currentFirstMatch.Matches_Date).getTime() < new Date().getTime())
+          return;
+      }
+      else if (matchFirstOrSecond === 1) {
+        if (new Date(this.currentSecondMatch.Matches_Date).getTime() < new Date().getTime())
+          return;
+      }
+
       let scorer: IForecastScorer = {
         Joueurs_Joueur: player.Joueur,
         Joueurs_NomComplet: player.Joueurs_NomComplet
@@ -506,65 +353,112 @@ module LPO {
         if (teamAOrB === 0) {
           // Equipe domicile
           this.currentFirstMatchScorersA.push(scorer);
+          this.addScorer(enumForecastActionCode.AllerAjoutButeurDomicile, player, this.currentFirstMatch.Match, this.currentFirstMatch.Matches_Date);
         }
         else if (teamAOrB === 1) {
           // Equipe visiteur
           this.currentFirstMatchScorersB.push(scorer);
+          this.addScorer(enumForecastActionCode.AllerAjoutButeurVisiteur, player, this.currentFirstMatch.Match, this.currentFirstMatch.Matches_Date);
         }
       }
-      else {
+      else if (matchFirstOrSecond === 1) {
         // Match retour
         if (teamAOrB === 0) {
           // Equipe domicile
           this.currentSecondMatchScorersA.push(scorer);
+          this.addScorer(enumForecastActionCode.RetourAjoutButeurDomicile, player, this.currentSecondMatch.Match, this.currentSecondMatch.Matches_Date);
         }
         else if (teamAOrB === 1) {
           // Equipe visiteur
           this.currentSecondMatchScorersB.push(scorer);
+          this.addScorer(enumForecastActionCode.RetourAjoutButeurVisiteur, player, this.currentSecondMatch.Match, this.currentSecondMatch.Matches_Date);
         }
       }
-
-      this.groupBy(this.currentFirstMatchScorersA, () => {
-        console.log("Dans l'appel de groupBy", scorer);
-        return scorer.Joueurs_Joueur;
-      });
     }
 
-    public groupBy(array: Array<IForecastScorer>, f: any): any {
-      let groups: any = {};
-      array.forEach(function (object) {
-        let group: any = JSON.stringify(f(object));
-        groups[group] = groups[group] || [];
-        groups[group].push(object);
-      });
-
-      console.log("Groupe construit", groups);
-      return Object.keys(groups).map(function (group) {
-        return groups[group];
-      })
+    public changeScoreFaceOff(forecastActionCode: number): void {
+      // Pronostic sur le score uniquement avant la fin du match aller
+      if (new Date(this.currentFirstMatch.Matches_Date).getTime() > new Date().getTime())
+        this.checkExtraAndShootingFaceOff(forecastActionCode);
     }
 
-    // Mise à jour des pronostics
-    public updateForecast(forecastActionCode: number): ng.IPromise<boolean> {
+    private updateForecastFaceOff(forecastActionCode: number): ng.IPromise<boolean> {
+      // Mise à jour du score d'un pronostic de confrontation directe
       let def: ng.IDeferred<boolean> = this.$q.defer<boolean>();
 
       // Mise à jour des données
-      let url = "./dist/forecast-update.php";
+      let url = "./dist/forecast-update-face-off.php";
 
       this.$http({
         method: "POST",
         url: url,
         params: { forecastActionCode: forecastActionCode },
-        data: angular.toJson(this.currentFirstMatch)
+        data: angular.toJson({"pronostiqueur": this.generalService.getUser().Pronostiqueur, "aller": this.currentFirstMatch, "retour": this.currentSecondMatch})
       }).then((response: { data: boolean }) => {
         def.resolve(response.data);
       }, function errorCallback(error) {
         let errMsg = (error.message) ? error.message :
-          error.status ? `${error.status} - ${error.statusText}` : "forecast-service updateForecast: Server error";
+          error.status ? `${error.status} - ${error.statusText}` : "forecast-service updateForecastFaceOff: Server error";
         console.error(errMsg);
         def.reject(errMsg);
       });
       return def.promise;
     }
+
+    private addScorer(forecastActionCode: number, player: IPlayer, matchNumber: number, matchDate: Date): ng.IPromise<boolean> {
+      // Ajout d'un pronostic de buteur
+      let def: ng.IDeferred<boolean> = this.$q.defer<boolean>();
+
+      // Mise à jour des données
+      let url = "./dist/forecast-update-face-off.php";
+
+      this.$http({
+        method: "POST",
+        url: url,
+        params: { forecastActionCode: forecastActionCode },
+        data: angular.toJson({ "pronostiqueur": this.generalService.getUser().Pronostiqueur, "joueur": player.Joueur, "match": matchNumber, "date": matchDate })
+      }).then((response: { data: boolean }) => {
+        def.resolve(response.data);
+      }, function errorCallback(error) {
+        let errMsg = (error.message) ? error.message :
+          error.status ? `${error.status} - ${error.statusText}` : "forecast-service addScorer: Server error";
+        console.error(errMsg);
+        def.reject(errMsg);
+      });
+      return def.promise;
+    }
+
+    private removeScorer(forecastActionCode: number, forecastScorer: IForecastScorer, matchNumber: number, matchDate: Date): ng.IPromise<boolean> {
+      // Suppression d'un pronostic de buteur
+      let def: ng.IDeferred<boolean> = this.$q.defer<boolean>();
+
+      // Mise à jour des données
+      let url = "./dist/forecast-update-face-off.php";
+      this.$http({
+        method: "POST",
+        url: url,
+        params: { forecastActionCode: forecastActionCode },
+        data: angular.toJson({ "pronostiqueur": this.generalService.getUser().Pronostiqueur, "joueur": forecastScorer.Joueurs_Joueur, "match": matchNumber, "date": matchDate  })
+      }).then((response: { data: boolean }) => {
+        def.resolve(response.data);
+      }, function errorCallback(error) {
+        let errMsg = (error.message) ? error.message :
+          error.status ? `${error.status} - ${error.statusText}` : "forecast-service addScorer: Server error";
+        console.error(errMsg);
+        def.reject(errMsg);
+      });
+      return def.promise;
+    }
+
+    public isOver(date: Date): boolean {
+      let ret: boolean = false;
+      if(date !== null && date !== undefined) {
+        if(new Date(date).getTime() < new Date().getTime())
+          ret = true;
+      }
+
+      return ret;
+    }
+
   }
 }

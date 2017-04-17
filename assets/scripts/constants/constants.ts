@@ -15,14 +15,20 @@ module LPO {
   }
 
   export enum enumForecastActionCode {
-    Pronostics_ScoreEquipeDomicile = 0,
-    Pronostics_ScoreEquipeVisiteur = 1,
-    Pronostics_ScoreAPEquipeDomicile = 2,
-    Pronostics_ScoreAPEquipeVisiteur = 3,
-    Pronostics_Vainqueur = 4,
-    Pronostics_AjoutButeur = 5,
-    Pronostics_SuppressionButeur = 6
+    AllerScoreEquipeDomicile = 0,
+    AllerScoreEquipeVisiteur = 1,
+    RetourScoreEquipeDomicile = 2,
+    RetourScoreEquipeVisiteur = 3,
+    RetourScoreAPDomicile = 4,
+    RetourScoreAPVisiteur = 5,
+    RetourVainqueur = 6,
+    AllerAjoutButeurDomicile = 7,
+    AllerAjoutButeurVisiteur = 8,
+    AllerSuppressionButeurDomicile = 9,
+    AllerSuppressionButeurVisiteur = 10,
+    RetourAjoutButeurDomicile = 11,
+    RetourAjoutButeurVisiteur = 12,
+    RetourSuppressionButeurDomicile = 13,
+    RetourSuppressionButeurVisiteur = 14
   };
-
-
 }

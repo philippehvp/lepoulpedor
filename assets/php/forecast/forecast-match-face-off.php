@@ -20,8 +20,6 @@
             '             ,fn_calculcotematch(matches.Matches_CoteNul) AS Matches_CoteNul' .
             '             ,fn_calculcotematch(matches.Matches_CoteEquipeVisiteur) AS Matches_CoteEquipeVisiteur' .
             '							,pronostics.Pronostics_ScoreEquipeDomicile, pronostics.Pronostics_ScoreEquipeVisiteur' .
-            '							,pronostics.Pronostics_ScoreAPEquipeDomicile, pronostics.Pronostics_ScoreAPEquipeVisiteur' .
-            '							,pronostics.Pronostics_Vainqueur' .
             '							,fn_matchpronostiquable(matches.Match, ' . $forecaster . ') AS Matches_Pronostiquable' .
             '							,CASE' .
             '								WHEN	matches.Matches_Date > NOW() AND (pronostics_carrefinal.PronosticsCarreFinal_Coefficient IS NULL OR pronostics_carrefinal.PronosticsCarreFinal_Coefficient <> 0)' .
@@ -97,7 +95,7 @@
   $firstMatchScorersB = $query->fetchAll();
 
   // Joueurs équipe domicile
-	$sql =		'	SELECT		  joueurs_equipes.Joueurs_Joueur' .
+	$sql =		'	SELECT		  joueurs.Joueur' .
 							'				    ,TRIM(CONCAT(joueurs.Joueurs_NomFamille, \' \', IFNULL(joueurs.Joueurs_Prenom, \'\'))) AS Joueurs_NomComplet' .
 							'				    ,joueurs.Postes_Poste' .
 							'				    ,CASE' .
@@ -123,7 +121,7 @@
 	$firstMatchPlayersA = $query->fetchAll();
 
   // Joueurs équipe visiteur
-	$sql =		'	SELECT		  joueurs_equipes.Joueurs_Joueur' .
+	$sql =		'	SELECT		  joueurs.Joueur' .
 							'				    ,TRIM(CONCAT(joueurs.Joueurs_NomFamille, \' \', IFNULL(joueurs.Joueurs_Prenom, \'\'))) AS Joueurs_NomComplet' .
 							'				    ,joueurs.Postes_Poste' .
 							'				    ,CASE' .
@@ -238,7 +236,7 @@
   $secondMatchScorersB = $query->fetchAll();
 
   // Joueurs équipe domicile
-	$sql =		'	SELECT		  joueurs_equipes.Joueurs_Joueur' .
+	$sql =		'	SELECT		  joueurs.Joueur' .
 							'				    ,TRIM(CONCAT(joueurs.Joueurs_NomFamille, \' \', IFNULL(joueurs.Joueurs_Prenom, \'\'))) AS Joueurs_NomComplet' .
 							'				    ,joueurs.Postes_Poste' .
 							'				    ,CASE' .
@@ -264,7 +262,7 @@
 	$secondMatchPlayersA = $query->fetchAll();
 
   // Joueurs équipe visiteur
-	$sql =		'	SELECT		  joueurs_equipes.Joueurs_Joueur' .
+	$sql =		'	SELECT		  joueurs.Joueur' .
 							'				    ,TRIM(CONCAT(joueurs.Joueurs_NomFamille, \' \', IFNULL(joueurs.Joueurs_Prenom, \'\'))) AS Joueurs_NomComplet' .
 							'				    ,joueurs.Postes_Poste' .
 							'				    ,CASE' .

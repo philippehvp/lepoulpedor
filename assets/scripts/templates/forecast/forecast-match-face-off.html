@@ -63,7 +63,8 @@
       <div class="col-sm-3 col-sm-offset-9">
         <select class="form-control"
                 ng-model="ctrl.forecastService.getCurrentFirstMatch().Pronostics_ScoreEquipeDomicile"
-                ng-change="ctrl.onChange(0, ctrl.forecastService.getCurrentFirstMatch().Match)">
+                ng-change="ctrl.onChangeScoreFaceOff(0)"
+                ng-disabled="ctrl.forecastService.isOver(ctrl.forecastService.getCurrentFirstMatch().Matches_Date)">
           <option ng-selected="{{ctrl.forecastService.getCurrentFirstMatch().Pronostics_ScoreEquipeDomicile == score}}"
                   ng-repeat="score in ctrl.forecastService.getScores() track by $index"
                   value="{{score}}">
@@ -83,7 +84,8 @@
       <div class="col-sm-3">
         <select class="form-control"
                 ng-model="ctrl.forecastService.getCurrentFirstMatch().Pronostics_ScoreEquipeVisiteur"
-                ng-change="ctrl.onChange(1, ctrl.forecastService.getCurrentFirstMatch().Match)">
+                ng-change="ctrl.onChangeScoreFaceOff(1)"
+                ng-disabled="ctrl.forecastService.isOver(ctrl.forecastService.getCurrentFirstMatch().Matches_Date)">
           <option ng-selected="{{ctrl.forecastService.getCurrentFirstMatch().Pronostics_ScoreEquipeVisiteur == score}}"
                   ng-repeat="score in ctrl.forecastService.getScores() track by $index"
                   value="{{score}}">
@@ -100,7 +102,8 @@
     <div class="col-sm-5 right">
       <p ng-if="ctrl.forecastService.getCurrentFirstMatchScorersA().length == 0">Aucun buteur pronostiqué</p>
       <p ng-if="ctrl.forecastService.getCurrentFirstMatchScorersA().length > 0">
-        <span ng-repeat="forecastScorer in ctrl.forecastService.getCurrentFirstMatchScorersA() track by $index"
+        <span class="forecast-scorer"
+              ng-repeat="forecastScorer in ctrl.forecastService.getCurrentFirstMatchScorersA() track by $index"
               ng-click="ctrl.onDeleteScorerFaceOff($index, forecastScorer, 0, 0)">
           {{forecastScorer.Joueurs_NomComplet}}{{$last ? '' : ', '}}
         </span>
@@ -114,7 +117,8 @@
     <div class="col-sm-5 left">
       <p ng-if="ctrl.forecastService.getCurrentFirstMatchScorersB().length == 0">Aucun buteur pronostiqué</p>
       <p ng-if="ctrl.forecastService.getCurrentFirstMatchScorersB().length > 0">
-        <span ng-repeat="forecastScorer in ctrl.forecastService.getCurrentFirstMatchScorersB() track by $index"
+        <span class="forecast-scorer"
+              ng-repeat="forecastScorer in ctrl.forecastService.getCurrentFirstMatchScorersB() track by $index"
               ng-click="ctrl.onDeleteScorerFaceOff($index, forecastScorer, 0, 1)">
           {{forecastScorer.Joueurs_NomComplet}}{{$last ? '' : ', '}}
         </span>
@@ -123,7 +127,7 @@
   </div>
 
   <!--Joueurs du match aller-->
-  <div class="collapse" id="firstMatchPlayers">
+  <div class="collapse players-list" id="firstMatchPlayers">
     <div class="row col-sm-12">
       <div class="col-sm-offset-5 col-sm-2">
         <span class="col-sm-4 forward centered">ATT</span><span class="col-sm-4 midfielder centered">MIL</span><span class="col-sm-4 defender centered">DEF</span>
@@ -135,9 +139,8 @@
         <div class="col-sm-4"
             ng-repeat="player in ctrl.forecastService.getCurrentFirstMatchPlayersA() track by $index"
             ng-click="ctrl.onAddScorerFaceOff(player, 0, 0)">
-          <span class="player-position" ng-class="{'forward': player.Postes_Poste == 4, 'midfielder': player.Postes_Poste == 3, 'defender': player.Postes_Poste == 2}">&nbsp;</span>
-          <span class="col-sm-1 centered">{{player.JoueursCotes_Cote}}</span>
-          <span class="col-sm-9 right nowrap">{{player.Joueurs_NomComplet}}</span>
+          <span class="col-sm-10 right nowrap forecast-player">{{player.Joueurs_NomComplet}}</span>
+          <span class="col-sm-1 centered player-position player-position-a" ng-class="{'forward': player.Postes_Poste == 4, 'midfielder': player.Postes_Poste == 3, 'defender': player.Postes_Poste == 2}">{{player.JoueursCotes_Cote}}</span>
         </div>
       </div>
 
@@ -149,9 +152,8 @@
         <div class="col-sm-4"
             ng-repeat="player in ctrl.forecastService.getCurrentFirstMatchPlayersB() track by $index"
             ng-click="ctrl.onAddScorerFaceOff(player, 0, 1)">
-          <span class="player-position" ng-class="{'forward': player.Postes_Poste == 4, 'midfielder': player.Postes_Poste == 3, 'defender': player.Postes_Poste == 2}">&nbsp;</span>
-          <span class="col-sm-1 centered">{{player.JoueursCotes_Cote}}</span>
-          <span class="col-sm-9 left nowrap">{{player.Joueurs_NomComplet}}</span>
+          <span class="col-sm-1 centered player-position player-position-b" ng-class="{'forward': player.Postes_Poste == 4, 'midfielder': player.Postes_Poste == 3, 'defender': player.Postes_Poste == 2}">{{player.JoueursCotes_Cote}}</span>
+          <span class="col-sm-9 left nowrap forecast-player">{{player.Joueurs_NomComplet}}</span>
         </div>
       </div>
     </div>
@@ -238,7 +240,8 @@
       <div class="col-sm-3 col-sm-offset-9">
         <select class="form-control"
                 ng-model="ctrl.forecastService.getCurrentSecondMatch().Pronostics_ScoreEquipeDomicile"
-                ng-change="ctrl.onChange(0, ctrl.forecastService.getCurrentSecondMatch().Match)">
+                ng-change="ctrl.onChangeScoreFaceOff(2)"
+                ng-disabled="ctrl.forecastService.isOver(ctrl.forecastService.getCurrentFirstMatch().Matches_Date)">
           <option ng-selected="{{ctrl.forecastService.getCurrentSecondMatch().Pronostics_ScoreEquipeDomicile == score}}"
                   ng-repeat="score in ctrl.forecastService.getScores() track by $index"
                   value="{{score}}">
@@ -258,7 +261,8 @@
       <div class="col-sm-3">
         <select class="form-control"
                 ng-model="ctrl.forecastService.getCurrentSecondMatch().Pronostics_ScoreEquipeVisiteur"
-                ng-change="ctrl.onChange(1, ctrl.forecastService.getCurrentSecondMatch().Match)">
+                ng-change="ctrl.onChangeScoreFaceOff(3)"
+                ng-disabled="ctrl.forecastService.isOver(ctrl.forecastService.getCurrentFirstMatch().Matches_Date)">
           <option ng-selected="{{ctrl.forecastService.getCurrentSecondMatch().Pronostics_ScoreEquipeVisiteur == score}}"
                   ng-repeat="score in ctrl.forecastService.getScores() track by $index"
                   value="{{score}}">
@@ -276,7 +280,8 @@
       <div class="col-sm-3 col-sm-offset-9">
         <select class="form-control"
                 ng-model="ctrl.forecastService.getCurrentSecondMatch().Pronostics_ScoreAPEquipeDomicile"
-                ng-change="ctrl.onChange(2, ctrl.forecastService.getCurrentSecondMatch().Match)">
+                ng-change="ctrl.onChangeScoreFaceOff(4)"
+                ng-disabled="ctrl.forecastService.isOver(ctrl.forecastService.getCurrentFirstMatch().Matches_Date)">
           <option ng-selected="{{ctrl.forecastService.getCurrentSecondMatch().Pronostics_ScoreAPEquipeDomicile == score}}"
                   ng-repeat="score in ctrl.forecastService.getScoresExtraA() track by $index"
                   value="{{score}}">
@@ -296,7 +301,8 @@
       <div class="col-sm-3">
         <select class="form-control"
                 ng-model="ctrl.forecastService.getCurrentSecondMatch().Pronostics_ScoreAPEquipeVisiteur"
-                ng-change="ctrl.onChange(3, ctrl.forecastService.getCurrentSecondMatch().Match)">
+                ng-change="ctrl.onChangeScoreFaceOff(5)"
+                ng-disabled="ctrl.forecastService.isOver(ctrl.forecastService.getCurrentFirstMatch().Matches_Date)">
           <option ng-selected="{{ctrl.forecastService.getCurrentSecondMatch().Pronostics_ScoreAPEquipeVisiteur == score}}"
                   ng-repeat="score in ctrl.forecastService.getScoresExtraB() track by $index"
                   value="{{score}}">
@@ -314,20 +320,32 @@
       <label class="radio-inline">
         {{ctrl.forecastService.getCurrentSecondMatch().EquipesDomicile_Nom}}
       </label>
-      <input type="radio" name="shooting" id="shootingA" value="1" ng-model="ctrl.forecastService.getCurrentSecondMatch().Pronostics_Vainqueur" ng-change="ctrl.onChange(4, ctrl.forecastService.getCurrentSecondMatch().Match)">
+      <input type="radio"
+             name="shooting"
+             id="shootingA"
+             value="1"
+             ng-model="ctrl.forecastService.getCurrentSecondMatch().Pronostics_Vainqueur"
+             ng-change="ctrl.onChangeScoreFaceOff(6)"
+             ng-disabled="ctrl.forecastService.isOver(ctrl.forecastService.getCurrentFirstMatch().Matches_Date)">
     </div>
 
     <!--Partie centrale-->
     <div class="col-sm-2 centered">
       <span class="label"
-            ng-class="{'label-success': ctrl.forecastService.getCurrentSecondMatch().Pronostics_Vainqueur == 1 || ctrl.forecastService.getCurrentSecondMatch().Pronostics_Vainqueur == 2, 'label-danger': ctrl.forecastService.getCurrentSecondMatch().Pronostics_Vainqueur != 1 && ctrl.forecastService.getCurrentSecondMatch().Pronostics_Vainqueur != 2}">
+            ng-class="{'label-success': ctrl.forecastService.getCurrentSecondMatch().Pronostics_Vainqueur == '1' || ctrl.forecastService.getCurrentSecondMatch().Pronostics_Vainqueur == '2', 'label-danger': ctrl.forecastService.getCurrentSecondMatch().Pronostics_Vainqueur != '1' && ctrl.forecastService.getCurrentSecondMatch().Pronostics_Vainqueur != '2'}">
         TAB
       </span>
     </div>
 
     <!--Equipe visiteur-->
     <div class="col-sm-5 left">
-      <input type="radio" name="shooting" id="shootingB" value="2" ng-model="ctrl.forecastService.getCurrentSecondMatch().Pronostics_Vainqueur" ng-change="ctrl.onChange(4, ctrl.forecastService.getCurrentSecondMatch().Match)">
+      <input type="radio"
+             name="shooting"
+             id="shootingB"
+             value="2"
+             ng-model="ctrl.forecastService.getCurrentSecondMatch().Pronostics_Vainqueur"
+             ng-change="ctrl.onChangeScoreFaceOff(6)"
+             ng-disabled="ctrl.forecastService.isOver(ctrl.forecastService.getCurrentFirstMatch().Matches_Date)">
       <label class="radio-inline">
         {{ctrl.forecastService.getCurrentSecondMatch().EquipesVisiteur_Nom}}
       </label>
@@ -340,7 +358,9 @@
     <div class="col-sm-5 right">
       <p ng-if="ctrl.forecastService.getCurrentSecondMatchScorersA().length == 0">Aucun buteur pronostiqué</p>
       <p ng-if="ctrl.forecastService.getCurrentSecondMatchScorersA().length > 0">
-        <span ng-repeat="forecastScorer in ctrl.forecastService.getCurrentSecondMatchScorersA() track by $index" ng-click="ctrl.onDeleteScorerFaceOff($index, forecastScorer, 1, 0)">
+        <span class="forecast-scorer"
+              ng-repeat="forecastScorer in ctrl.forecastService.getCurrentSecondMatchScorersA() track by $index"
+              ng-click="ctrl.onDeleteScorerFaceOff($index, forecastScorer, 1, 0)">
             {{forecastScorer.Joueurs_NomComplet}}{{$last ? '' : ', '}}
         </span>
       </p>
@@ -354,7 +374,9 @@
     <div class="col-sm-5 left">
       <p ng-if="ctrl.forecastService.getCurrentSecondMatchScorersB().length == 0">Aucun buteur pronostiqué</p>
       <p ng-if="ctrl.forecastService.getCurrentSecondMatchScorersB().length > 0">
-        <span ng-repeat="forecastScorer in ctrl.forecastService.getCurrentSecondMatchScorersB() track by $index" ng-click="ctrl.onDeleteScorerFaceOff($index, forecastScorer, 1, 1)">
+        <span class="forecast-scorer"
+              ng-repeat="forecastScorer in ctrl.forecastService.getCurrentSecondMatchScorersB() track by $index"
+              ng-click="ctrl.onDeleteScorerFaceOff($index, forecastScorer, 1, 1)">
             {{forecastScorer.Joueurs_NomComplet}}{{$last ? '' : ', '}}
         </span>
       </p>
@@ -362,7 +384,7 @@
   </div>
 
   <!--Joueurs du match retour-->
-  <div class="collapse" id="secondMatchPlayers">
+  <div class="collapse players-list" id="secondMatchPlayers">
     <div class="row col-sm-12">
       <div class="col-sm-offset-5 col-sm-2">
         <span class="col-sm-4 forward centered">ATT</span><span class="col-sm-4 midfielder centered">MIL</span><span class="col-sm-4 defender centered">DEF</span>
@@ -374,9 +396,8 @@
         <div class="col-sm-4"
             ng-repeat="player in ctrl.forecastService.getCurrentSecondMatchPlayersA() track by $index"
             ng-click="ctrl.onAddScorerFaceOff(player, 1, 0)">
-          <span class="player-position" ng-class="{'forward': player.Postes_Poste == 4, 'midfielder': player.Postes_Poste == 3, 'defender': player.Postes_Poste == 2}">&nbsp;</span>
-          <span class="col-sm-1 centered">{{player.JoueursCotes_Cote}}</span>
-          <span class="col-sm-9 right nowrap">{{player.Joueurs_NomComplet}}</span>
+          <span class="col-sm-10 right nowrap forecast-player">{{player.Joueurs_NomComplet}}</span>
+          <span class="col-sm-1 centered player-position player-position-a" ng-class="{'forward': player.Postes_Poste == 4, 'midfielder': player.Postes_Poste == 3, 'defender': player.Postes_Poste == 2}">{{player.JoueursCotes_Cote}}</span>
         </div>
       </div>
 
@@ -388,9 +409,8 @@
         <div class="col-sm-4"
             ng-repeat="player in ctrl.forecastService.getCurrentSecondMatchPlayersB() track by $index"
             ng-click="ctrl.onAddScorerFaceOff(player, 1, 1)">
-          <span class="player-position" ng-class="{'forward': player.Postes_Poste == 4, 'midfielder': player.Postes_Poste == 3, 'defender': player.Postes_Poste == 2}">&nbsp;</span>
-          <span class="col-sm-1 centered">{{player.JoueursCotes_Cote}}</span>
-          <span class="col-sm-9 left nowrap">{{player.Joueurs_NomComplet}}</span>
+          <span class="col-sm-1 centered player-position player-position-b" ng-class="{'forward': player.Postes_Poste == 4, 'midfielder': player.Postes_Poste == 3, 'defender': player.Postes_Poste == 2}">{{player.JoueursCotes_Cote}}</span>
+          <span class="col-sm-9 left nowrap forecast-player">{{player.Joueurs_NomComplet}}</span>
         </div>
       </div>
     </div>

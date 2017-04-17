@@ -13,8 +13,8 @@ module LPO {
     }
 
     public onChange(forecastActionCode: number): void {
-      this.forecastService.checkExtraAndShootingNormal();
-      this.forecastService.updateForecast(forecastActionCode);
+      //this.forecastService.checkExtraAndShootingNormal();
+      //this.forecastService.updateForecast(forecastActionCode);
     }
   }
 }
