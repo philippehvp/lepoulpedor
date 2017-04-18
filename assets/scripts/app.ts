@@ -14,7 +14,7 @@
 /// <reference path="controllers/login-controller.ts" />
 /// <reference path="controllers/standings-controller.ts" />
 /// <reference path="controllers/forecast/forecast-controller.ts" />
-/// <reference path="controllers/forecast/forecast-match-normal-controller.ts" />
+/// <reference path="controllers/forecast/forecast-match-single-controller.ts" />
 /// <reference path="controllers/forecast/forecast-match-face-off-controller.ts" />
 
 
@@ -62,7 +62,7 @@ module LPO {
     .controller("LoginController", ["navbarService", "generalService", "$cookies", "moment", (navbarService, generalService, $cookies, moment) => new LoginController(navbarService, generalService, $cookies, moment)])
     .controller("StandingsController", ["navbarService", "generalService", "standingsService", (navbarService, generalService, standingsService) => new StandingsController(navbarService, generalService, standingsService)])
     .controller("ForecastController", ["navbarService", "generalService", "forecastService", (navbarService, generalService, forecastService) => new ForecastController(navbarService, generalService, forecastService)])
-    .controller("ForecastMatchNormalController", ["generalService", "forecastService", (generalService, forecastService) => new ForecastMatchNormalController(generalService, forecastService)])
+    .controller("ForecastMatchSingleController", ["generalService", "forecastService", (generalService, forecastService) => new ForecastMatchSingleController(generalService, forecastService)])
     .controller("ForecastMatchFaceOffController", ["generalService", "forecastService", (generalService, forecastService) => new ForecastMatchFaceOffController(generalService, forecastService)])
 
     .controller("ContestCentreController", ["navbarService", "generalService", "contestCentreService", (navbarService, generalService, contestCentreService) => new ContestCentreController(navbarService, generalService, contestCentreService)])
@@ -98,7 +98,7 @@ module LPO {
     .component("login", { controller: "LoginController as ctrl", templateUrl: "./dist/login.html" })
     .component("standings", { controller: "StandingsController as ctrl", templateUrl: "./dist/standings.html" })
     .component("forecast", { controller: "ForecastController as ctrl", templateUrl: "./dist/forecast.html" })
-    .component("forecastMatchNormal", { controller: "ForecastMatchNormalController as ctrl", templateUrl: "./dist/forecast-match-normal.html" })
+    .component("forecastMatchSingle", { controller: "ForecastMatchSingleController as ctrl", templateUrl: "./dist/forecast-match-single.html" })
     .component("forecastMatchFaceOff", { controller: "ForecastMatchFaceOffController as ctrl", templateUrl: "./dist/forecast-match-face-off.html" })
     .component("contest", { controller: "ContestCentreController as ctrl", templateUrl: "./dist/contest-centre.html" })
     .component("forecasters", { controller: "ForecastersController as ctrl", templateUrl: "./dist/forecasters.html" })

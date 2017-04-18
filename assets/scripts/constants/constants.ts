@@ -14,21 +14,34 @@ module LPO {
     ];
   }
 
-  export enum enumForecastActionCode {
-    AllerScoreEquipeDomicile = 0,
-    AllerScoreEquipeVisiteur = 1,
-    RetourScoreEquipeDomicile = 2,
-    RetourScoreEquipeVisiteur = 3,
-    RetourScoreAPDomicile = 4,
-    RetourScoreAPVisiteur = 5,
-    RetourVainqueur = 6,
-    AllerAjoutButeurDomicile = 7,
-    AllerAjoutButeurVisiteur = 8,
-    AllerSuppressionButeurDomicile = 9,
-    AllerSuppressionButeurVisiteur = 10,
-    RetourAjoutButeurDomicile = 11,
-    RetourAjoutButeurVisiteur = 12,
-    RetourSuppressionButeurDomicile = 13,
-    RetourSuppressionButeurVisiteur = 14
+  export enum enumForecastFaceOffActionCode {
+    SingleMatchScoreA = 0,
+    SingleMatchScoreB = 1,
+    SecondMatchScoreA = 2,
+    SecondMatchScoreB = 3,
+    SecondMatchScoreExtraA = 4,
+    SecondMatchScoreExtraB = 5,
+    SecondMatchShootingWinner = 6,
+    FirstMatchAddScorerA = 7,
+    FirstMatchAddScorerB = 8,
+    FirstMatchDeleteScorerA = 9,
+    FirstMatchDeleteScorerB = 10,
+    SecondMatchAddScorerA = 11,
+    SecondMatchAddScorerB = 12,
+    SecondMatchDeleteScorerA = 13,
+    SecondMatchDeleteScorerB = 14
   };
+
+  export enum enumForecastSingleActionCode {
+    SingleMatchScoreA = 0,
+    SingleMatchScoreB = 1,
+    SingleMatchScoreExtraA = 2,
+    SingleMatchScoreExtraB = 3,
+    SingleMatchShootingWinner = 4,
+    SingleMatchAddScorerA = 5,
+    SingleMatchAddScorerB = 6,
+    SingleMatchDeleteScorerA = 7,
+    SingleMatchDeleteScorerB = 8
+  };
+
 }

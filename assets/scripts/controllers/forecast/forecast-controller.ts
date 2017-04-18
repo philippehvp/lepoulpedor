@@ -8,7 +8,7 @@ module LPO {
 
     constructor(private navbarService: NavbarService, private generalService: GeneralService, private forecastService: ForecastService) {
       this.generalService.checkUser();
-      this.forecastService.initCurrentMatch();
+      this.forecastService.initCurrentMatches();
     }
 
     $onInit() {

@@ -9,28 +9,36 @@ module LPO {
     private matchesLight: Array<IMatchLight>;
     private currentMatchLight: IMatchLight;
 
-    private currentMatch: IMatch;
-
+    // Match qui n'est pas de type confrontation directe
+    private currentSingleMatch: ISingleMatch;
+    // Matches de confrontation directe
     private currentFirstMatch: IMatchFirst;
     private currentSecondMatch: IMatchSecond;
 
     // Pronostic de buteur
+    private currentSingleMatchScorersA: Array<IForecastScorer>;
+    private currentSingleMatchScorersB: Array<IForecastScorer>;
     private currentFirstMatchScorersA: Array<IForecastScorer>;
     private currentFirstMatchScorersB: Array<IForecastScorer>;
     private currentSecondMatchScorersA: Array<IForecastScorer>;
     private currentSecondMatchScorersB: Array<IForecastScorer>;
 
     // Joueurs
+    private currentSingleMatchPlayersA: Array<IPlayer>;
+    private currentSingleMatchPlayersB: Array<IPlayer>;
     private currentFirstMatchPlayersA: Array<IPlayer>;
     private currentFirstMatchPlayersB: Array<IPlayer>;
     private currentSecondMatchPlayersA: Array<IPlayer>;
     private currentSecondMatchPlayersB: Array<IPlayer>;
 
-    private matchNormalLimitDateLabel: string;
+    private matchSingleLimitDateLabel: string;
     private matchFirstLimitDateLabel: string;
     private matchSecondLimitDateLabel: string;
 
+    // Score possible des matches (de 0 à 15)
     private scores: Array<number>;
+
+    // Pour les scores AP, cela dépend du score 90
     private scoresExtraA: Array<number>;
     private scoresExtraB: Array<number>;
 
@@ -62,8 +70,8 @@ module LPO {
       return this.currentMatchLight;
     }
 
-    public getCurrentMatch(): IMatch {
-      return this.currentMatch;
+    public getCurrentSingleMatch(): ISingleMatch {
+      return this.currentSingleMatch;
     }
 
     public getCurrentFirstMatch(): IMatchFirst {
@@ -72,6 +80,14 @@ module LPO {
 
     public getCurrentSecondMatch(): IMatchSecond {
       return this.currentSecondMatch;
+    }
+
+    public getCurrentSingleMatchScorersA(): Array<IForecastScorer> {
+      return this.currentSingleMatchScorersA;
+    }
+
+    public getCurrentSingleMatchScorersB(): Array<IForecastScorer> {
+      return this.currentSingleMatchScorersB;
     }
 
     public getCurrentFirstMatchScorersA(): Array<IForecastScorer> {
@@ -90,6 +106,14 @@ module LPO {
       return this.currentSecondMatchScorersB;
     }
 
+    public getCurrentSingleMatchPlayersA(): Array<IPlayer> {
+      return this.currentSingleMatchPlayersA;
+    }
+
+    public getCurrentSingleMatchPlayersB(): Array<IPlayer> {
+      return this.currentSingleMatchPlayersB;
+    }
+
     public getCurrentFirstMatchPlayersA(): Array<IPlayer> {
       return this.currentFirstMatchPlayersA;
     }
@@ -104,6 +128,11 @@ module LPO {
 
     public getCurrentSecondMatchPlayersB(): Array<IPlayer> {
       return this.currentSecondMatchPlayersB;
+    }
+
+    public setCurrentChampionshipAndWeek(championshipAndWeek: IChampionshipAndWeek): void {
+      // Sélection d'un championnat
+      this.currentChampionshipAndWeek = championshipAndWeek;
     }
 
     public readWeeks(): ng.IPromise<Array<IChampionshipAndWeek>> {
@@ -136,11 +165,6 @@ module LPO {
       return d.promise;
     }
 
-    public setCurrentChampionshipAndWeek(championshipAndWeek: IChampionshipAndWeek): void {
-      // Sélection d'un championnat
-      this.currentChampionshipAndWeek = championshipAndWeek;
-    }
-
     public readMatchesLight(championshipAndWeek: IChampionshipAndWeek): ng.IPromise<Array<IMatchLight>> {
       // Lecture des matches de la journée (informations minimales)
       let d: ng.IDeferred<Array<IMatchLight>> = this.$q.defer<Array<IMatchLight>>();
@@ -156,7 +180,7 @@ module LPO {
         data: JSON.stringify({ "pronostiqueur": this.generalService.getUser().Pronostiqueur, "journee": championshipAndWeek.Journee})
       }).then((response: { data: Array<IMatchLight> }) => {
         this.matchesLight = response.data;
-        this.initCurrentMatch();
+        this.initCurrentMatches();
         def.resolve(response.data);
       }, function errorCallback(error) {
         let errMsg = (error.message) ? error.message :
@@ -182,6 +206,23 @@ module LPO {
           this.checkExtraAndShootingFaceOff();
         });
       }
+      else {
+        this.readMatchSingle(matchLight).then((ret: boolean) => {
+          // Logistique du match
+          let dateSingleMatch: any = this.moment(this.currentSingleMatch.Matches_Date);
+          this.matchSingleLimitDateLabel = dateSingleMatch.format("dddd D MMMM à HH:mm");
+          this.checkExtraAndShootingSingle();
+        });
+      }
+    }
+
+    public checkExtraAndShootingSingle(forecastActionCode?: number): void {
+      // Doit-on afficher les scores AP et les TAB ?
+      this.mustDisplayScoresExtraSingle();
+      this.mustDisplayShootingSingle();
+
+      if(forecastActionCode !== null && forecastActionCode !== undefined)
+        this.updateForecastSingle(forecastActionCode);
     }
 
     public checkExtraAndShootingFaceOff(forecastActionCode?: number): void {
@@ -191,6 +232,45 @@ module LPO {
 
       if (forecastActionCode !== null && forecastActionCode !== undefined)
         this.updateForecastFaceOff(forecastActionCode);
+    }
+
+    private mustDisplayScoresExtraSingle(): void {
+      // Vérification de la nécessité d'afficher les scores AP ou non
+      this.displayScoresExtra = false;
+
+      // Match retour de confrontation directe
+      if (
+        this.currentSingleMatch.Pronostics_ScoreEquipeDomicile != null &&
+        this.currentSingleMatch.Pronostics_ScoreEquipeVisiteur != null
+      ) {
+        // Si les scores 90 sont les mêmes, alors on affiche le score AP sauf dans le cas du match de Community Shield
+        if (
+          this.currentSingleMatch.Pronostics_ScoreEquipeDomicile == this.currentSingleMatch.Pronostics_ScoreEquipeVisiteur && this.currentSingleMatch.Matches_TypeMatch !== 5
+        ) {
+          // On remplit le score minimal de chaque équipe avec celui de la fin du temps règlementaire
+          this.scoresExtraA = [];
+          this.scoresExtraB = [];
+          let i: number;
+          for (i = Number(this.currentSingleMatch.Pronostics_ScoreEquipeDomicile); i <= 15; i++) {
+            this.scoresExtraA.push(i);
+            this.scoresExtraB.push(i);
+          }
+
+          if (this.currentSingleMatch.Pronostics_ScoreAPEquipeDomicile === null)
+            this.currentSingleMatch.Pronostics_ScoreAPEquipeDomicile = this.currentSingleMatch.Pronostics_ScoreEquipeDomicile;
+
+          if (this.currentSingleMatch.Pronostics_ScoreAPEquipeVisiteur === null)
+            this.currentSingleMatch.Pronostics_ScoreAPEquipeVisiteur = this.currentSingleMatch.Pronostics_ScoreEquipeVisiteur;
+
+          this.displayScoresExtra = true;
+        }
+        else {
+          // Sinon, on remet les scores AP à null
+          this.currentSingleMatch.Pronostics_ScoreAPEquipeDomicile = null;
+          this.currentSingleMatch.Pronostics_ScoreAPEquipeVisiteur = null;
+          this.currentSingleMatch.Pronostics_Vainqueur = "0";
+        }
+      }
     }
 
     private mustDisplayScoresExtraFaceOff(): void {
@@ -236,6 +316,28 @@ module LPO {
       }
     }
 
+    private mustDisplayShootingSingle(): void {
+      // Vérification de la nécessité d'afficher les TAB ou non
+      this.displayShooting = false;
+
+      if (
+        this.currentSingleMatch.Pronostics_ScoreEquipeDomicile != null &&
+        this.currentSingleMatch.Pronostics_ScoreEquipeVisiteur != null
+      ) {
+        // Pour les matches autres que le Community Shield, si les scores AP sont identiques alors on affiche les TAB
+        // Pour le match de Community Shield, ce sont seulement les scores 90 puisqu'il n'y a pas de prolongation
+        if (
+          (this.currentSingleMatch.Matches_TypeMatch !== 5 && this.currentSingleMatch.Pronostics_ScoreAPEquipeDomicile == this.currentSingleMatch.Pronostics_ScoreAPEquipeVisiteur) ||
+          (this.currentSingleMatch.Matches_TypeMatch === 5 && this.currentSingleMatch.Pronostics_ScoreEquipeDomicile == this.currentSingleMatch.Pronostics_ScoreEquipeVisiteur)
+        ) {
+          this.displayShooting = true;
+        }
+      }
+
+      if (this.displayShooting === false)
+        this.currentSingleMatch.Pronostics_Vainqueur = "0";
+    }
+
     private mustDisplayShootingFaceOff(): void {
       // Vérification de la nécessité d'afficher les TAB ou non
       this.displayShooting = false;
@@ -257,6 +359,33 @@ module LPO {
 
       if (this.displayShooting === false)
         this.currentSecondMatch.Pronostics_Vainqueur = "0";
+    }
+
+    public readMatchSingle(matchLight: IMatchLight): ng.IPromise<boolean> {
+      // Lecture d'un match de confrontation directe
+      let d: ng.IDeferred<boolean> = this.$q.defer<boolean>();
+
+      // Lecture des informations d'un match
+      let url = "./dist/forecast-match-single.php";
+
+      this.$http({
+        method: "POST",
+        url: url,
+        data: JSON.stringify({ "pronostiqueur": this.generalService.getUser().Pronostiqueur, "match": matchLight.Match })
+      }).then((response: { data: any }) => {
+        this.currentSingleMatch = response.data[0].match[0];
+        this.currentSingleMatchScorersA = response.data[0].buteurs_domicile;
+        this.currentSingleMatchScorersB = response.data[0].buteurs_visiteur;
+        this.currentSingleMatchPlayersA = response.data[0].joueurs_domicile;
+        this.currentSingleMatchPlayersB = response.data[0].joueurs_visiteur;
+        d.resolve(true);
+      }, function errorCallback(error) {
+        let errMsg = (error.message) ? error.message :
+          error.status ? `${error.status} - ${error.statusText}` : "forecast-service readMatchSingle: Server error";
+        console.error(errMsg);
+        d.reject(errMsg);
+      });
+      return d.promise;
     }
 
     public readMatchFaceOff(matchLight: IMatchLight): ng.IPromise<boolean> {
@@ -284,25 +413,43 @@ module LPO {
         d.resolve(true);
       }, function errorCallback(error) {
         let errMsg = (error.message) ? error.message :
-          error.status ? `${error.status} - ${error.statusText}` : "forecast-service readMatch: Server error";
+          error.status ? `${error.status} - ${error.statusText}` : "forecast-service readMatchFaceOff: Server error";
         console.error(errMsg);
         d.reject(errMsg);
       });
       return d.promise;
     }
 
-    // Réinitialisation du match en cours
-    public initCurrentMatch(): void {
-      this.currentMatch = null;
+    // Réinitialisation du match en cours (lorsque l'on change de journée ou de match / rencontre)
+    public initCurrentMatches(): void {
+      this.currentSingleMatch = null;
+      this.currentFirstMatch = null;
+      this.currentSecondMatch = null;
+    }
+
+    public deleteScorerSingle($index: number, forecastScorer: IForecastScorer, teamAOrB: number): void {
+      if (this.currentSingleMatch.Matches_Date.getTime() < new Date().getTime())
+          return;
+
+      if (teamAOrB === 0) {
+        // Equipe domicile
+        this.currentSingleMatchScorersA.splice($index, 1);
+        this.removeScorer(enumForecastSingleActionCode.SingleMatchDeleteScorerA, forecastScorer, this.currentSingleMatch.Match, this.currentSingleMatch.Matches_Date);
+      }
+      else if (teamAOrB === 1) {
+        // Equipe visiteur
+        this.currentSingleMatchScorersB.splice($index, 1);
+        this.removeScorer(enumForecastSingleActionCode.SingleMatchDeleteScorerB, forecastScorer, this.currentSingleMatch.Match, this.currentSingleMatch.Matches_Date);
+      }
     }
 
     public deleteScorerFaceOff($index: number, forecastScorer: IForecastScorer, matchFirstOrSecond: number, teamAOrB: number): void {
       if (matchFirstOrSecond === 0) {
-        if (new Date(this.currentFirstMatch.Matches_Date).getTime() < new Date().getTime())
+        if (this.currentFirstMatch.Matches_Date.getTime() < new Date().getTime())
           return;
       }
       else if (matchFirstOrSecond === 1) {
-        if (new Date(this.currentSecondMatch.Matches_Date).getTime() < new Date().getTime())
+        if (this.currentSecondMatch.Matches_Date.getTime() < new Date().getTime())
           return;
       }
 
@@ -311,12 +458,12 @@ module LPO {
         if (teamAOrB === 0) {
           // Equipe domicile
           this.currentFirstMatchScorersA.splice($index, 1);
-          this.removeScorer(enumForecastActionCode.AllerSuppressionButeurDomicile, forecastScorer, this.currentFirstMatch.Match, this.currentFirstMatch.Matches_Date);
+          this.removeScorer(enumForecastFaceOffActionCode.FirstMatchDeleteScorerA, forecastScorer, this.currentFirstMatch.Match, this.currentFirstMatch.Matches_Date);
         }
         else if (teamAOrB === 1) {
           // Equipe visiteur
           this.currentFirstMatchScorersB.splice($index, 1);
-          this.removeScorer(enumForecastActionCode.AllerSuppressionButeurVisiteur, forecastScorer, this.currentFirstMatch.Match, this.currentFirstMatch.Matches_Date);
+          this.removeScorer(enumForecastFaceOffActionCode.FirstMatchDeleteScorerB, forecastScorer, this.currentFirstMatch.Match, this.currentFirstMatch.Matches_Date);
         }
       }
       else {
@@ -324,23 +471,44 @@ module LPO {
         if (teamAOrB === 0) {
           // Equipe domicile
           this.currentSecondMatchScorersA.splice($index, 1);
-          this.removeScorer(enumForecastActionCode.RetourSuppressionButeurDomicile, forecastScorer, this.currentSecondMatch.Match, this.currentSecondMatch.Matches_Date);
+          this.removeScorer(enumForecastFaceOffActionCode.SecondMatchDeleteScorerA, forecastScorer, this.currentSecondMatch.Match, this.currentSecondMatch.Matches_Date);
         }
         else if (teamAOrB === 1) {
           // Equipe visiteur
           this.currentSecondMatchScorersB.splice($index, 1);
-          this.removeScorer(enumForecastActionCode.RetourSuppressionButeurVisiteur, forecastScorer, this.currentSecondMatch.Match, this.currentSecondMatch.Matches_Date);
+          this.removeScorer(enumForecastFaceOffActionCode.SecondMatchDeleteScorerB, forecastScorer, this.currentSecondMatch.Match, this.currentSecondMatch.Matches_Date);
         }
+      }
+    }
+
+    public addScorerSingle(player: IPlayer, teamAOrB: number): void {
+      if (this.currentSingleMatch.Matches_Date.getTime() < new Date().getTime())
+          return;
+
+      let scorer: IForecastScorer = {
+        Joueurs_Joueur: player.Joueur,
+        Joueurs_NomComplet: player.Joueurs_NomComplet
+      };
+
+      if (teamAOrB === 0) {
+        // Equipe domicile
+        this.currentFirstMatchScorersA.push(scorer);
+        this.addScorer(enumForecastSingleActionCode.SingleMatchAddScorerA, player, this.currentSingleMatch.Match, this.currentSingleMatch.Matches_Date);
+      }
+      else if (teamAOrB === 1) {
+        // Equipe visiteur
+        this.currentFirstMatchScorersB.push(scorer);
+        this.addScorer(enumForecastSingleActionCode.SingleMatchAddScorerB, player, this.currentSingleMatch.Match, this.currentSingleMatch.Matches_Date);
       }
     }
 
     public addScorerFaceOff(player: IPlayer, matchFirstOrSecond: number, teamAOrB: number): void {
       if (matchFirstOrSecond === 0) {
-        if (new Date(this.currentFirstMatch.Matches_Date).getTime() < new Date().getTime())
+        if (this.currentFirstMatch.Matches_Date.getTime() < new Date().getTime())
           return;
       }
       else if (matchFirstOrSecond === 1) {
-        if (new Date(this.currentSecondMatch.Matches_Date).getTime() < new Date().getTime())
+        if (this.currentSecondMatch.Matches_Date.getTime() < new Date().getTime())
           return;
       }
 
@@ -353,12 +521,12 @@ module LPO {
         if (teamAOrB === 0) {
           // Equipe domicile
           this.currentFirstMatchScorersA.push(scorer);
-          this.addScorer(enumForecastActionCode.AllerAjoutButeurDomicile, player, this.currentFirstMatch.Match, this.currentFirstMatch.Matches_Date);
+          this.addScorer(enumForecastFaceOffActionCode.FirstMatchAddScorerA, player, this.currentFirstMatch.Match, this.currentFirstMatch.Matches_Date);
         }
         else if (teamAOrB === 1) {
           // Equipe visiteur
           this.currentFirstMatchScorersB.push(scorer);
-          this.addScorer(enumForecastActionCode.AllerAjoutButeurVisiteur, player, this.currentFirstMatch.Match, this.currentFirstMatch.Matches_Date);
+          this.addScorer(enumForecastFaceOffActionCode.FirstMatchAddScorerB, player, this.currentFirstMatch.Match, this.currentFirstMatch.Matches_Date);
         }
       }
       else if (matchFirstOrSecond === 1) {
@@ -366,20 +534,61 @@ module LPO {
         if (teamAOrB === 0) {
           // Equipe domicile
           this.currentSecondMatchScorersA.push(scorer);
-          this.addScorer(enumForecastActionCode.RetourAjoutButeurDomicile, player, this.currentSecondMatch.Match, this.currentSecondMatch.Matches_Date);
+          this.addScorer(enumForecastFaceOffActionCode.SecondMatchAddScorerA, player, this.currentSecondMatch.Match, this.currentSecondMatch.Matches_Date);
         }
         else if (teamAOrB === 1) {
           // Equipe visiteur
           this.currentSecondMatchScorersB.push(scorer);
-          this.addScorer(enumForecastActionCode.RetourAjoutButeurVisiteur, player, this.currentSecondMatch.Match, this.currentSecondMatch.Matches_Date);
+          this.addScorer(enumForecastFaceOffActionCode.SecondMatchAddScorerB, player, this.currentSecondMatch.Match, this.currentSecondMatch.Matches_Date);
         }
       }
     }
 
+    public changeScoreSingle(forecastActionCode: number): void {
+      if (this.currentSingleMatch.Matches_Date.getTime() > new Date().getTime())
+        this.checkExtraAndShootingSingle(forecastActionCode);
+    }
+
     public changeScoreFaceOff(forecastActionCode: number): void {
       // Pronostic sur le score uniquement avant la fin du match aller
-      if (new Date(this.currentFirstMatch.Matches_Date).getTime() > new Date().getTime())
+      if (this.currentFirstMatch.Matches_Date.getTime() > new Date().getTime())
         this.checkExtraAndShootingFaceOff(forecastActionCode);
+    }
+
+    private updateForecastSingle(forecastActionCode: number): ng.IPromise<boolean> {
+      // Mise à jour du score d'un pronostic de match hors confrontation directe
+      let def: ng.IDeferred<boolean> = this.$q.defer<boolean>();
+
+      // Mise à jour des données
+      let url = "./dist/forecast-update-single.php";
+
+      let updateParams: any = {
+        "pronostiqueur": this.generalService.getUser().Pronostiqueur,
+        "match": {
+          "Match": this.currentSingleMatch.Match,
+          "Matches_Date": this.currentSingleMatch.Matches_Date,
+          "Pronostics_ScoreEquipeDomicile": this.currentSingleMatch.Pronostics_ScoreEquipeDomicile,
+          "Pronostics_ScoreEquipeVisiteur": this.currentSingleMatch.Pronostics_ScoreEquipeVisiteur,
+          "Pronostics_ScoreAPEquipeDomicile": this.currentSingleMatch.Pronostics_ScoreEquipeDomicile,
+          "Pronostics_ScoreAPEquipeVisiteur": this.currentSingleMatch.Pronostics_ScoreEquipeVisiteur,
+          "Pronostics_Vainqueur": this.currentSingleMatch.Pronostics_Vainqueur
+        }
+      }
+
+      this.$http({
+        method: "POST",
+        url: url,
+        params: { forecastActionCode: forecastActionCode },
+        data: angular.toJson(updateParams)
+      }).then((response: { data: boolean }) => {
+        def.resolve(response.data);
+      }, function errorCallback(error) {
+        let errMsg = (error.message) ? error.message :
+          error.status ? `${error.status} - ${error.statusText}` : "forecast-service updateForecastSingle: Server error";
+        console.error(errMsg);
+        def.reject(errMsg);
+      });
+      return def.promise;
     }
 
     private updateForecastFaceOff(forecastActionCode: number): ng.IPromise<boolean> {
@@ -389,11 +598,30 @@ module LPO {
       // Mise à jour des données
       let url = "./dist/forecast-update-face-off.php";
 
+      let updateParams: any = {
+        "pronostiqueur": this.generalService.getUser().Pronostiqueur,
+        "aller": {
+          "Match": this.currentFirstMatch.Match,
+          "Matches_Date": this.currentFirstMatch.Matches_Date,
+          "Pronostics_ScoreEquipeDomicile": this.currentFirstMatch.Pronostics_ScoreEquipeDomicile,
+          "Pronostics_ScoreEquipeVisiteur": this.currentFirstMatch.Pronostics_ScoreEquipeVisiteur
+        },
+        "retour": {
+          "Match": this.currentSecondMatch.Match,
+          "Matches_Date": this.currentSecondMatch.Matches_Date,
+          "Pronostics_ScoreEquipeDomicile": this.currentSecondMatch.Pronostics_ScoreEquipeDomicile,
+          "Pronostics_ScoreEquipeVisiteur": this.currentSecondMatch.Pronostics_ScoreEquipeVisiteur,
+          "Pronostics_ScoreAPEquipeDomicile": this.currentSecondMatch.Pronostics_ScoreAPEquipeDomicile,
+          "Pronostics_ScoreAPEquipeVisiteur": this.currentSecondMatch.Pronostics_ScoreAPEquipeVisiteur,
+          "Pronostics_Vainqueur": this.currentSecondMatch.Pronostics_Vainqueur
+        }
+      }
+
       this.$http({
         method: "POST",
         url: url,
         params: { forecastActionCode: forecastActionCode },
-        data: angular.toJson({"pronostiqueur": this.generalService.getUser().Pronostiqueur, "aller": this.currentFirstMatch, "retour": this.currentSecondMatch})
+        data: angular.toJson(updateParams)
       }).then((response: { data: boolean }) => {
         def.resolve(response.data);
       }, function errorCallback(error) {
@@ -450,7 +678,7 @@ module LPO {
       return def.promise;
     }
 
-    public isOver(date: Date): boolean {
+    public isOver(date: string): boolean {
       let ret: boolean = false;
       if(date !== null && date !== undefined) {
         if(new Date(date).getTime() < new Date().getTime())
@@ -459,6 +687,5 @@ module LPO {
 
       return ret;
     }
-
   }
 }

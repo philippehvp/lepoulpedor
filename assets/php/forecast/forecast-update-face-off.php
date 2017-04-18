@@ -79,7 +79,7 @@
   $forecaster = isset($_SESSION["pronostiqueur"]) ? $_SESSION["pronostiqueur"] : 0;
   $postedData = json_decode(file_get_contents("php://input"), true);
   $forecaster = json_decode($postedData["pronostiqueur"]);
-  
+
   // Le code action permet de savoir quelle est la nature de la modification :
   // - 0 et 1 : respectivement score 90 aller domicile et visiteur
   // - 2 et 3 : respectivement score 90 retour domicile et visiteur
@@ -94,7 +94,6 @@
   // Par exemple, le fait de changer le score du match aller peut signifier que des TAB n'aient plus lieu
   // Donc, il faut toujours tout écrire lorsqu'un changement de score a lieu (c'est le seul moyen dans cet exemple d'effacer les TAB)
 
-  $update = false;
   $forecastActionCode = $_GET["forecastActionCode"];
 
   if($forecastActionCode >= 0 && $forecastActionCode <= 6) {
@@ -105,7 +104,7 @@
     $secondMatchDate = $secondMatch["Matches_Date"];
     $update = checkScoreFaceOff($forecastActionCode, $firstMatchDate, $secondMatchDate);
   }
-  else {
+  else if($forecastActionCode >= 7 && $forecastActionCode <= 14) {
     // Ajout ou suppression d'un pronostic de buteur
     $player = json_decode($postedData["joueur"]);
     $match = json_decode($postedData["match"]);

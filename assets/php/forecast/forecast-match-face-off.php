@@ -26,6 +26,11 @@
             '								THEN	1' .
             '								ELSE	0' .
             '							END AS Buteurs_Pronostiquables' .
+            '							,CASE' .
+            '								WHEN	matches.Matches_DemiFinaleEuropeenne = 1 OR matches.Matches_FinaleEuropeenne = 1' .
+            '								THEN	1' .
+            '								ELSE	0' .
+            '							END AS Afficher_CoefficientCarreFinal' .
             '							,PronosticsCarreFinal_Coefficient' .
             '	FROM				matches' .
             '	JOIN				journees' .
@@ -54,7 +59,7 @@
   $sql =    ' SELECT    pronostics_buteurs.Joueurs_Joueur, TRIM(CONCAT(joueurs.Joueurs_NomFamille, \' \', IFNULL(joueurs.Joueurs_Prenom, \'\'))) AS Joueurs_NomComplet' .
 						'	FROM			pronostics_buteurs' .
 						'	JOIN			joueurs_equipes' .
-						'					  ON		pronostics_buteurs.Joueurs_Joueur = joueurs_equipes.Joueurs_Joueur' .					
+						'					  ON		pronostics_buteurs.Joueurs_Joueur = joueurs_equipes.Joueurs_Joueur' .
 						'	JOIN			joueurs' .
 						'					  ON		joueurs_equipes.Joueurs_Joueur = joueurs.Joueur' .
 						'	JOIN			matches' .
@@ -70,13 +75,13 @@
 						'					  AND		(JoueursEquipes_Fin IS NULL OR JoueursEquipes_Fin > matches.Matches_Date)' .
             '           AND   pronostics_buteurs.Equipes_Equipe = matches.Equipes_EquipeDomicile';
   $query = $db->query($sql);
-  $firstMatchScorersA = $query->fetchAll();
+  $singleMatchScorersA = $query->fetchAll();
 
   // Buteurs équipe visiteur
   $sql =    ' SELECT    pronostics_buteurs.Joueurs_Joueur, TRIM(CONCAT(joueurs.Joueurs_NomFamille, \' \', IFNULL(joueurs.Joueurs_Prenom, \'\'))) AS Joueurs_NomComplet' .
 						'	FROM			pronostics_buteurs' .
 						'	JOIN			joueurs_equipes' .
-						'					  ON		pronostics_buteurs.Joueurs_Joueur = joueurs_equipes.Joueurs_Joueur' .					
+						'					  ON		pronostics_buteurs.Joueurs_Joueur = joueurs_equipes.Joueurs_Joueur' .
 						'	JOIN			joueurs' .
 						'					  ON		joueurs_equipes.Joueurs_Joueur = joueurs.Joueur' .
 						'	JOIN			matches' .
@@ -92,7 +97,7 @@
 						'					  AND		(JoueursEquipes_Fin IS NULL OR JoueursEquipes_Fin > matches.Matches_Date)' .
             '           AND   pronostics_buteurs.Equipes_Equipe = matches.Equipes_EquipeVisiteur';
   $query = $db->query($sql);
-  $firstMatchScorersB = $query->fetchAll();
+  $singleMatchScorersB = $query->fetchAll();
 
   // Joueurs équipe domicile
 	$sql =		'	SELECT		  joueurs.Joueur' .
@@ -118,7 +123,7 @@
 							'				    AND		joueurs.Postes_Poste <> 1' .
 							'	ORDER BY	joueurs.Postes_Poste DESC, joueurs_equipes.Joueurs_Joueur DESC';
 	$query = $db->query($sql);
-	$firstMatchPlayersA = $query->fetchAll();
+	$singleMatchPlayersA = $query->fetchAll();
 
   // Joueurs équipe visiteur
 	$sql =		'	SELECT		  joueurs.Joueur' .
@@ -144,7 +149,7 @@
 							'				    AND		joueurs.Postes_Poste <> 1' .
 							'	ORDER BY	joueurs.Postes_Poste DESC, joueurs_equipes.Joueurs_Joueur DESC';
 	$query = $db->query($sql);
-	$firstMatchPlayersB = $query->fetchAll();
+	$singleMatchPlayersB = $query->fetchAll();
 
   // Match retour (dont le numéro de match est forcément égal à celui du match aller + 1)
   $sql =		'	SELECT      DISTINCT matches.Match, matches.Matches_Date' .
@@ -165,6 +170,16 @@
             '							,(SELECT Pronostics_ScoreAPEquipeDomicile FROM pronostics WHERE Pronostiqueurs_pronostiqueur = ' . $forecaster . ' AND Matches_Match = matches.Matches_MatchLie) AS PronosticsLies_ScoreAPEquipeDomicile' .
             '							,(SELECT Pronostics_ScoreAPEquipeVisiteur FROM pronostics WHERE Pronostiqueurs_Pronostiqueur = ' . $forecaster . ' AND Matches_Match = matches.Matches_MatchLie) AS PronosticsLies_ScoreAPEquipeVisiteur' .
             '							,fn_matchpronostiquable(matches.Match, ' . $forecaster . ') AS Matches_Pronostiquable' .
+            '							,CASE' .
+            '								WHEN	matches.Matches_Date > NOW() AND (pronostics_carrefinal.PronosticsCarreFinal_Coefficient IS NULL OR pronostics_carrefinal.PronosticsCarreFinal_Coefficient <> 0)' .
+            '								THEN	1' .
+            '								ELSE	0' .
+            '							END AS Buteurs_Pronostiquables' .
+            '							,CASE' .
+            '								WHEN	matches.Matches_DemiFinaleEuropeenne = 1 OR matches.Matches_FinaleEuropeenne = 1' .
+            '								THEN	1' .
+            '								ELSE	0' .
+            '							END AS Afficher_CoefficientCarreFinal' .
             '							,PronosticsCarreFinal_Coefficient' .
             '	FROM				matches' .
             '	JOIN				journees' .
@@ -195,7 +210,7 @@
   $sql =    ' SELECT    pronostics_buteurs.Joueurs_Joueur, TRIM(CONCAT(joueurs.Joueurs_NomFamille, \' \', IFNULL(joueurs.Joueurs_Prenom, \'\'))) AS Joueurs_NomComplet' .
 						'	FROM			pronostics_buteurs' .
 						'	JOIN			joueurs_equipes' .
-						'					  ON		pronostics_buteurs.Joueurs_Joueur = joueurs_equipes.Joueurs_Joueur' .					
+						'					  ON		pronostics_buteurs.Joueurs_Joueur = joueurs_equipes.Joueurs_Joueur' .
 						'	JOIN			joueurs' .
 						'					  ON		joueurs_equipes.Joueurs_Joueur = joueurs.Joueur' .
 						'	JOIN			matches' .
@@ -217,7 +232,7 @@
   $sql =    ' SELECT    pronostics_buteurs.Joueurs_Joueur, TRIM(CONCAT(joueurs.Joueurs_NomFamille, \' \', IFNULL(joueurs.Joueurs_Prenom, \'\'))) AS Joueurs_NomComplet' .
 						'	FROM			pronostics_buteurs' .
 						'	JOIN			joueurs_equipes' .
-						'					  ON		pronostics_buteurs.Joueurs_Joueur = joueurs_equipes.Joueurs_Joueur' .					
+						'					  ON		pronostics_buteurs.Joueurs_Joueur = joueurs_equipes.Joueurs_Joueur' .
 						'	JOIN			joueurs' .
 						'					  ON		joueurs_equipes.Joueurs_Joueur = joueurs.Joueur' .
 						'	JOIN			matches' .

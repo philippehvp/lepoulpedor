@@ -17,7 +17,9 @@
 </div>
 
 <ui-view ng-if="ctrl.forecastService.getCurrentMatchLight() !== null && ctrl.forecastService.getCurrentMatchLight() !== undefined">
-  <forecast-match-normal ng-if="ctrl.forecastService.getCurrentMatchLight().Matches_TypeMatch != 2 && ctrl.forecastService.getCurrentMatchLight().Matches_TypeMatch != 3"></forecast-match-normal>
+  <div class="content-forecast content-scrollable">
+    <forecast-match-single ng-if="ctrl.forecastService.getCurrentMatchLight().Matches_TypeMatch != 2 && ctrl.forecastService.getCurrentMatchLight().Matches_TypeMatch != 3"></forecast-match-single>
+  </div>
   
   <div class="content-forecast content-scrollable">
     <forecast-match-face-off ng-if="ctrl.forecastService.getCurrentMatchLight().Matches_TypeMatch == 2"></forecast-match-face-off>
