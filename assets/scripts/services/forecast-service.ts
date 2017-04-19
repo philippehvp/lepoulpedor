@@ -245,7 +245,7 @@ module LPO {
       ) {
         // Si les scores 90 sont les mêmes, alors on affiche le score AP sauf dans le cas du match de Community Shield
         if (
-          this.currentSingleMatch.Pronostics_ScoreEquipeDomicile == this.currentSingleMatch.Pronostics_ScoreEquipeVisiteur && this.currentSingleMatch.Matches_TypeMatch !== 5
+          this.currentSingleMatch.Pronostics_ScoreEquipeDomicile == this.currentSingleMatch.Pronostics_ScoreEquipeVisiteur && this.currentSingleMatch.Matches_TypeMatch == 5
         ) {
           // On remplit le score minimal de chaque équipe avec celui de la fin du temps règlementaire
           this.scoresExtraA = [];
@@ -327,8 +327,15 @@ module LPO {
         // Pour les matches autres que le Community Shield, si les scores AP sont identiques alors on affiche les TAB
         // Pour le match de Community Shield, ce sont seulement les scores 90 puisqu'il n'y a pas de prolongation
         if (
-          (this.currentSingleMatch.Matches_TypeMatch !== 5 && this.currentSingleMatch.Pronostics_ScoreAPEquipeDomicile == this.currentSingleMatch.Pronostics_ScoreAPEquipeVisiteur) ||
-          (this.currentSingleMatch.Matches_TypeMatch === 5 && this.currentSingleMatch.Pronostics_ScoreEquipeDomicile == this.currentSingleMatch.Pronostics_ScoreEquipeVisiteur)
+          (
+            this.currentSingleMatch.Matches_TypeMatch != 5 &&
+            this.currentSingleMatch.Pronostics_ScoreAPEquipeDomicile == this.currentSingleMatch.Pronostics_ScoreAPEquipeVisiteur &&
+            this.currentSingleMatch.Pronostics_ScoreAPEquipeDomicile != null && this.currentSingleMatch.Pronostics_ScoreAPEquipeVisiteur != null
+          ) ||
+          (
+            this.currentSingleMatch.Matches_TypeMatch == 5 &&
+            this.currentSingleMatch.Pronostics_ScoreEquipeDomicile == this.currentSingleMatch.Pronostics_ScoreEquipeVisiteur
+          )
         ) {
           this.displayShooting = true;
         }

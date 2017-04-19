@@ -75,7 +75,7 @@
 						'					  AND		(JoueursEquipes_Fin IS NULL OR JoueursEquipes_Fin > matches.Matches_Date)' .
             '           AND   pronostics_buteurs.Equipes_Equipe = matches.Equipes_EquipeDomicile';
   $query = $db->query($sql);
-  $singleMatchScorersA = $query->fetchAll();
+  $firstMatchScorersA = $query->fetchAll();
 
   // Buteurs équipe visiteur
   $sql =    ' SELECT    pronostics_buteurs.Joueurs_Joueur, TRIM(CONCAT(joueurs.Joueurs_NomFamille, \' \', IFNULL(joueurs.Joueurs_Prenom, \'\'))) AS Joueurs_NomComplet' .
@@ -97,7 +97,7 @@
 						'					  AND		(JoueursEquipes_Fin IS NULL OR JoueursEquipes_Fin > matches.Matches_Date)' .
             '           AND   pronostics_buteurs.Equipes_Equipe = matches.Equipes_EquipeVisiteur';
   $query = $db->query($sql);
-  $singleMatchScorersB = $query->fetchAll();
+  $firstMatchScorersB = $query->fetchAll();
 
   // Joueurs équipe domicile
 	$sql =		'	SELECT		  joueurs.Joueur' .
@@ -123,7 +123,7 @@
 							'				    AND		joueurs.Postes_Poste <> 1' .
 							'	ORDER BY	joueurs.Postes_Poste DESC, joueurs_equipes.Joueurs_Joueur DESC';
 	$query = $db->query($sql);
-	$singleMatchPlayersA = $query->fetchAll();
+	$firstMatchPlayersA = $query->fetchAll();
 
   // Joueurs équipe visiteur
 	$sql =		'	SELECT		  joueurs.Joueur' .
@@ -149,7 +149,7 @@
 							'				    AND		joueurs.Postes_Poste <> 1' .
 							'	ORDER BY	joueurs.Postes_Poste DESC, joueurs_equipes.Joueurs_Joueur DESC';
 	$query = $db->query($sql);
-	$singleMatchPlayersB = $query->fetchAll();
+	$firstMatchPlayersB = $query->fetchAll();
 
   // Match retour (dont le numéro de match est forcément égal à celui du match aller + 1)
   $sql =		'	SELECT      DISTINCT matches.Match, matches.Matches_Date' .
