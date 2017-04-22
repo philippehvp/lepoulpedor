@@ -24,5 +24,8 @@ module LPO {
       this.forecastService.addScorerSingle(player, teamAOrB);
     }
 
+    public onClickCurrentSingleMatchCollapsedPlayers(): void {
+      this.forecastService.toggleCurrentSingleMatchCollapsedPlayers();
+    }
   }
 }

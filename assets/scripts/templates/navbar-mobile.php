@@ -117,7 +117,13 @@
             echo '<li><a ng-href="#/">Coupe de France</a></li>';
       ?>
 
-      <li><a ui-sref="connexion">Connexion</a></li>
+      <li ng-if="ctrl.generalService.getUser() === null">
+        <a ui-sref="connexion">Connexion</a>
+      </li>
+      <li ng-if="ctrl.generalService.getUser() !== null">
+        <a ng-click="ctrl.generalService.logout()">Déconnexion</a>
+      </li>
+
     </ul>
   </div>
 </nav>

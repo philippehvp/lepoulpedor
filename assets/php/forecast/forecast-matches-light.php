@@ -22,6 +22,7 @@
             '                 THEN  3' .
             '                 ELSE  4' .
             '             END AS Matches_TypeMatch' .
+            '             ,matches.Matches_Coefficient' .
             '	FROM				matches' .
             '	JOIN				journees' .
             '							ON		matches.Journees_Journee = journees.Journee' .
@@ -45,7 +46,8 @@
             '							AND		matches.Equipes_EquipeDomicile IS NOT NULL' .
             '							AND		matches.Equipes_EquipeVisiteur IS NOT NULL' .
             '             AND   NOT(matches.Matches_AvecProlongation = 1 AND matches.Matches_MatchLie IS NOT NULL)' .
-            '	ORDER BY		CASE' .
+            '	ORDER BY		matches.Matches_Coefficient' .
+            '             ,CASE' .
             '               WHEN  journees.Championnats_Championnat IN (1, 5)' .
             '               THEN  matches.Matches_Date' .
             '               ELSE  matches.Match' .

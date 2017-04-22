@@ -14,6 +14,12 @@ module LPO {
 
     Matches_Date: Date;
     Matches_TypeMatch: number;
+    Matches_Pronostiquable: number;
+    Buteurs_Pronostiquables: number;
+    Matches_SansButeur: number;
+    Afficher_CoefficientCarreFinal: number;
+    PronosticsCarreFinal_Coefficient: number;
+    Matches_Coefficient: number;
 
     Pronostics_ScoreEquipeDomicile: number;
     Pronostics_ScoreEquipeVisiteur: number;
@@ -30,8 +36,6 @@ module LPO {
 
     Matches_PointsQualificationEquipeDomicile: number;
     Matches_PointsQualificationEquipeVisiteur: number;
-
-    Championnats_Championnat: number;
   }
 
   export interface IMatchFirst {
@@ -46,6 +50,10 @@ module LPO {
     EquipesVisiteur_Fanion: string;
 
     Matches_Date: Date;
+    Matches_Pronostiquable: number;
+    Buteurs_Pronostiquables: number;
+    Afficher_CoefficientCarreFinal: number;
+    PronosticsCarreFinal_Coefficient: number;
 
     Pronostics_ScoreEquipeDomicile: number;
     Pronostics_ScoreEquipeVisiteur: number;
@@ -53,8 +61,6 @@ module LPO {
     Matches_CoteEquipeDomicile: number;
     Matches_CoteNul: number;
     Matches_CoteEquipeVisiteur: number;
-
-    PronosticsCarreFinal_Coefficient: number;
   }
 
   export interface IMatchSecond {
@@ -69,6 +75,10 @@ module LPO {
     EquipesVisiteur_Fanion: string;
 
     Matches_Date: Date;
+    Matches_Pronostiquable: number;
+    Buteurs_Pronostiquables: number;
+    Afficher_CoefficientCarreFinal: number;
+    PronosticsCarreFinal_Coefficient: number;
 
     Pronostics_ScoreEquipeDomicile: number;
     Pronostics_ScoreEquipeVisiteur: number;
@@ -82,8 +92,6 @@ module LPO {
 
     Matches_PointsQualificationEquipeDomicile: number;
     Matches_PointsQualificationEquipeVisiteur: number;
-
-    PronosticsCarreFinal_Coefficient: number;
   }
 
   export interface IMatchLight {

@@ -4,9 +4,14 @@ module LPO {
   "use strict";
 
   export class ForecastMatchFaceOffController {
+    private firstMatchCollapsedPlayers: boolean;
+    private secondMatchCollapsedPlayers: boolean;
 
     constructor(private generalService: GeneralService, private forecastService: ForecastService) {
       this.generalService.checkUser();
+
+      this.firstMatchCollapsedPlayers = null;
+      this.secondMatchCollapsedPlayers = null;
     }
 
     $onInit() {
@@ -23,5 +28,14 @@ module LPO {
     public onAddScorerFaceOff(player: IPlayer, matchFirstOrSecond: number, teamAOrB: number): void {
       this.forecastService.addScorerFaceOff(player, matchFirstOrSecond, teamAOrB);
     }
+
+    public onClickCurrentFirstMatchCollapsedPlayers(): void {
+      this.forecastService.toggleCurrentFirstMatchCollapsedPlayers();
+    }
+
+    public onClickCurrentSecondMatchCollapsedPlayers(): void {
+      this.forecastService.toggleCurrentSecondMatchCollapsedPlayers();
+    }
+
   }
 }

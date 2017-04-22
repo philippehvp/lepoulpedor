@@ -78,6 +78,7 @@ module LPO {
       this.user = null;
       this.$cookies.remove("lepoulpedor_user");
       this.goToPage("accueil");
+      this.navbarService.closeMobileMenu();
     }
 
     public checkUser(): void {
@@ -89,7 +90,7 @@ module LPO {
       }
 
       // On vérifie que les droits d'accès de l'utilisateur n'ont pas été changés depuis la dernière vérification
-      if(this.user !== undefined)
+      if (user !== null && user !== undefined)
         this.login(this.user.Pronostiqueurs_NomUtilisateur, this.user.Pronostiqueurs_MotDePasse);
     }
 

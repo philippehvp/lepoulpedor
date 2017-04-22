@@ -31,9 +31,9 @@ module LPO {
     private currentSecondMatchPlayersA: Array<IPlayer>;
     private currentSecondMatchPlayersB: Array<IPlayer>;
 
-    private matchSingleLimitDateLabel: string;
-    private matchFirstLimitDateLabel: string;
-    private matchSecondLimitDateLabel: string;
+    private currentSingleMatchLimitDateLabel: string;
+    private currentFirstMatchLimitDateLabel: string;
+    private currentSecondMatchLimitDateLabel: string;
 
     // Score possible des matches (de 0 à 15)
     private scores: Array<number>;
@@ -44,6 +44,11 @@ module LPO {
 
     private displayScoresExtra: boolean;
     private displayShooting: boolean;
+
+    // Affichage ou masquage de la liste des joueurs
+    private currentSingleMatchCollapsedPlayers: boolean;
+    private currentFirstMatchCollapsedPlayers: boolean;
+    private currentSecondMatchCollapsedPlayers: boolean;
 
     constructor(private navbarService: NavbarService, private generalService: GeneralService, private $http: ng.IHttpService, private $q: ng.IQService, private $state: any, private moment: any) {
       this.generalService.checkUser();
@@ -201,8 +206,8 @@ module LPO {
           // Logistique du match
           let dateFirstMatch: any = this.moment(this.currentFirstMatch.Matches_Date);
           let dateSecondMatch: any = this.moment(this.currentSecondMatch.Matches_Date);
-          this.matchFirstLimitDateLabel = dateFirstMatch.format("dddd D MMMM à HH:mm");
-          this.matchSecondLimitDateLabel = dateSecondMatch.format("dddd D MMMM à HH:mm");
+          this.currentFirstMatchLimitDateLabel = dateFirstMatch.format("dddd D MMMM YYYY à HH:mm");
+          this.currentSecondMatchLimitDateLabel = dateSecondMatch.format("dddd D MMMM YYYY à HH:mm");
           this.checkExtraAndShootingFaceOff();
         });
       }
@@ -210,7 +215,7 @@ module LPO {
         this.readMatchSingle(matchLight).then((ret: boolean) => {
           // Logistique du match
           let dateSingleMatch: any = this.moment(this.currentSingleMatch.Matches_Date);
-          this.matchSingleLimitDateLabel = dateSingleMatch.format("dddd D MMMM à HH:mm");
+          this.currentSingleMatchLimitDateLabel = dateSingleMatch.format("dddd D MMMM YYYY à HH:mm");
           this.checkExtraAndShootingSingle();
         });
       }
@@ -385,6 +390,7 @@ module LPO {
         this.currentSingleMatchScorersB = response.data[0].buteurs_visiteur;
         this.currentSingleMatchPlayersA = response.data[0].joueurs_domicile;
         this.currentSingleMatchPlayersB = response.data[0].joueurs_visiteur;
+        this.currentSingleMatchCollapsedPlayers = new Date(this.currentSingleMatch.Matches_Date.toString()).getTime() < new Date().getTime();
         d.resolve(true);
       }, function errorCallback(error) {
         let errMsg = (error.message) ? error.message :
@@ -417,6 +423,8 @@ module LPO {
         this.currentFirstMatchPlayersB = response.data[0].aller_joueurs_visiteur;
         this.currentSecondMatchPlayersA = response.data[0].retour_joueurs_domicile;
         this.currentSecondMatchPlayersB = response.data[0].retour_joueurs_visiteur;
+        this.currentFirstMatchCollapsedPlayers = new Date(this.currentFirstMatch.Matches_Date.toString()).getTime() < new Date().getTime();
+        this.currentSecondMatchCollapsedPlayers = this.currentFirstMatchCollapsedPlayers === false ? true : new Date(this.currentSecondMatch.Matches_Date.toString()).getTime() < new Date().getTime();
         d.resolve(true);
       }, function errorCallback(error) {
         let errMsg = (error.message) ? error.message :
@@ -435,7 +443,7 @@ module LPO {
     }
 
     public deleteScorerSingle($index: number, forecastScorer: IForecastScorer, teamAOrB: number): void {
-      if (this.currentSingleMatch.Matches_Date.getTime() < new Date().getTime())
+      if (this.currentSingleMatch.Buteurs_Pronostiquables == 0)
           return;
 
       if (teamAOrB === 0) {
@@ -452,11 +460,11 @@ module LPO {
 
     public deleteScorerFaceOff($index: number, forecastScorer: IForecastScorer, matchFirstOrSecond: number, teamAOrB: number): void {
       if (matchFirstOrSecond === 0) {
-        if (this.currentFirstMatch.Matches_Date.getTime() < new Date().getTime())
+        if (this.currentFirstMatch.Buteurs_Pronostiquables == 0)
           return;
       }
       else if (matchFirstOrSecond === 1) {
-        if (this.currentSecondMatch.Matches_Date.getTime() < new Date().getTime())
+        if (this.currentSecondMatch.Buteurs_Pronostiquables == 0)
           return;
       }
 
@@ -489,7 +497,7 @@ module LPO {
     }
 
     public addScorerSingle(player: IPlayer, teamAOrB: number): void {
-      if (this.currentSingleMatch.Matches_Date.getTime() < new Date().getTime())
+      if (this.currentSingleMatch.Buteurs_Pronostiquables == 0)
           return;
 
       let scorer: IForecastScorer = {
@@ -511,11 +519,11 @@ module LPO {
 
     public addScorerFaceOff(player: IPlayer, matchFirstOrSecond: number, teamAOrB: number): void {
       if (matchFirstOrSecond === 0) {
-        if (this.currentFirstMatch.Matches_Date.getTime() < new Date().getTime())
+        if (this.currentFirstMatch.Buteurs_Pronostiquables == 0)
           return;
       }
       else if (matchFirstOrSecond === 1) {
-        if (this.currentSecondMatch.Matches_Date.getTime() < new Date().getTime())
+        if (this.currentSecondMatch.Buteurs_Pronostiquables == 0)
           return;
       }
 
@@ -552,13 +560,13 @@ module LPO {
     }
 
     public changeScoreSingle(forecastActionCode: number): void {
-      if (this.currentSingleMatch.Matches_Date.getTime() > new Date().getTime())
+      if (this.currentSingleMatch.Matches_Pronostiquable != 0)
         this.checkExtraAndShootingSingle(forecastActionCode);
     }
 
     public changeScoreFaceOff(forecastActionCode: number): void {
       // Pronostic sur le score uniquement avant la fin du match aller
-      if (this.currentFirstMatch.Matches_Date.getTime() > new Date().getTime())
+      if (this.currentFirstMatch.Matches_Pronostiquable != 0)
         this.checkExtraAndShootingFaceOff(forecastActionCode);
     }
 
@@ -685,14 +693,29 @@ module LPO {
       return def.promise;
     }
 
-    public isOver(date: string): boolean {
-      let ret: boolean = false;
-      if(date !== null && date !== undefined) {
-        if(new Date(date).getTime() < new Date().getTime())
-          ret = true;
-      }
-
-      return ret;
+    public getCurrentSingleMatchCollapsedPlayers(): boolean {
+      return this.currentSingleMatchCollapsedPlayers;
     }
+
+    public toggleCurrentSingleMatchCollapsedPlayers(): void {
+      this.currentSingleMatchCollapsedPlayers = !this.currentSingleMatchCollapsedPlayers;
+    }
+
+    public getCurrentFirstMatchCollapsedPlayers(): boolean {
+      return this.currentFirstMatchCollapsedPlayers;
+    }
+
+    public toggleCurrentFirstMatchCollapsedPlayers(): void {
+      this.currentFirstMatchCollapsedPlayers = !this.currentFirstMatchCollapsedPlayers;
+    }
+
+    public getCurrentSecondMatchCollapsedPlayers(): boolean {
+      return this.currentSecondMatchCollapsedPlayers;
+    }
+
+    public toggleCurrentSecondMatchCollapsedPlayers(): void {
+      this.currentSecondMatchCollapsedPlayers = !this.currentSecondMatchCollapsedPlayers;
+    }
+
   }
 }

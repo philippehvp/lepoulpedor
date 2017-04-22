@@ -32,6 +32,7 @@
             '								ELSE	0' .
             '							END AS Afficher_CoefficientCarreFinal' .
             '							,PronosticsCarreFinal_Coefficient' .
+            '             ,journees.Championnats_Championnat' .
             '	FROM				matches' .
             '	JOIN				journees' .
             '							ON		matches.Journees_Journee = journees.Journee' .
