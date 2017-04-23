@@ -11,7 +11,7 @@ module LPO {
   export enum EnumLeftRight { UNKNOWN = 0, LEFT = 1, RIGHT = 2 };
 
   export class ContestCentreService {
-/**/
+
     // Thèmes et sous-thèmes
     public themes: Array<Theme>;
     public currentTheme: Theme;
@@ -56,9 +56,22 @@ module LPO {
     private currentTeamLight: ITeamLight;
     private players: Array<IPlayer>;
 
-    constructor(private navbarService: NavbarService, private $http: ng.IHttpService, private $q: ng.IQService, private $state: any, private $window: any, private $timeout: ng.ITimeoutService) {
+    constructor(private navbarService: NavbarService, private generalService: GeneralService, private $http: ng.IHttpService, private $q: ng.IQService, private $state: any, private $window: any, private $timeout: ng.ITimeoutService) {
       this.currentForecasterLight = null;
       this.championshipsL1AndEurope = null;
+    }
+
+    private preselectForecasterLight(): IForecasterLight {
+      let ret: IForecasterLight = null;
+      // Présélection d'un joueur si celui-ci est connecté
+      for(let i: number = 0; i < this.forecastersLight.length; i++) {
+        if(this.forecastersLight[i].Pronostiqueur == this.generalService.getUser().Pronostiqueur) {
+          ret = this.forecastersLight[i];
+          break;
+        }
+      }
+
+      return ret;
     }
 
     // Il faut rafraîchir la vue du sous-thème :
@@ -266,6 +279,11 @@ module LPO {
       return this.championshipsL1AndEurope;
     }
 
+    // Lecture du pronostiqueur courant
+    public getCurrentForecasterLight(): IForecasterLight {
+      return this.currentForecasterLight;
+    }
+
     // Sélection d'un pronostiqueur
     public setCurrentForecasterLight(forecasterLight: IForecasterLight): void {
       this.currentForecasterLight = forecasterLight;
@@ -291,7 +309,10 @@ module LPO {
         // Par défaut, celui qui est connecté
         // Sinon, le premier de la liste
         // Pour le moment, on prend le premier de la liste
-        this.currentForecasterLight = this.forecastersLight[0];
+        if(this.currentForecaster == null)
+          this.currentForecasterLight = this.preselectForecasterLight();
+
+        //this.currentForecasterLight = this.forecastersLight[0];
 
         def.resolve(response.data);
 

@@ -449,12 +449,12 @@ module LPO {
       if (teamAOrB === 0) {
         // Equipe domicile
         this.currentSingleMatchScorersA.splice($index, 1);
-        this.removeScorer(enumForecastSingleActionCode.SingleMatchDeleteScorerA, forecastScorer, this.currentSingleMatch.Match, this.currentSingleMatch.Matches_Date);
+        this.removeScorer(enumForecastSingleActionCode.SingleMatchDeleteScorerA, forecastScorer, this.currentSingleMatch.Match, this.currentSingleMatch.Matches_Date, 0);
       }
       else if (teamAOrB === 1) {
         // Equipe visiteur
         this.currentSingleMatchScorersB.splice($index, 1);
-        this.removeScorer(enumForecastSingleActionCode.SingleMatchDeleteScorerB, forecastScorer, this.currentSingleMatch.Match, this.currentSingleMatch.Matches_Date);
+        this.removeScorer(enumForecastSingleActionCode.SingleMatchDeleteScorerB, forecastScorer, this.currentSingleMatch.Match, this.currentSingleMatch.Matches_Date, 0);
       }
     }
 
@@ -473,12 +473,12 @@ module LPO {
         if (teamAOrB === 0) {
           // Equipe domicile
           this.currentFirstMatchScorersA.splice($index, 1);
-          this.removeScorer(enumForecastFaceOffActionCode.FirstMatchDeleteScorerA, forecastScorer, this.currentFirstMatch.Match, this.currentFirstMatch.Matches_Date);
+          this.removeScorer(enumForecastFaceOffActionCode.FirstMatchDeleteScorerA, forecastScorer, this.currentFirstMatch.Match, this.currentFirstMatch.Matches_Date, 1);
         }
         else if (teamAOrB === 1) {
           // Equipe visiteur
           this.currentFirstMatchScorersB.splice($index, 1);
-          this.removeScorer(enumForecastFaceOffActionCode.FirstMatchDeleteScorerB, forecastScorer, this.currentFirstMatch.Match, this.currentFirstMatch.Matches_Date);
+          this.removeScorer(enumForecastFaceOffActionCode.FirstMatchDeleteScorerB, forecastScorer, this.currentFirstMatch.Match, this.currentFirstMatch.Matches_Date, 1);
         }
       }
       else {
@@ -486,12 +486,12 @@ module LPO {
         if (teamAOrB === 0) {
           // Equipe domicile
           this.currentSecondMatchScorersA.splice($index, 1);
-          this.removeScorer(enumForecastFaceOffActionCode.SecondMatchDeleteScorerA, forecastScorer, this.currentSecondMatch.Match, this.currentSecondMatch.Matches_Date);
+          this.removeScorer(enumForecastFaceOffActionCode.SecondMatchDeleteScorerA, forecastScorer, this.currentSecondMatch.Match, this.currentSecondMatch.Matches_Date, 1);
         }
         else if (teamAOrB === 1) {
           // Equipe visiteur
           this.currentSecondMatchScorersB.splice($index, 1);
-          this.removeScorer(enumForecastFaceOffActionCode.SecondMatchDeleteScorerB, forecastScorer, this.currentSecondMatch.Match, this.currentSecondMatch.Matches_Date);
+          this.removeScorer(enumForecastFaceOffActionCode.SecondMatchDeleteScorerB, forecastScorer, this.currentSecondMatch.Match, this.currentSecondMatch.Matches_Date, 1);
         }
       }
     }
@@ -507,13 +507,13 @@ module LPO {
 
       if (teamAOrB === 0) {
         // Equipe domicile
-        this.currentFirstMatchScorersA.push(scorer);
-        this.addScorer(enumForecastSingleActionCode.SingleMatchAddScorerA, player, this.currentSingleMatch.Match, this.currentSingleMatch.Matches_Date);
+        this.currentSingleMatchScorersA.push(scorer);
+        this.addScorer(enumForecastSingleActionCode.SingleMatchAddScorerA, player, this.currentSingleMatch.Match, this.currentSingleMatch.Matches_Date, 0);
       }
       else if (teamAOrB === 1) {
         // Equipe visiteur
-        this.currentFirstMatchScorersB.push(scorer);
-        this.addScorer(enumForecastSingleActionCode.SingleMatchAddScorerB, player, this.currentSingleMatch.Match, this.currentSingleMatch.Matches_Date);
+        this.currentSingleMatchScorersB.push(scorer);
+        this.addScorer(enumForecastSingleActionCode.SingleMatchAddScorerB, player, this.currentSingleMatch.Match, this.currentSingleMatch.Matches_Date, 0);
       }
     }
 
@@ -536,12 +536,12 @@ module LPO {
         if (teamAOrB === 0) {
           // Equipe domicile
           this.currentFirstMatchScorersA.push(scorer);
-          this.addScorer(enumForecastFaceOffActionCode.FirstMatchAddScorerA, player, this.currentFirstMatch.Match, this.currentFirstMatch.Matches_Date);
+          this.addScorer(enumForecastFaceOffActionCode.FirstMatchAddScorerA, player, this.currentFirstMatch.Match, this.currentFirstMatch.Matches_Date, 1);
         }
         else if (teamAOrB === 1) {
           // Equipe visiteur
           this.currentFirstMatchScorersB.push(scorer);
-          this.addScorer(enumForecastFaceOffActionCode.FirstMatchAddScorerB, player, this.currentFirstMatch.Match, this.currentFirstMatch.Matches_Date);
+          this.addScorer(enumForecastFaceOffActionCode.FirstMatchAddScorerB, player, this.currentFirstMatch.Match, this.currentFirstMatch.Matches_Date, 1);
         }
       }
       else if (matchFirstOrSecond === 1) {
@@ -549,12 +549,12 @@ module LPO {
         if (teamAOrB === 0) {
           // Equipe domicile
           this.currentSecondMatchScorersA.push(scorer);
-          this.addScorer(enumForecastFaceOffActionCode.SecondMatchAddScorerA, player, this.currentSecondMatch.Match, this.currentSecondMatch.Matches_Date);
+          this.addScorer(enumForecastFaceOffActionCode.SecondMatchAddScorerA, player, this.currentSecondMatch.Match, this.currentSecondMatch.Matches_Date, 1);
         }
         else if (teamAOrB === 1) {
           // Equipe visiteur
           this.currentSecondMatchScorersB.push(scorer);
-          this.addScorer(enumForecastFaceOffActionCode.SecondMatchAddScorerB, player, this.currentSecondMatch.Match, this.currentSecondMatch.Matches_Date);
+          this.addScorer(enumForecastFaceOffActionCode.SecondMatchAddScorerB, player, this.currentSecondMatch.Match, this.currentSecondMatch.Matches_Date, 1);
         }
       }
     }
@@ -648,13 +648,17 @@ module LPO {
       return def.promise;
     }
 
-    private addScorer(forecastActionCode: number, player: IPlayer, matchNumber: number, matchDate: Date): ng.IPromise<boolean> {
+    private addScorer(forecastActionCode: number, player: IPlayer, matchNumber: number, matchDate: Date, singleOrFaceOff: number): ng.IPromise<boolean> {
       // Ajout d'un pronostic de buteur
       let def: ng.IDeferred<boolean> = this.$q.defer<boolean>();
 
       // Mise à jour des données
-      let url = "./dist/forecast-update-face-off.php";
-
+      let url: string;
+      if(singleOrFaceOff == 0)
+        url = "./dist/forecast-update-single.php";
+      else
+        url = "./dist/forecast-update-face-off.php";
+      
       this.$http({
         method: "POST",
         url: url,
@@ -671,12 +675,18 @@ module LPO {
       return def.promise;
     }
 
-    private removeScorer(forecastActionCode: number, forecastScorer: IForecastScorer, matchNumber: number, matchDate: Date): ng.IPromise<boolean> {
+    private removeScorer(forecastActionCode: number, forecastScorer: IForecastScorer, matchNumber: number, matchDate: Date, singleOrFaceOff: number): ng.IPromise<boolean> {
       // Suppression d'un pronostic de buteur
       let def: ng.IDeferred<boolean> = this.$q.defer<boolean>();
 
       // Mise à jour des données
-      let url = "./dist/forecast-update-face-off.php";
+      let url: string;
+      if (singleOrFaceOff == 0)
+        url = "./dist/forecast-update-single.php";
+      else
+        url = "./dist/forecast-update-face-off.php";
+
+      
       this.$http({
         method: "POST",
         url: url,
@@ -716,6 +726,5 @@ module LPO {
     public toggleCurrentSecondMatchCollapsedPlayers(): void {
       this.currentSecondMatchCollapsedPlayers = !this.currentSecondMatchCollapsedPlayers;
     }
-
   }
 }

@@ -139,10 +139,14 @@
     <div class="row">
       <div class="col-sm-5">
         <div class="col-sm-4"
-            ng-repeat="player in ctrl.forecastService.getCurrentFirstMatchPlayersA() track by $index"
-            ng-click="ctrl.onAddScorerFaceOff(player, 0, 0)">
-          <span class="col-sm-10 right nowrap forecast-player">{{player.Joueurs_NomComplet}}</span>
-          <span class="col-sm-1 centered player-position player-position-a" ng-class="{'forward': player.Postes_Poste == 4, 'midfielder': player.Postes_Poste == 3, 'defender': player.Postes_Poste == 2}">{{player.JoueursCotes_Cote}}</span>
+            ng-repeat="player in ctrl.forecastService.getCurrentFirstMatchPlayersA() track by $index">
+          <span class="col-sm-10 right nowrap">
+            <span class="forecast-player" ng-click="ctrl.onAddScorerFaceOff(player, 0, 0)">{{player.Joueurs_NomComplet}}</span>
+          </span>
+          <span class="col-sm-1 centered player-position player-position-a"
+                ng-class="{'forward': player.Postes_Poste == 4, 'midfielder': player.Postes_Poste == 3, 'defender': player.Postes_Poste == 2}">
+            {{player.JoueursCotes_Cote}}
+          </span>
         </div>
       </div>
 
@@ -155,10 +159,11 @@
       <!--Joueurs du match aller-->
       <div class="col-sm-5">
         <div class="col-sm-4"
-            ng-repeat="player in ctrl.forecastService.getCurrentFirstMatchPlayersB() track by $index"
-            ng-click="ctrl.onAddScorerFaceOff(player, 0, 1)">
+            ng-repeat="player in ctrl.forecastService.getCurrentFirstMatchPlayersB() track by $index">
           <span class="col-sm-1 centered player-position player-position-b" ng-class="{'forward': player.Postes_Poste == 4, 'midfielder': player.Postes_Poste == 3, 'defender': player.Postes_Poste == 2}">{{player.JoueursCotes_Cote}}</span>
-          <span class="col-sm-9 left nowrap forecast-player">{{player.Joueurs_NomComplet}}</span>
+          <span class="col-sm-9 left nowrap">
+            <span class="forecast-player" ng-click="ctrl.onAddScorerFaceOff(player, 0, 1)">{{player.Joueurs_NomComplet}}</span>
+          </span>
         </div>
       </div>
     </div>
@@ -407,10 +412,16 @@
     <div class="row">
       <div class="col-sm-5">
         <div class="col-sm-4"
-            ng-repeat="player in ctrl.forecastService.getCurrentSecondMatchPlayersA() track by $index"
-            ng-click="ctrl.onAddScorerFaceOff(player, 1, 0)">
-          <span class="col-sm-10 right nowrap forecast-player">{{player.Joueurs_NomComplet}}</span>
-          <span class="col-sm-1 centered player-position player-position-a" ng-class="{'forward': player.Postes_Poste == 4, 'midfielder': player.Postes_Poste == 3, 'defender': player.Postes_Poste == 2}">{{player.JoueursCotes_Cote}}</span>
+            ng-repeat="player in ctrl.forecastService.getCurrentSecondMatchPlayersA() track by $index">
+          <span class="col-sm-10 right nowrap">
+            <span class="forecast-player" ng-click="ctrl.onAddScorerFaceOff(player, 1, 0)">
+              {{player.Joueurs_NomComplet}}
+            </span>
+          </span>
+          <span class="col-sm-1 centered player-position player-position-a"
+                ng-class="{'forward': player.Postes_Poste == 4, 'midfielder': player.Postes_Poste == 3, 'defender': player.Postes_Poste == 2}">
+            {{player.JoueursCotes_Cote}}
+          </span>
         </div>
       </div>
 
@@ -422,10 +433,11 @@
 
       <div class="col-sm-5">
         <div class="col-sm-4"
-            ng-repeat="player in ctrl.forecastService.getCurrentSecondMatchPlayersB() track by $index"
-            ng-click="ctrl.onAddScorerFaceOff(player, 1, 1)">
+            ng-repeat="player in ctrl.forecastService.getCurrentSecondMatchPlayersB() track by $index">
           <span class="col-sm-1 centered player-position player-position-b" ng-class="{'forward': player.Postes_Poste == 4, 'midfielder': player.Postes_Poste == 3, 'defender': player.Postes_Poste == 2}">{{player.JoueursCotes_Cote}}</span>
-          <span class="col-sm-9 left nowrap forecast-player">{{player.Joueurs_NomComplet}}</span>
+          <span class="col-sm-9 left nowrap">
+            <span class="forecast-player" ng-click="ctrl.onAddScorerFaceOff(player, 1, 1)">{{player.Joueurs_NomComplet}}</span>
+          </span>
         </div>
       </div>
     </div>

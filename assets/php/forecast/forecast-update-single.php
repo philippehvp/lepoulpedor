@@ -85,14 +85,10 @@
       case 2:
       case 3:
       case 4: updateScoreSingle($db, $singleMatch, $forecaster); break;
-      case 7: addScorer($db, $singleMatch, 0, $player, $forecaster); break;
-      case 8: addScorer($db, $singleMatch, 1, $player, $forecaster); break;
-      case 9: removeScorer($db, $singleMatch, 0, $player, $forecaster); break;
-      case 10: removeScorer($db, $singleMatch, 1, $player, $forecaster); break;
-      case 11: addScorer($db, $singleMatch, 0, $player, $forecaster); break;
-      case 12: addScorer($db, $singleMatch, 1, $player, $forecaster); break;
-      case 13: removeScorer($db, $singleMatch, 0, $player, $forecaster); break;
-      case 14: removeScorer($db, $singleMatch, 1, $player, $forecaster); break;
+      case 5: addScorer($db, $singleMatch, 0, $player, $forecaster); break;
+      case 6: addScorer($db, $singleMatch, 1, $player, $forecaster); break;
+      case 7: removeScorer($db, $singleMatch, 0, $player, $forecaster); break;
+      case 8: removeScorer($db, $singleMatch, 1, $player, $forecaster); break;
     }
   }
 ?>

@@ -54,7 +54,7 @@ module LPO {
     .service("navbarService", [() => new NavbarService()])
     .service("standingsService", ["$http", "$q", ($http, $q) => new StandingsService($http, $q)])
     .service("forecastService", ["navbarService", "generalService", "$http", "$q", "$state", "moment", (navbarService, generalService, $http, $q, $state, moment) => new ForecastService(navbarService, generalService, $http, $q, $state, moment)])
-    .service("contestCentreService", ["navbarService", "$http", "$q", "$state", "$window", "$timeout", (navbarService, $http, $q, $state, $window, $timeout) => new ContestCentreService(navbarService, $http, $q, $state, $window, $timeout)]);
+    .service("contestCentreService", ["navbarService", "generalService", "$http", "$q", "$state", "$window", "$timeout", (navbarService, generalService, $http, $q, $state, $window, $timeout) => new ContestCentreService(navbarService, generalService, $http, $q, $state, $window, $timeout)]);
 
   appModule
     .controller("NavbarController", ["navbarService", "generalService", (navbarService, generalService) => new NavbarController(navbarService, generalService)])

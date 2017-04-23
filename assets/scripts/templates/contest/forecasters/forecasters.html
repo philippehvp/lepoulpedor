@@ -5,7 +5,7 @@
       <img class="forecaster-photo" ng-if="forecasterLight.Pronostiqueurs_Photo" ng-src="dist/images/pronostiqueurs/{{forecasterLight.Pronostiqueurs_Photo}}" alt="Photo du pronostiqueur">
       <img class="forecaster-photo" ng-if="!forecasterLight.Pronostiqueurs_Photo" ng-src="dist/images/pronostiqueurs/_inconnu.png" alt="Photo du pronostiqueur">
     </span>
-    <span class="col-sm-9">
+    <span class="col-sm-9" ng-class="{'forecaster-light-selected': forecasterLight === ctrl.contestCentreService.currentForecasterLight}">
       {{forecasterLight.Pronostiqueurs_NomUtilisateur}}
     </span>
   </div>
