@@ -61,9 +61,24 @@ div[ui-view] {
   width: @forecaster-photo-lg;
 }
 
-.forecaster-light-selected {
-  color: @forecaster-light-selected-color;
-  background-color: @forecaster-light-selected-background-color;
+.forecaster-light-single:hover, .forecaster-light-single:active
+, .forecaster-light-left:hover, .forecaster-light-left:active {
+  color: @forecaster-light-single-selected-color;
+  background-color: @forecaster-light-single-selected-background-color;
+}
+
+.forecaster-light:hover, .forecaster-light:active {
+  cursor: pointer;
+}
+
+.forecaster-light-single-selected, .forecaster-light-left-selected {
+  color: @forecaster-light-single-selected-color;
+  background-color: @forecaster-light-single-selected-background-color;
+}
+
+.forecaster-light-right-selected, .forecaster-light-right-selected {
+  color: @forecaster-light-right-selected-color;
+  background-color: @forecaster-light-right-selected-background-color;
 }
 
 .weeks-numbers {
@@ -135,6 +150,15 @@ div[ui-view] {
 
 .header-sm {
   display: none;
+}
+
+.team-light:hover, .team-light:active {
+  cursor: pointer;
+}
+
+.team-light-selected {
+  color: @team-light-selected-color;
+  background-color: @team-light-selected-background-color;
 }
 
 .team-flag {

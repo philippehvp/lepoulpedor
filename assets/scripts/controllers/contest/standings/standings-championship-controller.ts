@@ -10,7 +10,6 @@ module LPO {
     private leftOrRightForecaster: EnumLeftRight;
 
     constructor(private navbarService: NavbarService, private contestCentreService: ContestCentreService) {
-      this.leftOrRightForecaster = EnumLeftRight.UNKNOWN;
     }
 
     $onInit() {
@@ -18,19 +17,24 @@ module LPO {
 
       // Lecture des points du championnat
       this.contestCentreService.readStandingsForecastersLight(this.championship).then((data) => {
+        this.leftOrRightForecaster = EnumLeftRight.LEFT;
+        this.selectForecaster(this.contestCentreService.getCurrentForecasterLight());
+        this.leftOrRightForecaster = EnumLeftRight.RIGHT;
       });
     }
 
     // Sélection d'un pronostiqueur par l'utilisateur
-    selectForecaster(forecasterLight: IForecasterLight): void {
+    public selectForecaster(forecasterLight: IForecasterLight): void {
       this.contestCentreService.setCurrentForecasterLight(forecasterLight);
+      if(this.leftOrRightForecaster === EnumLeftRight.LEFT)
+        this.contestCentreService.setCurrentLeftForecasterLight(forecasterLight);
+      else if(this.leftOrRightForecaster === EnumLeftRight.RIGHT)
+        this.contestCentreService.setCurrentRightForecasterLight(forecasterLight);
       if (this.leftOrRightForecaster !== EnumLeftRight.UNKNOWN)
         if(this.type === 1)
-          this.contestCentreService.readGeneralStandings(this.championship, this.leftOrRightForecaster, forecasterLight).then((data) => {
-          });
+          this.contestCentreService.readGeneralStandings(this.championship, this.leftOrRightForecaster, forecasterLight).then((data) => {});
         else
-          this.contestCentreService.readWeekStandings(this.championship, this.leftOrRightForecaster, forecasterLight).then((data) => {
-          });
+          this.contestCentreService.readWeekStandings(this.championship, this.leftOrRightForecaster, forecasterLight).then((data) => {});
     }
 
     // Mise à jour du pronostiqueur (à gauche)
@@ -52,6 +56,5 @@ module LPO {
     public getRightForecaster(): boolean {
       return this.leftOrRightForecaster === EnumLeftRight.RIGHT;
     }
-
   }
 }

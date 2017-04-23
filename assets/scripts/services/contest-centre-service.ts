@@ -23,6 +23,8 @@ module LPO {
     // Pronostiqueurs
     public forecastersLight: Array<IForecasterLight>;
     private currentForecasterLight: IForecasterLight;
+    private currentLeftForecasterLight: IForecasterLight;
+    private currentRightForecasterLight: IForecasterLight;
     private currentForecaster: IForecaster;
     private forecasterAwards: IForecasterAwards[];
     private forecasterStats: Array<IForecasterStats>;
@@ -58,6 +60,8 @@ module LPO {
 
     constructor(private navbarService: NavbarService, private generalService: GeneralService, private $http: ng.IHttpService, private $q: ng.IQService, private $state: any, private $window: any, private $timeout: ng.ITimeoutService) {
       this.currentForecasterLight = null;
+      this.currentLeftForecasterLight = null;
+      this.currentRightForecasterLight = null;
       this.championshipsL1AndEurope = null;
     }
 
@@ -292,6 +296,23 @@ module LPO {
       this.refreshSubThemeView();
     }
 
+    // Idem pour le pronostiqueur de gauche ou de droite dans le classement général / journée
+    public getCurrentLeftForecasterLight(): IForecasterLight {
+      return this.currentLeftForecasterLight;
+    }
+
+    public setCurrentLeftForecasterLight(forecasterLight: IForecasterLight): void {
+      this.currentLeftForecasterLight = forecasterLight;
+    }
+
+    public getCurrentRightForecasterLight(): IForecasterLight {
+      return this.currentRightForecasterLight;
+    }
+
+    public setCurrentRightForecasterLight(forecasterLight: IForecasterLight): void {
+      this.currentRightForecasterLight = forecasterLight;
+    }
+
     // Lecture de tous les pronostiqueurs
     public readForecastersLight(): ng.IPromise<Array<IForecasterLight>> {
       let url = "./dist/forecasters.php";
@@ -311,8 +332,6 @@ module LPO {
         // Pour le moment, on prend le premier de la liste
         if(this.currentForecaster == null)
           this.currentForecasterLight = this.preselectForecasterLight();
-
-        //this.currentForecasterLight = this.forecastersLight[0];
 
         def.resolve(response.data);
 
@@ -857,7 +876,9 @@ module LPO {
         // Par défaut, celui qui est connecté
         // Sinon, le premier de la liste
         // Pour le moment, on prend le premier de la liste
-        this.currentForecasterLight = this.forecastersLight[0];
+        this.currentForecasterLight = this.preselectForecasterLight();
+        this.currentLeftForecasterLight = this.currentForecasterLight;
+        
 
         def.resolve(response.data);
 
