@@ -66,16 +66,19 @@
   // - 7 et 8 : respectivement suppression d'un buteur domicile et visiteur
 
   $forecastActionCode = $_GET["forecastActionCode"];
-  $singleMatch = json_decode($postedData["match"]);
-  $singleMatchDate = json_decode($postedData["date"]);
 
-  if($forecastActionCode >= 5 && $forecastActionCode <= 8) {
+  if($forecastActionCode >= 0 && $forecastActionCode <= 4) {
+    $singleMatch = $postedData["match"];
+    $singleMatchDate = $singleMatch["Matches_Date"];
+  }
+  else if($forecastActionCode >= 5 && $forecastActionCode <= 8) {
     // Ajout ou suppression d'un pronostic de buteur
     $player = json_decode($postedData["joueur"]);
+    $singleMatch = json_decode($postedData["match"]);
+    $singleMatchDate = json_decode($postedData["date"]);
   }
 
   $update = checkDateSingle($singleMatchDate);
-  $update = true;
 
   if($update) {
     // Mise à jour autorisée

@@ -53,9 +53,8 @@ var php =	[
 ];
 
 var cssSource =	[
-					 './assets/styles/partials/_variables.less'
-					,'./assets/styles/partials/_navbar.less'
-					,'./assets/styles/main.less'
+					 './assets/styles/partials/*.less'
+					,'./assets/styles/*.less'
 ];
 var cssTarget = 'main.css';
 

@@ -1,11 +1,4 @@
 <div class="col-sm-offset-1 col-sm-10 centered" ng-if="ctrl.forecastService.getCurrentSingleMatch() !== null && ctrl.forecastService.getCurrentSingleMatch() !== undefined">
-  <!--Affiche de la confrontation (équipe domicile VS équipe visiteur)-->
-  <!--<div class="row">
-    <div class="col-sm-12 centered">
-      <h3>{{ctrl.forecastService.getCurrentSingleMatch().EquipesDomicile_Nom}} - {{ctrl.forecastService.getCurrentSingleMatch().EquipesVisiteur_Nom}}</h3>
-    </div>
-  </div>-->
-
   <!--Logistique-->
   <div class="row">
     <div class="col-sm-12 centered">
@@ -162,64 +155,22 @@
     </div>
   </div>
 
-  <!--Buteurs-->
-  <div class="row" ng-if="ctrl.forecastService.getCurrentSingleMatch().Matches_SansButeur == 0">
-    <div class="col-sm-5 right">
-      <p ng-if="ctrl.forecastService.getCurrentSingleMatchScorersA().length == 0">Aucun buteur pronostiqué</p>
-      <p ng-if="ctrl.forecastService.getCurrentSingleMatchScorersA().length > 0">
-        <span class="forecast-scorer" ng-repeat="forecastScorer in ctrl.forecastService.getCurrentSingleMatchScorersA() track by $index"
-          ng-click="ctrl.onDeleteScorerSingle($index, forecastScorer, 0)">
-          {{forecastScorer.Joueurs_NomComplet}}{{$last ? '' : ', '}}
-        </span>
-      </p>
-    </div>
+  <!--Buteurs et joueurs en mode LG-->
+  <div ng-if="ctrl.forecastService.getCurrentSingleMatch().Matches_SansButeur == 0">
+    <div ng-if="!ctrl.generalService.isSmallScreen()">
+      <!--Buteurs en mode LG-->
+      <forecast-scorers-lg scorers-a="ctrl.forecastService.getCurrentSingleMatchScorersA()"
+                           scorers-b="ctrl.forecastService.getCurrentSingleMatchScorersB()"
+                           collapse-players="ctrl.onClickCurrentSingleMatchCollapsedPlayers()"
+                           delete-scorer="ctrl.onDeleteScorerSingle($index, forecastScorer, teamAOrB)">
+      </forecast-scorers-lg>
 
-    <div class="col-sm-2 centered">
-      <button type="button"
-              class="btn btn-default"
-              ng-click="ctrl.onClickCurrentSingleMatchCollapsedPlayers()">
-        Buteurs <span class="glyphicon glyphicon-chevron-down"></span>
-      </button>
-    </div>
-
-    <div class="col-sm-5 left">
-      <p ng-if="ctrl.forecastService.getCurrentSingleMatchScorersB().length == 0">Aucun buteur pronostiqué</p>
-      <p ng-if="ctrl.forecastService.getCurrentSingleMatchScorersB().length > 0">
-        <span class="forecast-scorer" ng-repeat="forecastScorer in ctrl.forecastService.getCurrentSingleMatchScorersB() track by $index"
-          ng-click="ctrl.onDeleteScorerSingle($index, forecastScorer, 1)">
-          {{forecastScorer.Joueurs_NomComplet}}{{$last ? '' : ', '}}
-        </span>
-      </p>
-    </div>
-  </div>
-
-  <!--Joueurs-->
-  <div uib-collapse="ctrl.forecastService.getCurrentSingleMatchCollapsedPlayers()" class="players-list" id="singleMatchPlayers" ng-if="ctrl.forecastService.getCurrentSingleMatch().Matches_SansButeur == 0">
-    <div class="row">
-      <div class="col-sm-5">
-        <div class="col-sm-4" ng-repeat="player in ctrl.forecastService.getCurrentSingleMatchPlayersA() track by $index">
-          <span class="col-sm-10 right nowrap">
-            <span class="forecast-player" ng-click="ctrl.onAddScorerSingle(player, 0)">{{player.Joueurs_NomComplet}}</span>
-          </span>
-          <span class="col-sm-1 centered player-position player-position-a"
-                ng-class="{'forward': player.Postes_Poste == 4, 'midfielder': player.Postes_Poste == 3, 'defender': player.Postes_Poste == 2}">
-                {{player.JoueursCotes_Cote}}
-          </span>
-        </div>
-      </div>
-
-      <div class="col-sm-2 centered">
-        <span class="col-sm-offset-2 col-sm-2 forward centered">ATT</span><span class="col-sm-offset-1 col-sm-2 midfielder centered">MIL</span><span class="col-sm-offset-1 col-sm-2 defender centered">DEF</span>
-      </div>
-
-      <div class="col-sm-5">
-        <div class="col-sm-4" ng-repeat="player in ctrl.forecastService.getCurrentSingleMatchPlayersB() track by $index">
-          <span class="col-sm-1 centered player-position player-position-b" ng-class="{'forward': player.Postes_Poste == 4, 'midfielder': player.Postes_Poste == 3, 'defender': player.Postes_Poste == 2}">{{player.JoueursCotes_Cote}}</span>
-          <span class="col-sm-9 left nowrap">
-            <span class="forecast-player" ng-click="ctrl.onAddScorerSingle(player, 1)">{{player.Joueurs_NomComplet}}</span>
-          </span>
-        </div>
-      </div>
+      <!--Joueurs en mode LG-->
+      <forecast-players-lg players-a="ctrl.forecastService.getCurrentSingleMatchPlayersA()"
+                           players-b="ctrl.forecastService.getCurrentSingleMatchPlayersB()"
+                           collapsed-players="ctrl.forecastService.getCurrentSingleMatchCollapsedPlayers()"
+                           add-scorer="ctrl.onAddScorerSingle(player, teamAOrB)">
+      </forecast-players-lg>
     </div>
   </div>
 </div>

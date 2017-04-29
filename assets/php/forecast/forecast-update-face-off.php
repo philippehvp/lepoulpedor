@@ -112,8 +112,6 @@
     $update = checkScorerFaceOff($matchDate);
   }
 
-  $update = true;
-
   if($update == true) {
     // Mise à jour autorisée
     switch($forecastActionCode) {

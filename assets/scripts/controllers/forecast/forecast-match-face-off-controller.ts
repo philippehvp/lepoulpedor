@@ -4,38 +4,39 @@ module LPO {
   "use strict";
 
   export class ForecastMatchFaceOffController {
-    private firstMatchCollapsedPlayers: boolean;
-    private secondMatchCollapsedPlayers: boolean;
 
-    constructor(private generalService: GeneralService, private forecastService: ForecastService) {
+    constructor(private generalService: GeneralService, private forecastService: ForecastService, private $rootScope: ng.IRootScopeService) {
       this.generalService.checkUser();
-
-      this.firstMatchCollapsedPlayers = null;
-      this.secondMatchCollapsedPlayers = null;
-    }
-
-    $onInit() {
     }
 
     public onChangeScoreFaceOff(forecastActionCode: number): void {
       this.forecastService.changeScoreFaceOff(forecastActionCode);
     }
 
-    public onDeleteScorerFaceOff($index: number, forecastScorer: IForecastScorer, matchFirstOrSecond: number, teamAOrB: number): void {
-      this.forecastService.deleteScorerFaceOff($index, forecastScorer, matchFirstOrSecond, teamAOrB);
-    }
-
-    public onAddScorerFaceOff(player: IPlayer, matchFirstOrSecond: number, teamAOrB: number): void {
-      this.forecastService.addScorerFaceOff(player, matchFirstOrSecond, teamAOrB);
-    }
-
     public onClickCurrentFirstMatchCollapsedPlayers(): void {
       this.forecastService.toggleCurrentFirstMatchCollapsedPlayers();
+      this.$rootScope.$broadcast("content.changed");
     }
 
     public onClickCurrentSecondMatchCollapsedPlayers(): void {
       this.forecastService.toggleCurrentSecondMatchCollapsedPlayers();
+      this.$rootScope.$broadcast("content.changed");
     }
 
+    public onDeleteScorerFirstMatch($index: number, forecastScorer: IForecastScorer, teamAOrB: number): void {
+      this.forecastService.deleteScorerFaceOff($index, forecastScorer, teamAOrB, 0);
+    }
+
+    public onDeleteScorerSecondMatch($index: number, forecastScorer: IForecastScorer, teamAOrB: number): void {
+      this.forecastService.deleteScorerFaceOff($index, forecastScorer, teamAOrB, 1);
+    }
+
+    public onAddScorerFirstMatch(player: IPlayer, teamAOrB: number): void {
+      this.forecastService.addScorerFaceOff(player, teamAOrB, 0);
+    }
+
+    public onAddScorerSecondMatch(player: IPlayer, teamAOrB: number): void {
+      this.forecastService.addScorerFaceOff(player, teamAOrB, 1);
+    }
   }
 }

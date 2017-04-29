@@ -50,7 +50,13 @@ module LPO {
     private currentFirstMatchCollapsedPlayers: boolean;
     private currentSecondMatchCollapsedPlayers: boolean;
 
-    constructor(private navbarService: NavbarService, private generalService: GeneralService, private $http: ng.IHttpService, private $q: ng.IQService, private $state: any, private moment: any) {
+    constructor(private navbarService: NavbarService
+      , private generalService: GeneralService
+      , private $http: ng.IHttpService
+      , private $q: ng.IQService
+      , private $state: any
+      , private $rootScope: ng.IRootScopeService
+      , private moment: any) {
       this.generalService.checkUser();
       this.scores = [];
       for(let i: number = 0; i <= 15; i++)
@@ -425,6 +431,9 @@ module LPO {
         this.currentSecondMatchPlayersB = response.data[0].retour_joueurs_visiteur;
         this.currentFirstMatchCollapsedPlayers = new Date(this.currentFirstMatch.Matches_Date.toString()).getTime() < new Date().getTime();
         this.currentSecondMatchCollapsedPlayers = this.currentFirstMatchCollapsedPlayers === false ? true : new Date(this.currentSecondMatch.Matches_Date.toString()).getTime() < new Date().getTime();
+
+        // Reconstruction de la zone d'affichage du match
+        this.$rootScope.$broadcast("content.reload");
         d.resolve(true);
       }, function errorCallback(error) {
         let errMsg = (error.message) ? error.message :
@@ -440,6 +449,7 @@ module LPO {
       this.currentSingleMatch = null;
       this.currentFirstMatch = null;
       this.currentSecondMatch = null;
+      this.currentMatchLight = null;
     }
 
     public deleteScorerSingle($index: number, forecastScorer: IForecastScorer, teamAOrB: number): void {
@@ -458,7 +468,7 @@ module LPO {
       }
     }
 
-    public deleteScorerFaceOff($index: number, forecastScorer: IForecastScorer, matchFirstOrSecond: number, teamAOrB: number): void {
+    public deleteScorerFaceOff($index: number, forecastScorer: IForecastScorer, teamAOrB: number, matchFirstOrSecond: number): void {
       if (matchFirstOrSecond === 0) {
         if (this.currentFirstMatch.Buteurs_Pronostiquables == 0)
           return;
@@ -517,7 +527,7 @@ module LPO {
       }
     }
 
-    public addScorerFaceOff(player: IPlayer, matchFirstOrSecond: number, teamAOrB: number): void {
+    public addScorerFaceOff(player: IPlayer, teamAOrB: number, matchFirstOrSecond: number): void {
       if (matchFirstOrSecond === 0) {
         if (this.currentFirstMatch.Buteurs_Pronostiquables == 0)
           return;
@@ -658,7 +668,7 @@ module LPO {
         url = "./dist/forecast-update-single.php";
       else
         url = "./dist/forecast-update-face-off.php";
-      
+
       this.$http({
         method: "POST",
         url: url,
@@ -686,7 +696,7 @@ module LPO {
       else
         url = "./dist/forecast-update-face-off.php";
 
-      
+
       this.$http({
         method: "POST",
         url: url,

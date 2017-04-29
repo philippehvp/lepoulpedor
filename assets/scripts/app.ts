@@ -16,6 +16,8 @@
 /// <reference path="controllers/forecast/forecast-controller.ts" />
 /// <reference path="controllers/forecast/forecast-match-single-controller.ts" />
 /// <reference path="controllers/forecast/forecast-match-face-off-controller.ts" />
+/// <reference path="controllers/forecast/forecast-players-controller.ts" />
+/// <reference path="controllers/forecast/forecast-scorers-controller.ts" />
 
 
 /// <reference path="controllers/contest-centre-controller.ts" />
@@ -47,13 +49,13 @@
 module LPO {
   "use strict";
 
-  let appModule = angular.module("lepoulpedorApp", ["ngAnimate", "ui.router", "ui.bootstrap", "ui.layout", "angularMoment", "ngCookies"]);
+  let appModule = angular.module("lepoulpedorApp", ["ngAnimate", "ui.router", "ui.bootstrap", "ui.layout", "angularMoment", "ngCookies", "ngScrollable"]);
 
   appModule
     .service("generalService", ["$http", "$q", "navbarService", "$state", "$cookies", ($http, $q, navbarService, $state, $cookies) => new GeneralService($http, $q, navbarService, $state, $cookies)])
     .service("navbarService", [() => new NavbarService()])
     .service("standingsService", ["$http", "$q", ($http, $q) => new StandingsService($http, $q)])
-    .service("forecastService", ["navbarService", "generalService", "$http", "$q", "$state", "moment", (navbarService, generalService, $http, $q, $state, moment) => new ForecastService(navbarService, generalService, $http, $q, $state, moment)])
+    .service("forecastService", ["navbarService", "generalService", "$http", "$q", "$state", "$rootScope", "moment", (navbarService, generalService, $http, $q, $state, $rootScope, moment) => new ForecastService(navbarService, generalService, $http, $q, $state, $rootScope, moment)])
     .service("contestCentreService", ["navbarService", "generalService", "$http", "$q", "$state", "$window", "$timeout", (navbarService, generalService, $http, $q, $state, $window, $timeout) => new ContestCentreService(navbarService, generalService, $http, $q, $state, $window, $timeout)]);
 
   appModule
@@ -63,7 +65,9 @@ module LPO {
     .controller("StandingsController", ["navbarService", "generalService", "standingsService", (navbarService, generalService, standingsService) => new StandingsController(navbarService, generalService, standingsService)])
     .controller("ForecastController", ["navbarService", "generalService", "forecastService", (navbarService, generalService, forecastService) => new ForecastController(navbarService, generalService, forecastService)])
     .controller("ForecastMatchSingleController", ["generalService", "forecastService", (generalService, forecastService) => new ForecastMatchSingleController(generalService, forecastService)])
-    .controller("ForecastMatchFaceOffController", ["generalService", "forecastService", (generalService, forecastService) => new ForecastMatchFaceOffController(generalService, forecastService)])
+    .controller("ForecastMatchFaceOffController", ["generalService", "forecastService", "$rootScope", (generalService, forecastService, $rootScope) => new ForecastMatchFaceOffController(generalService, forecastService, $rootScope)])
+    .controller("ForecastScorersController", ["generalService", "forecastService", (generalService, forecastService) => new ForecastScorersController(generalService, forecastService)])
+    .controller("ForecastPlayersController", ["generalService", "forecastService", (generalService, forecastService) => new ForecastPlayersController(generalService, forecastService)])
 
     .controller("ContestCentreController", ["navbarService", "generalService", "contestCentreService", (navbarService, generalService, contestCentreService) => new ContestCentreController(navbarService, generalService, contestCentreService)])
     .controller("ForecastersController", ["navbarService", "contestCentreService", (navbarService, contestCentreService) => new ForecastersController(navbarService, contestCentreService)])
@@ -100,19 +104,24 @@ module LPO {
     .component("forecast", { controller: "ForecastController as ctrl", templateUrl: "./dist/forecast.html" })
     .component("forecastMatchSingle", { controller: "ForecastMatchSingleController as ctrl", templateUrl: "./dist/forecast-match-single.html" })
     .component("forecastMatchFaceOff", { controller: "ForecastMatchFaceOffController as ctrl", templateUrl: "./dist/forecast-match-face-off.html" })
+    .component("forecastScorersLg", { controller: "ForecastScorersController as ctrl", templateUrl: "./dist/forecast-scorers-lg.html", bindings: { "scorersA": "<", "scorersB": "<", "collapsePlayers": "&", "deleteScorer": "&" } })
+    .component("forecastPlayersLg", { controller: "ForecastPlayersController as ctrl", templateUrl: "./dist/forecast-players-lg.html", bindings: { "playersA": "<", "playersB": "<", "collapsedPlayers": "&", "addScorer": "&" } })
+    .component("forecastScorersSm", { controller: "ForecastScorersController as ctrl", templateUrl: "./dist/forecast-scorers-sm.html", bindings: { "scorersA": "<", "scorersB": "<", "collapsePlayers": "&", "deleteScorer": "&" } })
+    .component("forecastPlayersSm", { controller: "ForecastPlayersController as ctrl", templateUrl: "./dist/forecast-players-sm.html", bindings: { "playersA": "<", "playersB": "<", "collapsedPlayers": "&", "addScorer": "&" } })
+
     .component("contest", { controller: "ContestCentreController as ctrl", templateUrl: "./dist/contest-centre.html" })
     .component("forecasters", { controller: "ForecastersController as ctrl", templateUrl: "./dist/forecasters.html" })
     .component("forecasterId", { controller: "ForecasterIdController as ctrl", templateUrl: "./dist/forecaster-id.html" })
     .component("forecasterAwards", { controller: "ForecasterAwardsController as ctrl", templateUrl: "./dist/forecaster-awards.html" })
     .component("forecasterStats", { controller: "ForecasterStatsController as ctrl", templateUrl: "./dist/forecaster-stats.html" })
     .component("forecasterStandings", { controller: "ForecasterStandingsController as ctrl", templateUrl: "./dist/forecaster-standings.html" })
-    .component("forecasterStandingsSvg", { controller: "ForecasterStandingsSVGController as ctrl", templateUrl: "./dist/forecaster-standings-svg.html", bindings: { standings: '<', maxCount: '<'} })
+    .component("forecasterStandingsSvg", { controller: "ForecasterStandingsSVGController as ctrl", templateUrl: "./dist/forecaster-standings-svg.html", bindings: { standings: "<", maxCount: "<"} })
     .component("scorers", { controller: "ScorersController as ctrl", templateUrl: "./dist/scorers.html" })
-    .component("scorersChampionship", { controller: "ScorersChampionshipController as ctrl", templateUrl: "./dist/scorers-championship.html", bindings: { championship: '<'} })
+    .component("scorersChampionship", { controller: "ScorersChampionshipController as ctrl", templateUrl: "./dist/scorers-championship.html", bindings: { championship: "<"} })
     .component("awards", { controller: "AwardsController as ctrl", templateUrl: "./dist/awards.html" })
-    .component("awardsChampionship", { controller: "AwardsChampionshipController as ctrl", templateUrl: "./dist/awards-championship.html", bindings: { championship: '<'} })
+    .component("awardsChampionship", { controller: "AwardsChampionshipController as ctrl", templateUrl: "./dist/awards-championship.html", bindings: { championship: "<"} })
     .component("points", { controller: "PointsController as ctrl", templateUrl: "./dist/points.html" })
-    .component("pointsChampionship", { controller: "PointsChampionshipController as ctrl", templateUrl: "./dist/points-championship.html", bindings: { championship: '<'} })
+    .component("pointsChampionship", { controller: "PointsChampionshipController as ctrl", templateUrl: "./dist/points-championship.html", bindings: { championship: "<"} })
     .component("l1", { controller: "L1Controller as ctrl", templateUrl: "./dist/l1.html" })
     .component("l1WinDrawLoss", { controller: "L1WinDrawLossController as ctrl", templateUrl: "./dist/l1-win-draw-loss.html" })
     .component("l1Ratio", { controller: "L1RatioController as ctrl", templateUrl: "./dist/l1-ratio.html" })
@@ -121,9 +130,9 @@ module LPO {
     .component("l1Canal", { controller: "L1CanalController as ctrl", templateUrl: "./dist/l1-canal.html" })
     .component("generalStandings", { controller: "GeneralStandingsController as ctrl", templateUrl: "./dist/general-week-standings.html" })
     .component("weekStandings", { controller: "WeekStandingsController as ctrl", templateUrl: "./dist/general-week-standings.html" })
-    .component("standingsChampionship", { controller: "StandingsChampionshipController as ctrl", templateUrl: "./dist/standings-championship.html", bindings: { championship: '<', type: '<' } })
+    .component("standingsChampionship", { controller: "StandingsChampionshipController as ctrl", templateUrl: "./dist/standings-championship.html", bindings: { championship: "<", type: "<" } })
     .component("teams", { controller: "TeamsController as ctrl", templateUrl: "./dist/teams.html" })
-    .component("teamsChampionship", { controller: "TeamsChampionshipController as ctrl", templateUrl: "./dist/teams-championship.html", bindings: { championship: '<', europe: '<' } })
+    .component("teamsChampionship", { controller: "TeamsChampionshipController as ctrl", templateUrl: "./dist/teams-championship.html", bindings: { championship: "<", europe: "<" } })
     .component("teamPlayers", { controller: "TeamPlayersController as ctrl", templateUrl: "./dist/team-players.html" });
 
 
