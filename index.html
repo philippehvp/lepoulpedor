@@ -17,11 +17,16 @@
 	</head>
 
 	<body>
+		<div class="content">
+			<div class="header">
+				<navbar-desktop></navbar-desktop>
+				<navbar-mobile></navbar-mobile>
+			</div>
 
-		<navbar-desktop></navbar-desktop>
-		<navbar-mobile></navbar-mobile>
-
-		<div ui-view></div>
+			<div class="main">
+				<ui-view></ui-view>
+			</div>
+		</div>
 
 		<footer>
 			<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -40,7 +45,6 @@
 			<script type="text/javascript" src="https://rawgithub.com/angular-ui/ui-layout/master/src/ui-layout.js"></script>
 			<script type="text/javascript" src="https://code.angularjs.org/1.5.6/angular-cookies.min.js"></script>
 
-			<!--<script type="text/javascript" src="dist/ng-scrollbar.min.js"></script>-->
 			<script type="text/javascript" src="dist/ng-scrollable.min.js"></script>
 
       <script type="text/javascript" src="dist/app.js"></script>

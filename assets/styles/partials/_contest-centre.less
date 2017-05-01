@@ -1,0 +1,203 @@
+@import "_variables.less";
+
+.standing-photo {
+  width: @standing-photo;
+}
+
+.forecaster-photo {
+  width: @forecaster-photo-lg;
+}
+
+.forecaster-light-single:hover, .forecaster-light-single:active
+, .forecaster-light-left:hover, .forecaster-light-left:active {
+  color: @forecaster-light-single-selected-color;
+  background-color: @forecaster-light-single-selected-background-color;
+}
+
+.forecaster-light:hover, .forecaster-light:active {
+  cursor: pointer;
+}
+
+.forecaster-light-single-selected, .forecaster-light-left-selected {
+  color: @forecaster-light-single-selected-color;
+  background-color: @forecaster-light-single-selected-background-color;
+}
+
+.forecaster-light-right-selected, .forecaster-light-right-selected {
+  color: @forecaster-light-right-selected-color;
+  background-color: @forecaster-light-right-selected-background-color;
+}
+
+.weeks-numbers {
+  display: flex;
+  overflow-x: auto;
+  padding: @weeks-numbers-padding;
+  margin-top: @weeks-numbers-margin-top;
+  margin-bottom: @weeks-numbers-margin-bottom;
+}
+
+.subthemes {
+  margin-top: @subthemes-margin-top;
+  margin-bottom: @subthemes-margin-bottom;
+}
+
+.left-right-forecaster {
+  margin-bottom: @left-right-margin-bottom;
+}
+
+.content-all-standings {
+  height: 100%;
+}
+
+.content-scrollable {
+  overflow-y: auto;
+}
+
+.content-forecast {
+  width: 100%;
+}
+
+.content-one-standing, .content-scorers, .content-win-draw-loss, .content-awards, .content-ratio, .content-team-points, .content-best-teams, .content-canal
+, .content-standings, .content-forecast {
+  height: ~"calc(100vh - 190px)";
+}
+
+.content-general-standings {
+  height: ~"calc(100vh - 190px)";
+}
+
+.content-all-forecasters, .content-all-teams {
+  max-height: ~"calc(35vh - 85px)";
+  margin-bottom: @content-all-forecasters-margin-bottom;
+}
+
+.content-forecaster-id, .content-forecaster-awards, .content-forecaster-stats, .content-forecaster-standings {
+  height: ~"calc(40vh)";
+}
+
+.content-forecaster-awards, .content-forecaster-stats, .content-forecaster-standings {
+  height: ~"calc(50vh)";
+}
+
+.content-forecaster-id-photo {
+  width: 80px;
+  margin-right: @contest-forecaster-id-photo;
+}
+
+.standings-svg,
+.content-all-players {
+  height: ~"calc(65vh - 85px)";
+}
+
+.visible-in-sm {
+  display: none;
+  margin-bottom: @navigation-list-margin-bottom;
+}
+
+.header-sm {
+  display: none;
+}
+
+.team-light:hover, .team-light:active {
+  cursor: pointer;
+}
+
+.team-light-selected {
+  color: @team-light-selected-color;
+  background-color: @team-light-selected-background-color;
+}
+
+.team-flag {
+  width: @team-flag-lg;
+}
+
+svg {
+  width: 100%;
+  height: 100%;
+
+  rect {
+    z-index: 9;
+    &.general {
+      fill: @histogram-general-color;
+    }
+
+    &.goal {
+      fill: @histogram-goal-color;
+    }
+
+    &.week {
+      fill: @histogram-week-color;
+    }
+
+    &.left {
+      fill: @histogram-general-left;
+    }
+
+    &.right {
+      fill: @histogram-general-right;
+    }
+  }
+
+  rect:hover {
+    fill: @histogram-hover-color;
+    z-index: 11;
+  }
+
+  path {
+    stroke-width: 1px;
+    stroke: @path-stroke-color;
+    fill: none;
+    z-index: 10;
+  }
+
+  circle {
+    fill: @path-stroke-color;
+  }
+}
+
+// Mobile
+@media screen and (max-width: 767px) {
+  .form-horizontal {
+    label {
+      width: 100%;
+    }
+  }
+
+  .standing-photo {
+    width: @standing-photo-mobile;
+  }
+
+  .forecaster-photo {
+    width: @forecaster-photo-sm;
+  }
+
+  .content-all-standings {
+    width: 100%;
+    height: ~"calc(100vh - 150px)";
+    overflow-y: auto;
+  }
+
+  .content-one-standing {
+    height: 100%;
+  }
+
+  .themes-lg, .subthemes-lg, .championships-lg, .weeks-lg, .header-lg {
+    display: none;
+  }
+
+  .visible-in-sm {
+    display: block;
+  }
+
+  .header-sm {
+    display: table-row;
+  }
+
+  .contest-breadcrumb {
+    display: none;
+  }
+
+  .team-flag {
+    width: @team-flag-sm;
+  }
+}

@@ -17,7 +17,6 @@
     $menu140 = $menus[0]["Menu140"];
     $menu150 = $menus[0]["Menu150"];
 
-    $pronostiqueur = 1;
 ?>
 
 <nav ng-show="ctrl.getMobileMenuVisibility()" class="navbar navbar-default menu" ng-class="{'menu-visible': ctrl.getMobileMenuVisibility()}">
@@ -34,10 +33,9 @@
       <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pronostics <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          <?php
-            if($pronostiqueur != null && $pronostiqueur != 0)
-              echo '<li><a ui-sref="pronostics">Journées en cours</a></li>';
-          ?>
+          <li ng-if="ctrl.generalService.getUser() != null">
+            <a ui-sref="pronostics">Journées en cours</a>
+          </li>
 
           <?php
             if($menu100 == 1)

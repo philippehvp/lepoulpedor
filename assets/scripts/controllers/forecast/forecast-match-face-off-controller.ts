@@ -11,6 +11,7 @@ module LPO {
 
     public onChangeScoreFaceOff(forecastActionCode: number): void {
       this.forecastService.changeScoreFaceOff(forecastActionCode);
+      this.$rootScope.$broadcast("content.changed");
     }
 
     public onClickCurrentFirstMatchCollapsedPlayers(): void {
@@ -25,18 +26,22 @@ module LPO {
 
     public onDeleteScorerFirstMatch($index: number, forecastScorer: IForecastScorer, teamAOrB: number): void {
       this.forecastService.deleteScorerFaceOff($index, forecastScorer, teamAOrB, 0);
+      this.$rootScope.$broadcast("content.changed");
     }
 
     public onDeleteScorerSecondMatch($index: number, forecastScorer: IForecastScorer, teamAOrB: number): void {
       this.forecastService.deleteScorerFaceOff($index, forecastScorer, teamAOrB, 1);
+      this.$rootScope.$broadcast("content.changed");
     }
 
     public onAddScorerFirstMatch(player: IPlayer, teamAOrB: number): void {
       this.forecastService.addScorerFaceOff(player, teamAOrB, 0);
+      this.$rootScope.$broadcast("content.changed");
     }
 
     public onAddScorerSecondMatch(player: IPlayer, teamAOrB: number): void {
       this.forecastService.addScorerFaceOff(player, teamAOrB, 1);
+      this.$rootScope.$broadcast("content.changed");
     }
   }
 }

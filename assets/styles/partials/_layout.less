@@ -1,0 +1,29 @@
+@import "_variables.less";
+
+html, body {
+  height: 100%;
+}
+
+body {
+  color: @body-color;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    ui-view:first-child {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+  }
+}
+
+

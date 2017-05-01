@@ -1,0 +1,134 @@
+@import "_variables.less";
+
+.coefficient-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.coefficient-canal, .coefficient-2, .coefficient-3 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 200px;
+  height: 50px;
+  background: @coefficient-background-color;
+  color: @coefficient-color;
+  font-size: @coefficient-font-size;
+  vertical-align: middle;
+}
+
+.coefficient-canal:after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  content: "Canal (x2)"
+}
+
+.coefficient-2:after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  content: "x2"
+}
+
+.coefficient-3:after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  content: "x3"
+}
+
+.forward, .midfielder, .defender {
+  padding: @player-position-padding;
+  display: inline-block;
+  color: @player-position-color;
+  font-size: 0.9rem;
+  margin-bottom: @player-position-margin-bottom;
+}
+
+.forward {
+  background-color: @player-position-forward-background-color;
+}
+
+.midfielder {
+  background-color: @player-position-midfielder-background-color;
+}
+
+.defender {
+  background-color: @player-position-defender-background-color;
+}
+
+.player-position {
+  min-width: @player-position-min-width;
+}
+
+.player-position-a {
+  margin-left: 5px;
+}
+
+.player-position-b {
+  margin-right: 5px;
+}
+
+.players-list {
+  margin-top: @players-list-margin-top;
+}
+
+.forecast-scorer:hover, .forecast-scorer:active, .forecast-player:hover, .forecast-player:active {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.forecast-team-logo {
+  width: @forecast-team-logo-width;
+}
+
+.matches-light {
+  display: flex;
+  flex-direction: row;
+  padding: @matches-light-padding;
+  margin-top: @matches-light-margin-top;
+  margin-bottom: @matches-light-margin-bottom;
+}
+
+forecast {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  ui-view {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+}
+
+.championship-and-week-lg, .matches-lg {
+  display: flex;
+  flex-direction: column;
+}
+
+.championship-and-week-lg {
+  min-height: ~"calc(@{button-bar-min-height})";
+}
+
+.matches-lg {
+  min-height: ~"calc(@{button-bar-min-height} + @{matches-light-margin-top} + @{matches-light-margin-bottom} + @{matches-light-padding} + @{matches-light-padding})";
+}
+
+.forecast-match {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+forecast-match-face-off, forecast-match-single {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}

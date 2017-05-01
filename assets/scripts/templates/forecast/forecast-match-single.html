@@ -1,4 +1,6 @@
-<div class="col-sm-offset-1 col-sm-10 centered" ng-if="ctrl.forecastService.getCurrentSingleMatch() !== null && ctrl.forecastService.getCurrentSingleMatch() !== undefined">
+<div class="col-sm-offset-1 col-sm-10 centered forecast-match"
+     ng-if="ctrl.forecastService.getCurrentSingleMatch() !== null"
+     ng-scrollable="{scrollX:'none'}">
   <!--Logistique-->
   <div class="row">
     <div class="col-sm-12 centered">

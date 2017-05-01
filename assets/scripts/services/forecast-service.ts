@@ -59,6 +59,10 @@ module LPO {
       , private moment: any) {
       this.generalService.checkUser();
       this.scores = [];
+      this.currentMatchLight = null;
+      this.currentSingleMatch = null;
+      this.currentFirstMatch = null;
+      this.currentSecondMatch = null;
       for(let i: number = 0; i <= 15; i++)
         this.scores.push(i);
 
@@ -212,8 +216,8 @@ module LPO {
           // Logistique du match
           let dateFirstMatch: any = this.moment(this.currentFirstMatch.Matches_Date);
           let dateSecondMatch: any = this.moment(this.currentSecondMatch.Matches_Date);
-          this.currentFirstMatchLimitDateLabel = dateFirstMatch.format("dddd D MMMM YYYY à HH:mm");
-          this.currentSecondMatchLimitDateLabel = dateSecondMatch.format("dddd D MMMM YYYY à HH:mm");
+          this.currentFirstMatchLimitDateLabel = dateFirstMatch.format("dddd D MMMM à HH:mm");
+          this.currentSecondMatchLimitDateLabel = dateSecondMatch.format("dddd D MMMM à HH:mm");
           this.checkExtraAndShootingFaceOff();
         });
       }
@@ -221,7 +225,7 @@ module LPO {
         this.readMatchSingle(matchLight).then((ret: boolean) => {
           // Logistique du match
           let dateSingleMatch: any = this.moment(this.currentSingleMatch.Matches_Date);
-          this.currentSingleMatchLimitDateLabel = dateSingleMatch.format("dddd D MMMM YYYY à HH:mm");
+          this.currentSingleMatchLimitDateLabel = dateSingleMatch.format("dddd D MMMM à HH:mm");
           this.checkExtraAndShootingSingle();
         });
       }
@@ -397,6 +401,9 @@ module LPO {
         this.currentSingleMatchPlayersA = response.data[0].joueurs_domicile;
         this.currentSingleMatchPlayersB = response.data[0].joueurs_visiteur;
         this.currentSingleMatchCollapsedPlayers = new Date(this.currentSingleMatch.Matches_Date.toString()).getTime() < new Date().getTime();
+
+        // Reconstruction de la zone d'affichage du match
+        this.$rootScope.$broadcast("content.changed");
         d.resolve(true);
       }, function errorCallback(error) {
         let errMsg = (error.message) ? error.message :
@@ -433,7 +440,7 @@ module LPO {
         this.currentSecondMatchCollapsedPlayers = this.currentFirstMatchCollapsedPlayers === false ? true : new Date(this.currentSecondMatch.Matches_Date.toString()).getTime() < new Date().getTime();
 
         // Reconstruction de la zone d'affichage du match
-        this.$rootScope.$broadcast("content.reload");
+        this.$rootScope.$broadcast("content.changed");
         d.resolve(true);
       }, function errorCallback(error) {
         let errMsg = (error.message) ? error.message :

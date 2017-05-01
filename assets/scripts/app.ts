@@ -64,7 +64,7 @@ module LPO {
     .controller("LoginController", ["navbarService", "generalService", "$cookies", "moment", (navbarService, generalService, $cookies, moment) => new LoginController(navbarService, generalService, $cookies, moment)])
     .controller("StandingsController", ["navbarService", "generalService", "standingsService", (navbarService, generalService, standingsService) => new StandingsController(navbarService, generalService, standingsService)])
     .controller("ForecastController", ["navbarService", "generalService", "forecastService", (navbarService, generalService, forecastService) => new ForecastController(navbarService, generalService, forecastService)])
-    .controller("ForecastMatchSingleController", ["generalService", "forecastService", (generalService, forecastService) => new ForecastMatchSingleController(generalService, forecastService)])
+    .controller("ForecastMatchSingleController", ["generalService", "forecastService", "$rootScope", (generalService, forecastService, $rootScope) => new ForecastMatchSingleController(generalService, forecastService, $rootScope)])
     .controller("ForecastMatchFaceOffController", ["generalService", "forecastService", "$rootScope", (generalService, forecastService, $rootScope) => new ForecastMatchFaceOffController(generalService, forecastService, $rootScope)])
     .controller("ForecastScorersController", ["generalService", "forecastService", (generalService, forecastService) => new ForecastScorersController(generalService, forecastService)])
     .controller("ForecastPlayersController", ["generalService", "forecastService", (generalService, forecastService) => new ForecastPlayersController(generalService, forecastService)])
