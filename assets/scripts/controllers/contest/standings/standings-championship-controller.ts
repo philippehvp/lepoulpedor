@@ -25,6 +25,8 @@ module LPO {
 
     // Sélection d'un pronostiqueur par l'utilisateur
     public selectForecaster(forecasterLight: IForecasterLight): void {
+      if(forecasterLight === null)
+        return;
       this.contestCentreService.setCurrentForecasterLight(forecasterLight);
       if(this.leftOrRightForecaster === EnumLeftRight.LEFT)
         this.contestCentreService.setCurrentLeftForecasterLight(forecasterLight);

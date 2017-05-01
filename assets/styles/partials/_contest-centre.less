@@ -45,21 +45,17 @@
   margin-bottom: @left-right-margin-bottom;
 }
 
-.content-all-standings {
+.content-all-scorers, .content-all-awards, .content-all-points, .content-all-wins-draws-losses, .content-all-ratios, .content-all-teams-points, .content-all-best-teams, .content-all-canal {
   height: 100%;
 }
 
-.content-scrollable {
-  overflow-y: auto;
+.content-scorer, .content-award, .content-point, .content-win-draw-loss, .content-ratio, .content-team-point, .content-standing, .content-best-team, .content-canal
+, .content-standings, .content-forecast {
+  height: ~"calc(100vh - 190px)";
 }
 
 .content-forecast {
   width: 100%;
-}
-
-.content-one-standing, .content-scorers, .content-win-draw-loss, .content-awards, .content-ratio, .content-team-points, .content-best-teams, .content-canal
-, .content-standings, .content-forecast {
-  height: ~"calc(100vh - 190px)";
 }
 
 .content-general-standings {
@@ -67,8 +63,19 @@
 }
 
 .content-all-forecasters, .content-all-teams {
-  max-height: ~"calc(35vh - 85px)";
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: @content-all-forecasters-height;
   margin-bottom: @content-all-forecasters-margin-bottom;
+}
+
+.content-all-forecasters {
+  max-height: @content-all-forecasters-height;
+}
+
+.content-all-teams {
+  max-height: @content-all-teams-max-height;
 }
 
 .content-forecaster-id, .content-forecaster-awards, .content-forecaster-stats, .content-forecaster-standings {

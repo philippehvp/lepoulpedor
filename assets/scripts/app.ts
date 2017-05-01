@@ -56,7 +56,7 @@ module LPO {
     .service("navbarService", [() => new NavbarService()])
     .service("standingsService", ["$http", "$q", ($http, $q) => new StandingsService($http, $q)])
     .service("forecastService", ["navbarService", "generalService", "$http", "$q", "$state", "$rootScope", "moment", (navbarService, generalService, $http, $q, $state, $rootScope, moment) => new ForecastService(navbarService, generalService, $http, $q, $state, $rootScope, moment)])
-    .service("contestCentreService", ["navbarService", "generalService", "$http", "$q", "$state", "$window", "$timeout", (navbarService, generalService, $http, $q, $state, $window, $timeout) => new ContestCentreService(navbarService, generalService, $http, $q, $state, $window, $timeout)]);
+    .service("contestCentreService", ["navbarService", "generalService", "$http", "$q", "$state", "$rootScope", "$window", "$timeout", (navbarService, generalService, $http, $q, $state, $rootScope, $window, $timeout) => new ContestCentreService(navbarService, generalService, $http, $q, $state, $rootScope, $window, $timeout)]);
 
   appModule
     .controller("NavbarController", ["navbarService", "generalService", (navbarService, generalService) => new NavbarController(navbarService, generalService)])
@@ -70,7 +70,7 @@ module LPO {
     .controller("ForecastPlayersController", ["generalService", "forecastService", (generalService, forecastService) => new ForecastPlayersController(generalService, forecastService)])
 
     .controller("ContestCentreController", ["navbarService", "generalService", "contestCentreService", (navbarService, generalService, contestCentreService) => new ContestCentreController(navbarService, generalService, contestCentreService)])
-    .controller("ForecastersController", ["navbarService", "contestCentreService", (navbarService, contestCentreService) => new ForecastersController(navbarService, contestCentreService)])
+    .controller("ForecastersController", ["navbarService", "contestCentreService", "$rootScope", (navbarService, contestCentreService, $rootScope) => new ForecastersController(navbarService, contestCentreService, $rootScope)])
     .controller("ForecasterIdController", ["navbarService", "contestCentreService", (navbarService, contestCentreService) => new ForecasterIdController(navbarService, contestCentreService)])
     .controller("ForecasterAwardsController", ["navbarService", "contestCentreService", (navbarService, contestCentreService) => new ForecasterAwardsController(navbarService, contestCentreService)])
     .controller("ForecasterStatsController", ["navbarService", "contestCentreService", (navbarService, contestCentreService) => new ForecasterStatsController(navbarService, contestCentreService)])

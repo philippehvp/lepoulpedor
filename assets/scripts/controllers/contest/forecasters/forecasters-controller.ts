@@ -5,7 +5,7 @@ module LPO {
   "use strict";
 
   export class ForecastersController {
-    constructor(private navbarService: NavbarService, private contestCentreService: ContestCentreService) {
+    constructor(private navbarService: NavbarService, private contestCentreService: ContestCentreService, private $rootScope: ng.IRootScopeService) {
     }
     $onInit() {
       this.navbarService.closeMobileMenu();
@@ -16,6 +16,7 @@ module LPO {
       // Lecture de tous les pronostiqueurs
       this.contestCentreService.readForecastersLight().then((data) => {
         this.contestCentreService.readForecasterId().then((data) => {
+          this.$rootScope.$broadcast("content.changed");
         });
       });
     }

@@ -1,7 +1,7 @@
 <?php
   include_once('common.php');
 
-  $sql =      '   SELECT      championnats.Championnat, championnats.Championnats_NomCourt' .
+  $sql =      '   SELECT      championnats.Championnat, championnats.Championnats_Nom, championnats.Championnats_NomCourt' .
               '   FROM        championnats' .
               '   WHERE       championnats.Championnat <> 5';
 

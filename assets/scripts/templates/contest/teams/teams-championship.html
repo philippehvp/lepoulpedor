@@ -1,12 +1,14 @@
-<div class="col-sm-12 content-all-teams content-scrollable">
-  <div class="col-sm-6 col-md-2" ng-repeat="teamLight in ctrl.contestCentreService.teamsLight track by $index"
-    ng-click="ctrl.selectTeam(teamLight)" ng-class="{'active': teamLight == ctrl.contestCentreService.currentTeamLight}">
-    <span class="col-sm-2">
-      <img class="team-flag" ng-if="teamLight.Equipes_Fanion" ng-src="dist/images/equipes/{{teamLight.Equipes_Fanion}}" alt="Fanion de l'équipe'">
-    </span>
-    <span class="col-sm-8 team-light" ng-class="{'team-light-selected': teamLight === ctrl.contestCentreService.currentTeamLight }">
-      {{teamLight.Equipes_NomCourt}}
-    </span>
+<div class="col-sm-offset-1 col-sm-10 content-all-teams" ng-scrollable="{scrollX:'none'}">
+  <div class="row">
+    <div class="col-sm-6 col-md-2" ng-repeat="teamLight in ctrl.contestCentreService.teamsLight track by $index"
+      ng-click="ctrl.selectTeam(teamLight)" ng-class="{'active': teamLight == ctrl.contestCentreService.currentTeamLight}">
+      <span class="col-sm-2">
+        <img class="team-flag" ng-if="teamLight.Equipes_Fanion" ng-src="dist/images/equipes/{{teamLight.Equipes_Fanion}}" alt="Fanion de l'équipe'">
+      </span>
+      <span class="col-sm-8 team-light" ng-class="{'team-light-selected': teamLight === ctrl.contestCentreService.currentTeamLight }">
+        {{teamLight.Equipes_NomCourt}}
+      </span>
+    </div>
   </div>
 </div>
 

@@ -58,7 +58,14 @@ module LPO {
     private currentTeamLight: ITeamLight;
     private players: Array<IPlayer>;
 
-    constructor(private navbarService: NavbarService, private generalService: GeneralService, private $http: ng.IHttpService, private $q: ng.IQService, private $state: any, private $window: any, private $timeout: ng.ITimeoutService) {
+    constructor(private navbarService: NavbarService
+      , private generalService: GeneralService
+      , private $http: ng.IHttpService
+      , private $q: ng.IQService
+      , private $state: any
+      , private $rootScope: ng.IRootScopeService
+      , private $window: any
+      , private $timeout: ng.ITimeoutService) {
       this.currentForecasterLight = null;
       this.currentLeftForecasterLight = null;
       this.currentRightForecasterLight = null;
@@ -78,10 +85,10 @@ module LPO {
       return ret;
     }
 
-    // Il faut rafraîchir la vue du sous-thème :
-    // - à la sélection d'un nouveau pronostiqueur de l'onglet Pronostiqueurs
-    // - à la sélection d'une équipe de l'onglet Equipes
     public refreshSubThemeView(): void {
+      // Il faut rafraîchir la vue du sous-thème :
+      // - à la sélection d'un nouveau pronostiqueur de l'onglet Pronostiqueurs
+      // - à la sélection d'une équipe de l'onglet Equipes
       switch (this.currentSubTheme.id) {
         case 11: this.readForecasterId().then((data) => { });
           break;
@@ -121,8 +128,8 @@ module LPO {
       }
     }
 
-    // Création des menus et sous-menus (thèmes et sous-thèmes)
     public createThemes(): void {
+      // Création des menus et sous-menus (thèmes et sous-thèmes)
       this.themes = [];
       let theme: Theme = new Theme(1, "Pronostiqueurs", "contest.pronostiqueurs", [
         { "id": 11, "label": "Fiche d'identité", "shortLabel": "Fiche", "link": "contest.pronostiqueurs.fiche", "shortLink": "pronostiqueur-fiche" }
@@ -185,8 +192,8 @@ module LPO {
       this.themes.push(theme);
     }
 
-    // Sélection par défaut du thème et du sous-thème qui sont passés
     public setCurrentThemeAndSubTheme(link: string, subLink: string = ''): void {
+      // Sélection par défaut du thème et du sous-thème qui sont passés
       this.currentTheme = null;
 
       if(link.length !== 0) {
@@ -239,8 +246,8 @@ module LPO {
 
     }
 
-    // Sélection d'un thème
     public setTheme(theme: Theme): void {
+      // Sélection d'un thème
       this.currentTheme = theme;
       if (this.currentTheme.subThemes.length) {
         this.currentSubTheme = this.currentTheme.subThemes[0];
@@ -256,8 +263,8 @@ module LPO {
       }
     }
 
-    // Sélection d'un sous-thème
     public setSubTheme(subTheme: SubTheme): void {
+      // Sélection d'un sous-thème
       this.currentSubTheme = subTheme;
 
       if (this.currentSubTheme.link != "") {
@@ -266,10 +273,8 @@ module LPO {
       }
     }
 
-    // Liste des championnats
-
-    // Ligue 1 et championnats européens
     public getChampionshipsL1AndEurope(): Array<IChampionship> {
+      // Ligue 1 et championnats européens
       if (this.championshipsL1AndEurope == null) {
         let l1: IChampionship = new Championship(1, "Ligue 1", "L1");
         let ldc: IChampionship = new Championship(2, "Ligue des Champions", "LDC");
@@ -283,21 +288,21 @@ module LPO {
       return this.championshipsL1AndEurope;
     }
 
-    // Lecture du pronostiqueur courant
     public getCurrentForecasterLight(): IForecasterLight {
+      // Lecture du pronostiqueur courant
       return this.currentForecasterLight;
     }
 
-    // Sélection d'un pronostiqueur
     public setCurrentForecasterLight(forecasterLight: IForecasterLight): void {
+      // Sélection d'un pronostiqueur
       this.currentForecasterLight = forecasterLight;
 
       // Action à effectuer selon le sous-thème sélectionné
       this.refreshSubThemeView();
     }
 
-    // Idem pour le pronostiqueur de gauche ou de droite dans le classement général / journée
     public getCurrentLeftForecasterLight(): IForecasterLight {
+      // Idem pour le pronostiqueur de gauche ou de droite dans le classement général / journée
       return this.currentLeftForecasterLight;
     }
 
@@ -313,8 +318,8 @@ module LPO {
       this.currentRightForecasterLight = forecasterLight;
     }
 
-    // Lecture de tous les pronostiqueurs
     public readForecastersLight(): ng.IPromise<Array<IForecasterLight>> {
+      // Lecture de tous les pronostiqueurs
       let url = "./dist/forecasters.php";
 
       let def: ng.IDeferred<Array<IForecasterLight>> = this.$q.defer<Array<IForecasterLight>>();
@@ -332,6 +337,8 @@ module LPO {
         // Pour le moment, on prend le premier de la liste
         if(this.currentForecaster == null)
           this.currentForecasterLight = this.preselectForecasterLight();
+
+        this.$rootScope.$broadcast("content.changed");
 
         def.resolve(response.data);
 
@@ -872,13 +879,10 @@ module LPO {
       }).then((response: {data: Array<IForecasterLight>}) => {
         this.forecastersLight = response.data;
 
-        // Sélection d'un pronostiqueur par défaut
-        // Par défaut, celui qui est connecté
+        // Sélection d'un pronostiqueur par défaut (celui qui est connecté)
         // Sinon, le premier de la liste
-        // Pour le moment, on prend le premier de la liste
         this.currentForecasterLight = this.preselectForecasterLight();
         this.currentLeftForecasterLight = this.currentForecasterLight;
-        
 
         def.resolve(response.data);
 

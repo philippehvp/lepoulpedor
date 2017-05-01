@@ -1,58 +1,56 @@
-<div class="content-forecaster-awards content-scrollable">
-  <div class="table-responsive col-sm-12 col-md-6" ng-repeat="awards in ctrl.contestCentreService.getForecasterAwards() track by $index">
-    <table class="table table-striped table-hover">
-      <thead>
-        <tr>
-          <th class="col-sm-12" colspan="3">{{awards.Championnats_Nom}}</th>
-        </tr>
-        <tr>
-          <th class="col-sm-4">Palmarès</th>
-          <th class="col-sm-2">Nombre</th>
-          <th class="col-sm-6">Journées</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="col-sm-4">Poulpe d'Or</td>
-          <td class="col-sm-2">{{awards.PoulpeOr.Nombre_Journees}}</td>
-          <td class="col-sm-6">{{awards.PoulpeOr.Journees_Journee}}</td>
-        </tr>
-        <tr>
-          <td class="col-sm-4">Poulpe d'Argent</td>
-          <td class="col-sm-2">{{awards.PoulpeArgent.Nombre_Journees}}</td>
-          <td class="col-sm-6">{{awards.PoulpeArgent.Journees_Journee}}</td>
-        </tr>
-        <tr>
-          <td class="col-sm-4">Poulpe de Bronze</td>
-          <td class="col-sm-2">{{awards.PoulpeBronze.Nombre_Journees}}</td>
-          <td class="col-sm-6">{{awards.PoulpeBronze.Journees_Journee}}</td>
-        </tr>
-        <tr>
-          <td class="col-sm-4">Soulier d'Or</td>
-          <td class="col-sm-2">{{awards.SoulierOr.Nombre_Journees}}</td>
-          <td class="col-sm-6">{{awards.SoulierOr.Journees_Journee}}</td>
-        </tr>
-        <tr>
-          <td class="col-sm-4">Brandao</td>
-          <td class="col-sm-2">{{awards.Brandao.Nombre_Journees}}</td>
-          <td class="col-sm-6">{{awards.Brandao.Journees_Journee}}</td>
-        </tr>
-        <tr>
-          <td class="col-sm-4">Jérémy Morel</td>
-          <td class="col-sm-2">{{awards.DjaDjedje.Nombre_Journees}}</td>
-          <td class="col-sm-6">{{awards.DjaDjedje.Journees_Journee}}</td>
-        </tr>
-        <tr>
-          <td class="col-sm-4">Record de points</td>
-          <td class="col-sm-2">{{awards.RecordPoints.Nombre_Journees}}</td>
-          <td class="col-sm-6">{{awards.RecordPoints.Journees_Journee}}</td>
-        </tr>
-        <tr>
-          <td class="col-sm-4">Record buteur</td>
-          <td class="col-sm-2">{{awards.RecordPointsButeur.Nombre_Journees}}</td>
-          <td class="col-sm-6">{{awards.RecordPointsButeur.Journees_Journee}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<div class="table-responsive col-sm-12 col-md-6" ng-repeat="awards in ctrl.contestCentreService.getForecasterAwards() track by $index">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th class="col-sm-12" colspan="3">{{awards.Championnats_Nom}}</th>
+      </tr>
+      <tr>
+        <th class="col-sm-4">Palmarès</th>
+        <th class="col-sm-2">Nombre</th>
+        <th class="col-sm-6">Journées</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="col-sm-4">Poulpe d'Or</td>
+        <td class="col-sm-2">{{awards.PoulpeOr.Nombre_Journees}}</td>
+        <td class="col-sm-6">{{awards.PoulpeOr.Journees_Journee}}</td>
+      </tr>
+      <tr>
+        <td class="col-sm-4">Poulpe d'Argent</td>
+        <td class="col-sm-2">{{awards.PoulpeArgent.Nombre_Journees}}</td>
+        <td class="col-sm-6">{{awards.PoulpeArgent.Journees_Journee}}</td>
+      </tr>
+      <tr>
+        <td class="col-sm-4">Poulpe de Bronze</td>
+        <td class="col-sm-2">{{awards.PoulpeBronze.Nombre_Journees}}</td>
+        <td class="col-sm-6">{{awards.PoulpeBronze.Journees_Journee}}</td>
+      </tr>
+      <tr>
+        <td class="col-sm-4">Soulier d'Or</td>
+        <td class="col-sm-2">{{awards.SoulierOr.Nombre_Journees}}</td>
+        <td class="col-sm-6">{{awards.SoulierOr.Journees_Journee}}</td>
+      </tr>
+      <tr>
+        <td class="col-sm-4">Brandao</td>
+        <td class="col-sm-2">{{awards.Brandao.Nombre_Journees}}</td>
+        <td class="col-sm-6">{{awards.Brandao.Journees_Journee}}</td>
+      </tr>
+      <tr>
+        <td class="col-sm-4">Jérémy Morel</td>
+        <td class="col-sm-2">{{awards.DjaDjedje.Nombre_Journees}}</td>
+        <td class="col-sm-6">{{awards.DjaDjedje.Journees_Journee}}</td>
+      </tr>
+      <tr>
+        <td class="col-sm-4">Record de points</td>
+        <td class="col-sm-2">{{awards.RecordPoints.Nombre_Journees}}</td>
+        <td class="col-sm-6">{{awards.RecordPoints.Journees_Journee}}</td>
+      </tr>
+      <tr>
+        <td class="col-sm-4">Record buteur</td>
+        <td class="col-sm-2">{{awards.RecordPointsButeur.Nombre_Journees}}</td>
+        <td class="col-sm-6">{{awards.RecordPointsButeur.Journees_Journee}}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
