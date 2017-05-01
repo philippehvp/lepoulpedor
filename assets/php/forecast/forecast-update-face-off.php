@@ -31,6 +31,20 @@
     // En effet, un changement dans le score du match aller peut avoir une incidence sur les scores AP du match retour et des TAB
     // Le fait de recopier tous les scores transmis à la fonction permet de s'assurer de la cohérence des pronostics
 
+  	// Vérification de l'existence du pronostic et création de celui-ci si nécessaire
+    $sql =		'   INSERT INTO		pronostics	(	Pronostiqueurs_Pronostiqueur, Matches_Match)' .
+              '       					SELECT		*' .
+              '					        FROM		(SELECT ' . $forecaster . ' AS Pronostiqueurs_Pronostiqueur, ' . $firstMatch["Match"] . ' AS Matches_Match) AS tmp' .
+              '					        WHERE		NOT EXISTS	(SELECT * FROM pronostics WHERE Pronostiqueurs_Pronostiqueur = ' . $forecaster . ' AND Matches_Match = ' . $firstMatch["Match"] . ')';
+    $db->exec($sql);
+
+    $sql =		'   INSERT INTO		pronostics	(	Pronostiqueurs_Pronostiqueur, Matches_Match)' .
+              '       					SELECT		*' .
+              '					        FROM		(SELECT ' . $forecaster . ' AS Pronostiqueurs_Pronostiqueur, ' . $secondMatch["Match"] . ' AS Matches_Match) AS tmp' .
+              '					        WHERE		NOT EXISTS	(SELECT * FROM pronostics WHERE Pronostiqueurs_Pronostiqueur = ' . $forecaster . ' AND Matches_Match = ' . $secondMatch["Match"] . ')';
+    $db->exec($sql);
+
+
     // Match aller
     $sql =    '   UPDATE      pronostics' .
               '   SET         pronostics.Pronostics_ScoreEquipeDomicile = ' . (isset($firstMatch["Pronostics_ScoreEquipeDomicile"]) ? $firstMatch["Pronostics_ScoreEquipeDomicile"] : "NULL") .
@@ -76,7 +90,7 @@
   }
 
   // Selon le type d'action, les données transmises ne sont pas les mêmes
-  $forecaster = isset($_SESSION["pronostiqueur"]) ? $_SESSION["pronostiqueur"] : 0;
+  $forecaster = isset($forecaster) ? $forecaster : 0;
   $postedData = json_decode(file_get_contents("php://input"), true);
   $forecaster = json_decode($postedData["pronostiqueur"]);
 
