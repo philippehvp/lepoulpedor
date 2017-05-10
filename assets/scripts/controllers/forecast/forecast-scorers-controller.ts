@@ -8,6 +8,5 @@ module LPO {
     constructor(private generalService: GeneralService, private forecastService: ForecastService) {
       this.generalService.checkUser();
     }
-
   }
 }

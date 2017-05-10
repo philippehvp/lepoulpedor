@@ -9,16 +9,26 @@
 
 
 // Commun (équivalent ici à ordinateur et tablette)
-.centered {
-  text-align: center;
+.visible-in-xs { display: none; }
+.visible-in-lg { display: block; }
+
+.header-visible-in-xs { display: none; }
+.header-visible-in-lg { display: table-row; }
+
+.button-group {
+  margin-bottom: @button-group-margin-bottom;
+  min-height: 41px;
 }
 
-.left {
-  text-align: left;
-}
-
+.centered { text-align: center; }
+.left { text-align: left; }
 .right {
   text-align: right;
+
+  .radio-inline {
+    padding-left: @radio-inline-right-padding-left;
+    padding-right: @radio-inline-right-padding-right;
+  }
 }
 
 .resize-none {
@@ -27,29 +37,19 @@
   }
 }
 
-
-.success {
-  color: @match-logistics-color-success;
-}
-
-.danger {
-  color: @match-logistics-color-danger;
-}
-
-.right {
-  .radio-inline {
-    padding-left: @radio-inline-right-padding-left;
-    padding-right: @radio-inline-right-padding-right;
-  }
-}
+.success { color: @color-success; }
+.danger { color: @color-danger; }
 
 .nowrap {
   white-space: nowrap;
   overflow: hidden;
 }
 
-
 // Mobile
 @media screen and (max-width: 767px) {
+  .visible-in-xs { display: block; }
+  .visible-in-lg { display: none; }
 
+  .header-visible-in-xs { display: table-row; }
+  .header-visible-in-lg { display: none; }
 }

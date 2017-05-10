@@ -44,4 +44,9 @@ module LPO {
     SingleMatchDeleteScorerB = 8
   };
 
+  export enum enumDisplayedTeam {
+    A = 0,
+    B = 1
+  };
+
 }

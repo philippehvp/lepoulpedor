@@ -1,0 +1,45 @@
+<div class="content-full-height">
+  <div class="table-responsive col-xs-12 content-point" ng-scrollable="{scrollX:'none'}">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr class="header-visible-in-xs">
+          <th class="col-xs-1">Rang</th>
+          <th class="col-xs-2">Joueurs</th>
+          <th><button popover-placement="bottom" uib-popover="Scores exacts" type="button" class="btn btn-default">SE</button></th>
+          <th><button popover-placement="bottom" uib-popover="8 points" type="button" class="btn btn-default">8</button></th>
+          <th><button popover-placement="bottom" uib-popover="7 points" type="button" class="btn btn-default">7</button></th>
+          <th><button popover-placement="bottom" uib-popover="6 points" type="button" class="btn btn-default">6</button></th>
+          <th><button popover-placement="bottom" uib-popover="5 points" type="button" class="btn btn-default">5</button></th>
+          <th><button popover-placement="bottom" uib-popover="Résultats corrects" type="button" class="btn btn-default">RC</button></th>
+          <th><button popover-placement="bottom" uib-popover="3 points" type="button" class="btn btn-default">3</button></th>
+          <th><button popover-placement="bottom" uib-popover="2 points" type="button" class="btn btn-default">2</button></th>
+          <th><button popover-placement="bottom" uib-popover="1 point" type="button" class="btn btn-default">1</button></th>
+          <th><button popover-placement="bottom" uib-popover="Tout faux" type="button" class="btn btn-default">0</button></th>
+          <th><button popover-placement="bottom" uib-popover="Oublis" type="button" class="btn btn-default">O</button></th>
+        </tr>
+        <tr class="header-visible-in-lg">
+          <th class="col-xs-1">Rang</th>
+          <th class="col-xs-2">Joueurs</th>
+          <th class="col-xs-1">Scores exacts</th>
+          <th class="col-xs-1">8 pts</th>
+          <th class="col-xs-1">7 pts</th>
+          <th class="col-xs-1">6 pts</th>
+          <th class="col-xs-1">5 pts</th>
+          <th class="col-xs-1">Résultats corrects</th>
+          <th class="col-xs-1">3 pts</th>
+          <th class="col-xs-1">2 pts</th>
+          <th class="col-xs-1">1 pt</th>
+          <th class="col-xs-1">Faux</th>
+          <th class="col-xs-1">Oublis</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="forecaster in ctrl.contestCentreService.getPoints() track by $index">
+          <td class="col-xs-1">{{$index + 1}}</td>
+          <td class="col-xs-2">{{forecaster.Pronostiqueur.Pronostiqueurs_NomUtilisateur}}</td>
+          <td class="col-xs-1" ng-repeat="point in forecaster.Points track by $index">{{forecaster.Points[$index]}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

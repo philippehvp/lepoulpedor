@@ -1,21 +1,41 @@
 @import "_variables.less";
 
-.standing-photo {
-  width: @standing-photo;
+/* Structure de la page */
+.content-full-height {
+  height: 100%;
+}
+
+.content-scorer, .content-award, .content-point, .content-win-draw-loss, .content-ratio, .content-team-point, .content-standing, .content-best-team, .content-canal
+, .content-standings, .content-forecast {
+  height: ~"calc(100vh - 190px)";
+}
+
+contest {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  ui-view {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+}
+
+/* Thème Pronostiqueurs */
+.forecaster-light:hover, .forecaster-light:active {
+  cursor: pointer;
 }
 
 .forecaster-photo {
   width: @forecaster-photo-lg;
 }
 
+/* Thèmes Classement général et Classement journée */
 .forecaster-light-single:hover, .forecaster-light-single:active
 , .forecaster-light-left:hover, .forecaster-light-left:active {
   color: @forecaster-light-single-selected-color;
   background-color: @forecaster-light-single-selected-background-color;
-}
-
-.forecaster-light:hover, .forecaster-light:active {
-  cursor: pointer;
 }
 
 .forecaster-light-single-selected, .forecaster-light-left-selected {
@@ -28,58 +48,26 @@
   background-color: @forecaster-light-right-selected-background-color;
 }
 
-.weeks-numbers {
-  display: flex;
-  overflow-x: auto;
-  padding: @weeks-numbers-padding;
-  margin-top: @weeks-numbers-margin-top;
-  margin-bottom: @weeks-numbers-margin-bottom;
-}
-
-.subthemes {
-  margin-top: @subthemes-margin-top;
-  margin-bottom: @subthemes-margin-bottom;
-}
-
 .left-right-forecaster {
   margin-bottom: @left-right-margin-bottom;
-}
-
-.content-all-scorers, .content-all-awards, .content-all-points, .content-all-wins-draws-losses, .content-all-ratios, .content-all-teams-points, .content-all-best-teams, .content-all-canal {
-  height: 100%;
-}
-
-.content-scorer, .content-award, .content-point, .content-win-draw-loss, .content-ratio, .content-team-point, .content-standing, .content-best-team, .content-canal
-, .content-standings, .content-forecast {
-  height: ~"calc(100vh - 190px)";
-}
-
-.content-forecast {
-  width: 100%;
 }
 
 .content-general-standings {
   height: ~"calc(100vh - 190px)";
 }
 
-.content-all-forecasters, .content-all-teams {
+.contest-list-area {
+  display: flex;
+  flex-direction: column;
+  height: @contest-list-area-max-height;
+  max-height: @contest-list-area-max-height;
+  margin-bottom: @contest-list-area-margin-bottom;
+}
+
+.content-detail-area {
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-height: @content-all-forecasters-height;
-  margin-bottom: @content-all-forecasters-margin-bottom;
-}
-
-.content-all-forecasters {
-  max-height: @content-all-forecasters-height;
-}
-
-.content-all-teams {
-  max-height: @content-all-teams-max-height;
-}
-
-.content-forecaster-id, .content-forecaster-awards, .content-forecaster-stats, .content-forecaster-standings {
-  height: ~"calc(40vh)";
 }
 
 .content-forecaster-awards, .content-forecaster-stats, .content-forecaster-standings {
@@ -96,12 +84,7 @@
   height: ~"calc(65vh - 85px)";
 }
 
-.visible-in-sm {
-  display: none;
-  margin-bottom: @navigation-list-margin-bottom;
-}
-
-.header-sm {
+.header-xs {
   display: none;
 }
 
@@ -175,7 +158,7 @@ svg {
   }
 
   .forecaster-photo {
-    width: @forecaster-photo-sm;
+    width: @forecaster-photo-xs;
   }
 
   .content-all-standings {
@@ -184,19 +167,7 @@ svg {
     overflow-y: auto;
   }
 
-  .content-one-standing {
-    height: 100%;
-  }
-
-  .themes-lg, .subthemes-lg, .championships-lg, .weeks-lg, .header-lg {
-    display: none;
-  }
-
-  .visible-in-sm {
-    display: block;
-  }
-
-  .header-sm {
+  .header-xs {
     display: table-row;
   }
 
@@ -205,6 +176,6 @@ svg {
   }
 
   .team-flag {
-    width: @team-flag-sm;
+    width: @team-flag-xs;
   }
 }

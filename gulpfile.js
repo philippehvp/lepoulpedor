@@ -9,7 +9,7 @@ var sourcemaps = require('gulp-sourcemaps');
 
 var jsSource =	[
 					 './assets/scripts/*.ts'
-					,'./assets/scripts/constants/*.ts' 
+					,'./assets/scripts/constants/*.ts'
 					,'./assets/scripts/controllers/*.ts'
 					,'./assets/scripts/controllers/contest/forecasters/*.ts'
 					,'./assets/scripts/controllers/contest/scorers/*.ts'
@@ -27,16 +27,16 @@ var jsTarget = "app.js";
 var jsVendors = ['./assets/scripts/vendors/*.js'];
 
 var htmlSource = [
-					 './assets/scripts/templates/*.html'
-					,'./assets/scripts/templates/contest/forecasters/*.html'
-					,'./assets/scripts/templates/contest/scorers/*.html'
-					,'./assets/scripts/templates/contest/awards/*.html'
-					,'./assets/scripts/templates/contest/points/*.html'
-					,'./assets/scripts/templates/contest/l1/*.html'
-					,'./assets/scripts/templates/contest/standings/*.html'
-					,'./assets/scripts/templates/contest/teams/*.html'
-					,'./assets/scripts/templates/forecast/*.html'
-					,'./assets/scripts/templates/*.php'
+					 './assets/templates/*.html'
+					,'./assets/templates/contest/forecasters/*.html'
+					,'./assets/templates/contest/scorers/*.html'
+					,'./assets/templates/contest/awards/*.html'
+					,'./assets/templates/contest/points/*.html'
+					,'./assets/templates/contest/l1/*.html'
+					,'./assets/templates/contest/standings/*.html'
+					,'./assets/templates/contest/teams/*.html'
+					,'./assets/templates/forecast/*.html'
+					,'./assets/templates/*.php'
 				 ];
 
 var php =	[
@@ -141,4 +141,3 @@ gulp.task('watch', function() {
 		livereload.reload('./index.html');
 	});
 });
-

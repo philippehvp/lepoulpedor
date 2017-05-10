@@ -8,8 +8,11 @@ module LPO {
     private forecastScorer: IForecastScorer;
     private teamAOrB: number;
 
+    private displayedTeam: enumDisplayedTeam;
+
     constructor(private generalService: GeneralService, private forecastService: ForecastService, private $rootScope: ng.IRootScopeService) {
       this.generalService.checkUser();
+      this.displayedTeam = enumDisplayedTeam.A;
     }
 
     public onChangeScoreSingle(forecastActionCode: number): void {
@@ -30,6 +33,14 @@ module LPO {
     public onAddScorerSingle(player: IPlayer, teamAOrB: number): void {
       this.forecastService.addScorerSingle(player, teamAOrB);
       this.$rootScope.$broadcast("content.changed");
+    }
+
+    public getDisplayedTeam(): enumDisplayedTeam {
+      return this.displayedTeam;
+    }
+
+    public setDisplayedTeam(displayedTeam: number): void {
+      this.displayedTeam = displayedTeam;
     }
   }
 }
