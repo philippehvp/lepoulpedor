@@ -100,12 +100,6 @@ forecast {
   display: flex;
   flex-direction: column;
   height: 100%;
-
-  ui-view {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
 }
 
 .championship-and-week-lg, .matches-lg {
@@ -119,18 +113,6 @@ forecast {
 
 .matches-lg {
   min-height: ~"calc(@{button-bar-min-height} + @{matches-light-margin-top} + @{matches-light-margin-bottom} + @{matches-light-padding} + @{matches-light-padding})";
-}
-
-.forecast-match {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-forecast-match-face-off, forecast-match-single {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
 }
 
 @media screen and (max-width: 767px) {

@@ -9,6 +9,13 @@
 
 
 // Commun (équivalent ici à ordinateur et tablette)
+.full-height {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+
 .visible-in-xs { display: none; }
 .visible-in-lg { display: block; }
 
@@ -43,6 +50,7 @@
 .nowrap {
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: text-ellipsis;
 }
 
 // Mobile

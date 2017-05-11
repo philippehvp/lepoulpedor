@@ -1,8 +1,8 @@
 <div class="col-xs-6" ng-repeat="player in ctrl.players track by $index">
+  <span class="col-xs-1 centered player-position" ng-class="{'forward': player.Postes_Poste == 4, 'midfielder': player.Postes_Poste == 3, 'defender': player.Postes_Poste == 2}">
+    {{player.JoueursCotes_Cote}}
+  </span>
   <span class="col-xs-10 nowrap">
     <span class="forecast-player" ng-click="ctrl.addScorer({player: player, teamAOrB: ctrl.teamAOrB})">{{player.Joueurs_NomComplet}}</span>
-  </span>
-  <span class="col-xs-1 centered player-position player-position-a" ng-class="{'forward': player.Postes_Poste == 4, 'midfielder': player.Postes_Poste == 3, 'defender': player.Postes_Poste == 2}">
-    {{player.JoueursCotes_Cote}}
   </span>
 </div>
