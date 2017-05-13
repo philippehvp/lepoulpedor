@@ -11,23 +11,9 @@
   </div>
 
   <div class="col-xs-2 centered">
-    <button type="button" class="btn btn-default" ng-click="ctrl.collapsePlayers()"
-            ng-if="ctrl.forecastService.getCurrentMatchLight().Matches_TypeMatch != 2 && ctrl.forecastService.getCurrentMatchLight().Matches_TypeMatch != 3">
+    <button type="button" class="btn btn-default" ng-click="ctrl.collapsePlayers()">
       Buteurs&nbsp;
-      <span ng-if="ctrl.forecastService.getCurrentSingleMatchCollapsedPlayers()" class="glyphicon glyphicon-chevron-down"></span>
-      <span ng-if="!ctrl.forecastService.getCurrentSingleMatchCollapsedPlayers()" class="glyphicon glyphicon-chevron-up"></span>
-    </button>
-    <button type="button" class="btn btn-default" ng-click="ctrl.collapsePlayers()"
-            ng-if="ctrl.forecastService.getCurrentMatchLight().Matches_TypeMatch == 2">
-      Buteurs&nbsp;
-      <span ng-if="ctrl.forecastService.getCurrentFirstMatchCollapsedPlayers()" class="glyphicon glyphicon-chevron-down"></span>
-      <span ng-if="!ctrl.forecastService.getCurrentFirstMatchCollapsedPlayers()" class="glyphicon glyphicon-chevron-up"></span>
-    </button>
-    <button type="button" class="btn btn-default" ng-click="ctrl.collapsePlayers()"
-            ng-if="ctrl.forecastService.getCurrentMatchLight().Matches_TypeMatch == 3">
-      Buteurs&nbsp;
-      <span ng-if="ctrl.forecastService.getCurrentSecondMatchCollapsedPlayers()" class="glyphicon glyphicon-chevron-down"></span>
-      <span ng-if="!ctrl.forecastService.getCurrentSecondMatchCollapsedPlayers()" class="glyphicon glyphicon-chevron-up"></span>
+      <span class="glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.collapsedPlayers(), 'glyphicon-chevron-up': !ctrl.collapsedPlayers()}"></span>
     </button>
   </div>
 

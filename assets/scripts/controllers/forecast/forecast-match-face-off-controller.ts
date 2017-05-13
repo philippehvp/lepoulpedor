@@ -4,9 +4,13 @@ module LPO {
   "use strict";
 
   export class ForecastMatchFaceOffController {
+    private currentFirstMatchdisplayedTeam: enumDisplayedTeam;
+    private currentSecondMatchDisplayedTeam: enumDisplayedTeam;
 
     constructor(private generalService: GeneralService, private forecastService: ForecastService, private $rootScope: ng.IRootScopeService) {
       this.generalService.checkUser();
+      this.currentFirstMatchdisplayedTeam = enumDisplayedTeam.A;
+      this.currentSecondMatchDisplayedTeam = enumDisplayedTeam.A;
     }
 
     public onChangeScoreFaceOff(forecastActionCode: number): void {
@@ -42,6 +46,22 @@ module LPO {
     public onAddScorerSecondMatch(player: IPlayer, teamAOrB: number): void {
       this.forecastService.addScorerFaceOff(player, teamAOrB, 1);
       this.$rootScope.$broadcast("content.changed");
+    }
+
+    public getCurrentFirstMatchDisplayedTeam(): enumDisplayedTeam {
+      return this.currentFirstMatchdisplayedTeam;
+    }
+
+    public setCurrentFirstMatchDisplayedTeam(displayedTeam: number): void {
+      this.currentFirstMatchdisplayedTeam = displayedTeam;
+    }
+
+    public getCurrentSecondMatchDisplayedTeam(): enumDisplayedTeam {
+      return this.currentSecondMatchDisplayedTeam;
+    }
+
+    public setCurrentSecondMatchDisplayedTeam(displayedTeam: number): void {
+      this.currentSecondMatchDisplayedTeam = displayedTeam;
     }
   }
 }

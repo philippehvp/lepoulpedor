@@ -1,5 +1,6 @@
-<div class="content-detail-area">
-  <div class="table-responsive col-xs-12 col-md-6" ng-repeat="standings in ctrl.contestCentreService.getForecasterStandings() track by $index">
+<div class="full-height" ng-scrollable>
+  <div class="row">
+    <div class="table-responsive col-xs-12 col-md-6" ng-repeat="standings in ctrl.contestCentreService.getForecasterStandings() track by $index">
     <table class="table table-striped table-hover">
       <thead>
         <tr>
@@ -25,5 +26,6 @@
         </tr>
       </tbody>
     </table>
+  </div>
   </div>
 </div>

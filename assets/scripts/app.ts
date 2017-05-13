@@ -106,7 +106,7 @@ module LPO {
     .component("forecastMatchFaceOffLg", { controller: "ForecastMatchFaceOffController as ctrl", templateUrl: "./dist/forecast-match-face-off-lg.html" })
     .component("forecastMatchSingleXs", { controller: "ForecastMatchSingleController as ctrl", templateUrl: "./dist/forecast-match-single-xs.html" })
     .component("forecastMatchFaceOffXs", { controller: "ForecastMatchFaceOffController as ctrl", templateUrl: "./dist/forecast-match-face-off-xs.html" })
-    .component("forecastScorersLg", { controller: "ForecastScorersController as ctrl", templateUrl: "./dist/forecast-scorers-lg.html", bindings: { "scorersA": "<", "scorersB": "<", "collapsePlayers": "&", "deleteScorer": "&" } })
+    .component("forecastScorersLg", { controller: "ForecastScorersController as ctrl", templateUrl: "./dist/forecast-scorers-lg.html", bindings: { "scorersA": "<", "scorersB": "<", "collapsePlayers": "&", "collapsedPlayers": "&", "deleteScorer": "&" } })
     .component("forecastPlayersLg", { controller: "ForecastPlayersController as ctrl", templateUrl: "./dist/forecast-players-lg.html", bindings: { "playersA": "<", "playersB": "<", "collapsedPlayers": "&", "addScorer": "&" } })
     .component("forecastScorersXs", { controller: "ForecastScorersController as ctrl", templateUrl: "./dist/forecast-scorers-xs.html", bindings: { "scorers": "<", "deleteScorer": "&", "teamAOrB": "<" } })
     .component("forecastPlayersXs", { controller: "ForecastPlayersController as ctrl", templateUrl: "./dist/forecast-players-xs.html", bindings: { "players": "<", "addScorer": "&", "teamAOrB": "<" } })

@@ -104,6 +104,7 @@
       <forecast-scorers-lg scorers-a="ctrl.forecastService.getCurrentFirstMatchScorersA()"
                            scorers-b="ctrl.forecastService.getCurrentFirstMatchScorersB()"
                            collapse-players="ctrl.onClickCurrentFirstMatchCollapsedPlayers()"
+                           collapsed-players="ctrl.forecastService.getCurrentFirstMatchCollapsedPlayers()"
                            delete-scorer="ctrl.onDeleteScorerFirstMatch($index, forecastScorer, teamAOrB)">
       </forecast-scorers-lg>
 
@@ -324,6 +325,7 @@
       <forecast-scorers-lg scorers-a="ctrl.forecastService.getCurrentSecondMatchScorersA()"
                            scorers-b="ctrl.forecastService.getCurrentSecondMatchScorersB()"
                            collapse-players="ctrl.onClickCurrentSecondMatchCollapsedPlayers()"
+                           collapsed-players="ctrl.forecastService.getCurrentSecondMatchCollapsedPlayers()"
                            delete-scorer="ctrl.onDeleteScorerSecondMatch($index, forecastScorer, teamAOrB)">
       </forecast-scorers-lg>
 

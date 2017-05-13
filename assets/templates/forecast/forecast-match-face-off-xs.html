@@ -4,15 +4,15 @@
   <!--Logistique du match aller-->
   <div class="row">
     <div class="col-xs-12 centered">
-      <h5 class="success">Match et limite de pronostic le {{ctrl.forecastService.currentFirstMatchLimitDateLabel}}</h5>
+      <h6 class="success">Match et max prono. {{ctrl.forecastService.currentFirstMatchLimitDateLabel}}</h6>
     </div>
   </div>
 
   <!--Affiche du match aller-->
   <div class="row">
-    <!--Equipe domicile-->
     <div class="col-xs-5 centered">
-      <h5>{{ctrl.forecastService.getCurrentFirstMatch().EquipesDomicile_Nom}}</h5>
+      <!--Equipe domicile-->
+      <h6>{{ctrl.forecastService.getCurrentFirstMatch().EquipesDomicile_Nom}}</h6>
       <div class="col-xs-12">
         <img class="forecast-team-logo" ng-src="dist/images/equipes/{{ctrl.forecastService.getCurrentFirstMatch().EquipesDomicile_Fanion}}">
       </div>
@@ -20,7 +20,7 @@
 
     <!--Partie centrale-->
     <div class="col-xs-2 centered">
-      <h4>ALLER</h4>
+      <h5>ALLER</h5>
 
       <div class="coefficient-container">
         <!--Coefficient du match différent de 1 (pour une demi-finale ou une finale de coupe européenne)-->
@@ -31,7 +31,7 @@
 
     <!--Equipe visiteur-->
     <div class="col-xs-5 centered">
-      <h5>{{ctrl.forecastService.getCurrentFirstMatch().EquipesVisiteur_Nom}}</h5>
+      <h6>{{ctrl.forecastService.getCurrentFirstMatch().EquipesVisiteur_Nom}}</h6>
       <div class="col-xs-12">
         <img class="forecast-team-logo" ng-src="dist/images/equipes/{{ctrl.forecastService.getCurrentFirstMatch().EquipesVisiteur_Fanion}}">
       </div>
@@ -42,17 +42,17 @@
   <div class="row">
     <!--Cote équipe domicile-->
     <div class="col-xs-5 centered">
-      <span>Cote victoire : {{ctrl.forecastService.getCurrentFirstMatch().Matches_CoteEquipeDomicile}}</span>
+      <span>Cote {{ctrl.forecastService.getCurrentFirstMatch().Matches_CoteEquipeDomicile}}</span>
     </div>
 
     <!--Cote du match nul-->
     <div class="col-xs-2 centered">
-      <span>Cote du nul : {{ctrl.forecastService.getCurrentFirstMatch().Matches_CoteNul}}</span>
+      <span>Nul {{ctrl.forecastService.getCurrentFirstMatch().Matches_CoteNul}}</span>
     </div>
 
     <!--Cote équipe visiteur-->
     <div class="col-xs-5 centered">
-      <span>Cote victoire : {{ctrl.forecastService.getCurrentFirstMatch().Matches_CoteEquipeVisiteur}}</span>
+      <span>Cote {{ctrl.forecastService.getCurrentFirstMatch().Matches_CoteEquipeVisiteur}}</span>
     </div>
   </div>
 
@@ -96,40 +96,68 @@
     </div>
   </div>
 
-  <!--Buteurs du match aller-->
+  <!--Buteurs et joueurs du match aller-->
+  <div class="row">
+    <button type="button"
+            class="col-xs-5 col-xs-offset-1"
+            ng-class="{'btn': true, 'btn-primary': ctrl.getCurrentFirstMatchDisplayedTeam() === 0, 'btn-default': ctrl.getCurrentFirstMatchDisplayedTeam() === 1}"
+            ng-click="ctrl.setCurrentFirstMatchDisplayedTeam(0)">
+      {{ctrl.forecastService.getCurrentFirstMatch().EquipesDomicile_NomCourt}}
+    </button>
+    <button type="button"
+            class="col-xs-5"
+            ng-class="{'btn': true, 'btn-primary': ctrl.getCurrentFirstMatchDisplayedTeam() === 1, 'btn-default': ctrl.getCurrentFirstMatchDisplayedTeam() === 0}"
+            ng-click="ctrl.setCurrentFirstMatchDisplayedTeam(1)">
+      {{ctrl.forecastService.getCurrentFirstMatch().EquipesVisiteur_NomCourt}}
+    </button>
+  </div>
 
-  <!--<div ng-if="!ctrl.generalService.isSmallScreen()">-->
-  <div>
-    <!--Buteurs en mode LG-->
-    <forecast-scorers-lg scorers-a="ctrl.forecastService.getCurrentFirstMatchScorersA()"
-                         scorers-b="ctrl.forecastService.getCurrentFirstMatchScorersB()"
-                         collapse-players="ctrl.onClickCurrentFirstMatchCollapsedPlayers()"
-                         delete-scorer="ctrl.onDeleteScorerFirstMatch($index, forecastScorer, teamAOrB)">
-    </forecast-scorers-lg>
+  <div ng-if="ctrl.getCurrentFirstMatchDisplayedTeam() == 0">
+    <div class="row">
+      <forecast-scorers-xs scorers="ctrl.forecastService.getCurrentFirstMatchScorersA()"
+                           delete-scorer="ctrl.onDeleteScorerFirstMatch($index, forecastScorer, teamAOrB)"
+                           team-a-or-b="0">
+      </forecast-scorers-xs>
+    </div>
 
-    <!--Joueurs en mode LG-->
-    <forecast-players-lg players-a="ctrl.forecastService.getCurrentFirstMatchPlayersA()"
-                         players-b="ctrl.forecastService.getCurrentFirstMatchPlayersB()"
-                         collapsed-players="ctrl.forecastService.getCurrentFirstMatchCollapsedPlayers()"
-                         add-scorer="ctrl.onAddScorerFirstMatch(player, teamAOrB)">
-    </forecast-players-lg>
+    <div class="row">
+      <forecast-players-xs players="ctrl.forecastService.getCurrentFirstMatchPlayersA()"
+                            add-scorer="ctrl.onAddScorerFirstMatch(player, teamAOrB)"
+                            team-a-or-b="0">
+      </forecast-players-xs>
+    </div>
+  </div>
+
+  <div ng-if="ctrl.getCurrentFirstMatchDisplayedTeam() == 1">
+    <div class="row">
+      <forecast-scorers-xs scorers="ctrl.forecastService.getCurrentFirstMatchScorersB()" delete-scorer="ctrl.onDeleteScorerFirstMatch($index, forecastScorer, teamAOrB)"
+        team-a-or-b="0">
+      </forecast-scorers-xs>
+    </div>
+
+    <div class="row">
+      <forecast-players-xs players="ctrl.forecastService.getCurrentFirstMatchPlayersB()" add-scorer="ctrl.onAddScorerFirstMatch(player, teamAOrB)"
+        team-a-or-b="0">
+      </forecast-players-xs>
+    </div>
   </div>
 
   <hr>
 
   <!--Logistique du match retour-->
   <div class="row col-xs-12 centered">
-    <h5>
-      <span class="success">Match le {{ctrl.forecastService.currentSecondMatchLimitDateLabel}}</span>
-      <span class="danger"> (pronostic avant le {{ctrl.forecastService.currentFirstMatchLimitDateLabel}})</span>
-    </h5>
+    <h6>
+      <span class="success">Match {{ctrl.forecastService.currentSecondMatchLimitDateLabel}}</span>
+      <br>
+      <span class="danger">(max prono {{ctrl.forecastService.currentFirstMatchLimitDateLabel}})</span>
+    </h6>
   </div>
 
   <!--Affiche du match retour-->
   <div class="row">
     <!--Equipe domicile-->
     <div class="col-xs-5 centered">
-      <h5>{{ctrl.forecastService.getCurrentSecondMatch().EquipesDomicile_Nom}}</h5>
+      <h6>{{ctrl.forecastService.getCurrentSecondMatch().EquipesDomicile_Nom}}</h6>
       <div class="col-xs-12">
         <img class="forecast-team-logo" ng-src="dist/images/equipes/{{ctrl.forecastService.getCurrentSecondMatch().EquipesDomicile_Fanion}}">
       </div>
@@ -137,7 +165,7 @@
 
     <!--Partie centrale-->
     <div class="col-xs-2 centered">
-      <h4>RETOUR</h4>
+      <h5>RETOUR</h5>
 
       <div class="coefficient-container">
         <!--Coefficient du match différent de 1 (pour une demi-finale ou une finale de coupe européenne)-->
@@ -148,7 +176,7 @@
 
     <!--Equipe visiteur-->
     <div class="col-xs-5 centered">
-      <h5>{{ctrl.forecastService.getCurrentSecondMatch().EquipesVisiteur_Nom}}</h5>
+      <h6>{{ctrl.forecastService.getCurrentSecondMatch().EquipesVisiteur_Nom}}</h6>
       <div class="col-xs-12">
         <img class="forecast-team-logo" ng-src="dist/images/equipes/{{ctrl.forecastService.getCurrentSecondMatch().EquipesVisiteur_Fanion}}">
       </div>
@@ -159,18 +187,18 @@
   <div class="row">
     <!--Cote équipe domicile-->
     <div class="col-xs-5 centered">
-      <span>Cote victoire : {{ctrl.forecastService.getCurrentSecondMatch().Matches_CoteEquipeDomicile}}</span>
+      <span>Cote {{ctrl.forecastService.getCurrentSecondMatch().Matches_CoteEquipeDomicile}}</span>
     </div>
 
     <!--Cote du match nul-->
     <div class="col-xs-2 centered">
-      <span>Cote du nul : {{ctrl.forecastService.getCurrentSecondMatch().Matches_CoteNul}}
+      <span>Nul {{ctrl.forecastService.getCurrentSecondMatch().Matches_CoteNul}}
       </span>
     </div>
 
     <!--Cote équipe visiteur-->
     <div class="col-xs-5 centered">
-      <span>Cote victoire : {{ctrl.forecastService.getCurrentSecondMatch().Matches_CoteEquipeVisiteur}}
+      <span>Cote {{ctrl.forecastService.getCurrentSecondMatch().Matches_CoteEquipeVisiteur}}
       </span>
     </div>
   </div>
@@ -180,7 +208,7 @@
     <!--Points qualification équipe domicile-->
     <div class="col-xs-5 centered">
       <span>
-          Points qualification : {{ctrl.forecastService.getCurrentSecondMatch().Matches_PointsQualificationEquipeDomicile}}
+          Qualif. {{ctrl.forecastService.getCurrentSecondMatch().Matches_PointsQualificationEquipeDomicile}}
       </span>
     </div>
 
@@ -191,7 +219,7 @@
     <!--Points qualification équipe visiteur-->
     <div class="col-xs-5 centered">
       <span>
-          Points qualification : {{ctrl.forecastService.getCurrentSecondMatch().Matches_PointsQualificationEquipeVisiteur}}
+          Qualif. {{ctrl.forecastService.getCurrentSecondMatch().Matches_PointsQualificationEquipeVisiteur}}
       </span>
     </div>
   </div>
@@ -318,22 +346,43 @@
     </div>
   </div>
 
-  <!--Buteurs du match retour-->
-  <!--<div ng-if="!ctrl.generalService.isSmallScreen()">-->
-  <div>
-    <!--Buteurs en mode LG-->
-    <forecast-scorers-lg scorers-a="ctrl.forecastService.getCurrentSecondMatchScorersA()"
-                         scorers-b="ctrl.forecastService.getCurrentSecondMatchScorersB()"
-                         collapse-players="ctrl.onClickCurrentSecondMatchCollapsedPlayers()"
-                         delete-scorer="ctrl.onDeleteScorerSecondMatch($index, forecastScorer, teamAOrB)">
-    </forecast-scorers-lg>
+  <!--Buteurs et joueurs du match retour-->
+  <div class="row">
+    <button type="button" class="col-xs-5 col-xs-offset-1" ng-class="{'btn': true, 'btn-primary': ctrl.getCurrentSecondMatchDisplayedTeam() === 0, 'btn-default': ctrl.getCurrentSecondMatchDisplayedTeam() === 1}"
+      ng-click="ctrl.setCurrentSecondMatchDisplayedTeam(0)">
+      {{ctrl.forecastService.getCurrentSecondMatch().EquipesDomicile_NomCourt}}
+    </button>
+    <button type="button" class="col-xs-5" ng-class="{'btn': true, 'btn-primary': ctrl.getCurrentSecondMatchDisplayedTeam() === 1, 'btn-default': ctrl.getCurrentSecondMatchDisplayedTeam() === 0}"
+      ng-click="ctrl.setCurrentSecondMatchDisplayedTeam(1)">
+      {{ctrl.forecastService.getCurrentSecondMatch().EquipesVisiteur_NomCourt}}
+    </button>
+  </div>
 
-    <!--Joueurs en mode LG-->
-    <forecast-players-lg players-a="ctrl.forecastService.getCurrentSecondMatchPlayersA()"
-                         players-b="ctrl.forecastService.getCurrentSecondMatchPlayersB()"
-                         collapsed-players="ctrl.forecastService.getCurrentSecondMatchCollapsedPlayers()"
-                         add-scorer="ctrl.onAddScorerSecondMatch(player, teamAOrB)">
-    </forecast-players-lg>
+  <div ng-if="ctrl.getCurrentSecondMatchDisplayedTeam() == 0">
+    <div class="row">
+      <forecast-scorers-xs scorers="ctrl.forecastService.getCurrentSecondMatchScorersA()" delete-scorer="ctrl.onDeleteScorerSecondMatch($index, forecastScorer, teamAOrB)"
+        team-a-or-b="0">
+      </forecast-scorers-xs>
+    </div>
 
+    <div class="row">
+      <forecast-players-xs players="ctrl.forecastService.getCurrentSecondMatchPlayersA()" add-scorer="ctrl.onAddScorerSecondMatch(player, teamAOrB)"
+        team-a-or-b="0">
+      </forecast-players-xs>
+    </div>
+  </div>
+
+  <div ng-if="ctrl.getCurrentSecondMatchDisplayedTeam() == 1">
+    <div class="row">
+      <forecast-scorers-xs scorers="ctrl.forecastService.getCurrentSecondMatchScorersB()" delete-scorer="ctrl.onDeleteScorerSecondMatch($index, forecastScorer, teamAOrB)"
+        team-a-or-b="0">
+      </forecast-scorers-xs>
+    </div>
+
+    <div class="row">
+      <forecast-players-xs players="ctrl.forecastService.getCurrentSecondMatchPlayersB()" add-scorer="ctrl.onAddScorerSecondMatch(player, teamAOrB)"
+        team-a-or-b="0">
+      </forecast-players-xs>
+    </div>
   </div>
 </div>

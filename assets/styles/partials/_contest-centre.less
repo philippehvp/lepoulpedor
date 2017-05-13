@@ -1,10 +1,6 @@
 @import "_variables.less";
 
 /* Structure de la page */
-.content-full-height {
-  height: 100%;
-}
-
 .content-scorer, .content-award, .content-point, .content-win-draw-loss, .content-ratio, .content-team-point, .content-standing, .content-best-team, .content-canal
 , .content-standings, .content-forecast {
   height: ~"calc(100vh - 190px)";
@@ -20,6 +16,14 @@ contest {
     flex-direction: column;
     height: 100%;
   }
+}
+
+forecasters, forecaster-id, forecaster-awards, forecaster-standings, forecaster-stats
+, general-standings, week-standings, standings-championship
+, teams, teams-championship, team-players {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 /* Thème Pronostiqueurs */
@@ -62,12 +66,6 @@ contest {
   height: @contest-list-area-max-height;
   max-height: @contest-list-area-max-height;
   margin-bottom: @contest-list-area-margin-bottom;
-}
-
-.content-detail-area {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
 }
 
 .content-forecaster-awards, .content-forecaster-stats, .content-forecaster-standings {
