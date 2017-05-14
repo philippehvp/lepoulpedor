@@ -23,6 +23,15 @@
             '                 ELSE  4' .
             '             END AS Matches_TypeMatch' .
             '             ,matches.Matches_Coefficient' .
+            '             ,CASE' .
+            '                 WHEN  matches.Matches_Date < NOW()' .
+            '                 THEN  0' .
+            '                 WHEN  fn_matchpronostiquable(matches.Match, ' . $forecaster . ') = 0' .
+            '                 THEN  1' .
+            '                 WHEN  fn_pronosticcorrect(matches.Match, ' . $forecaster . ') = 0' .
+            '                 THEN  2' .
+            '                 ELSE  3' .
+            '             END AS Matches_EtatPronostic' .
             '	FROM				matches' .
             '	JOIN				journees' .
             '							ON		matches.Journees_Journee = journees.Journee' .

@@ -616,7 +616,15 @@ module LPO {
         params: { forecastActionCode: forecastActionCode },
         data: angular.toJson(updateParams)
       }).then((response: { data: boolean }) => {
-        def.resolve(response.data);
+        // Après la mise à jour, on lit le statut du match pour indiquer si le match a été correctement saisi ou non, si la date est passée, etc.
+        this.$http({
+          method: "POST",
+          url: "./dist/forecast-status.php",
+          data: JSON.stringify({ "match": this.currentSingleMatch.Match, "pronostiqueur": this.generalService.getUser().Pronostiqueur })
+        }).then((response: { data: Array<IMatchStatus> }) => {
+          this.currentMatchLight.Matches_EtatPronostic =  response.data[0].Matches_EtatPronostic;
+          def.resolve(true);
+        });
       }, function errorCallback(error) {
         let errMsg = (error.message) ? error.message :
           error.status ? `${error.status} - ${error.statusText}` : "forecast-service updateForecastSingle: Server error";
@@ -658,7 +666,16 @@ module LPO {
         params: { forecastActionCode: forecastActionCode },
         data: angular.toJson(updateParams)
       }).then((response: { data: boolean }) => {
-        def.resolve(response.data);
+        // Après la mise à jour, on lit le statut du match pour indiquer si le match a été correctement saisi ou non, si la date est passée, etc.
+        this.$http({
+          method: "POST",
+          url: "./dist/forecast-status.php",
+          data: JSON.stringify({ "match": this.currentFirstMatch.Match, "pronostiqueur": this.generalService.getUser().Pronostiqueur })
+        }).then((response: { data: Array<IMatchStatus> }) => {
+          this.currentMatchLight.Matches_EtatPronostic = response.data[0].Matches_EtatPronostic;
+          def.resolve(true);
+        });
+
       }, function errorCallback(error) {
         let errMsg = (error.message) ? error.message :
           error.status ? `${error.status} - ${error.statusText}` : "forecast-service updateForecastFaceOff: Server error";

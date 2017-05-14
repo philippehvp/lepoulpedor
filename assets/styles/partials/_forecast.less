@@ -94,6 +94,26 @@
   padding: @matches-light-padding;
   margin-top: @matches-light-margin-top;
   margin-bottom: @matches-light-margin-bottom;
+
+  .over {
+    background-color: #666;
+    color: #fff;
+  }
+
+  .unforecastable {
+    background-color: #f00;
+    color: #fff;
+  }
+
+  .unforecasted {
+    background-color: #ff0;
+    color: #fff;
+  }
+
+  .forecasted {
+    background-color: #0f0;
+    color: #fff;
+  }
 }
 
 forecast {
@@ -116,7 +136,7 @@ forecast {
 }
 
 @media screen and (max-width: 767px) {
-.forecast-team-logo {
-  width: @forecast-team-logo-width-xs;
-} 
+  .forecast-team-logo {
+    width: @forecast-team-logo-width-xs;
+  } 
 }

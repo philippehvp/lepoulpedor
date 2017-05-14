@@ -1,0 +1,25 @@
+<!--Barre des championnats-->
+<div class="col-xs-12 championship-and-week-lg">
+  <div class="btn-group" role="group">
+    <button type="button"
+            ng-class="{'btn': true, 'btn-default': championshipAndWeek != ctrl.forecastService.currentChampionshipAndWeek, 'btn-primary': championshipAndWeek == ctrl.forecastService.currentChampionshipAndWeek}"
+            ng-repeat="championshipAndWeek in ctrl.forecastService.championshipsAndWeeks track by $index"
+            ng-click="ctrl.selectChampionshipAndWeek(championshipAndWeek)">
+      {{championshipAndWeek.Championnats_Nom}} - {{championshipAndWeek.Journees_Nom}}
+    </button>
+  </div>
+</div>
+
+<!--ng-class="{'btn': true, 'btn-default': matchLight.Match != ctrl.forecastService.currentMatchLight.Match, 'btn-warning': matchLight.Match == ctrl.forecastService.currentMatchLight.Match}"-->
+
+<div class="col-xs-12 matches-lg">
+  <div class="btn-group matches-light" role="group">
+    <button type="button"
+            class="btn"
+            ng-class="ctrl.getClass(matchLight)"
+            ng-repeat="matchLight in ctrl.forecastService.matchesLight track by $index"
+            ng-click="ctrl.selectMatchLight(matchLight)">
+      {{matchLight.EquipesDomicile_Sigle}} - {{matchLight.EquipesVisiteur_Sigle}}
+    </button>
+  </div>
+</div>

@@ -14,6 +14,7 @@
 /// <reference path="controllers/login-controller.ts" />
 /// <reference path="controllers/standings-controller.ts" />
 /// <reference path="controllers/forecast/forecast-controller.ts" />
+/// <reference path="controllers/forecast/forecast-header-controller.ts" />
 /// <reference path="controllers/forecast/forecast-match-single-controller.ts" />
 /// <reference path="controllers/forecast/forecast-match-face-off-controller.ts" />
 /// <reference path="controllers/forecast/forecast-players-controller.ts" />
@@ -64,6 +65,7 @@ module LPO {
     .controller("LoginController", ["navbarService", "generalService", "$cookies", "moment", (navbarService, generalService, $cookies, moment) => new LoginController(navbarService, generalService, $cookies, moment)])
     .controller("StandingsController", ["navbarService", "generalService", "standingsService", (navbarService, generalService, standingsService) => new StandingsController(navbarService, generalService, standingsService)])
     .controller("ForecastController", ["navbarService", "generalService", "forecastService", (navbarService, generalService, forecastService) => new ForecastController(navbarService, generalService, forecastService)])
+    .controller("ForecastHeaderController", ["navbarService", "generalService", "forecastService", (navbarService, generalService, forecastService) => new ForecastHeaderController(navbarService, generalService, forecastService)])
     .controller("ForecastMatchSingleController", ["generalService", "forecastService", "$rootScope", (generalService, forecastService, $rootScope) => new ForecastMatchSingleController(generalService, forecastService, $rootScope)])
     .controller("ForecastMatchFaceOffController", ["generalService", "forecastService", "$rootScope", (generalService, forecastService, $rootScope) => new ForecastMatchFaceOffController(generalService, forecastService, $rootScope)])
     .controller("ForecastScorersController", ["generalService", "forecastService", (generalService, forecastService) => new ForecastScorersController(generalService, forecastService)])
@@ -102,6 +104,8 @@ module LPO {
     .component("login", { controller: "LoginController as ctrl", templateUrl: "./dist/login.html" })
     .component("standings", { controller: "StandingsController as ctrl", templateUrl: "./dist/standings.html" })
     .component("forecast", { controller: "ForecastController as ctrl", templateUrl: "./dist/forecast.html" })
+    .component("forecastHeaderLg", { controller: "ForecastHeaderController as ctrl", templateUrl: "./dist/forecast-header-lg.html" })
+    .component("forecastHeaderXs", { controller: "ForecastHeaderController as ctrl", templateUrl: "./dist/forecast-header-xs.html" })
     .component("forecastMatchSingleLg", { controller: "ForecastMatchSingleController as ctrl", templateUrl: "./dist/forecast-match-single-lg.html" })
     .component("forecastMatchFaceOffLg", { controller: "ForecastMatchFaceOffController as ctrl", templateUrl: "./dist/forecast-match-face-off-lg.html" })
     .component("forecastMatchSingleXs", { controller: "ForecastMatchSingleController as ctrl", templateUrl: "./dist/forecast-match-single-xs.html" })

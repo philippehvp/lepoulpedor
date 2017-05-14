@@ -28,7 +28,7 @@
       <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pronostics <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          <li ng-if="ctrl.generalService.getUser() != null">
+          <li ng-if="ctrl.generalService.getUser() != null && ctrl.generalService.getUser() != undefined">
             <a ui-sref="pronostics">Journées en cours</a>
           </li>
 
@@ -111,10 +111,10 @@
       ?>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li ng-if="ctrl.generalService.getUser() === null">
+      <li ng-if="ctrl.generalService.getUser() == null || ctrl.generalService.getUser() == undefined">
         <a ui-sref="connexion">Connexion</a>
       </li>
-      <li ng-if="ctrl.generalService.getUser() !== null">
+      <li ng-if="ctrl.generalService.getUser() != null && ctrl.generalService.getUser() != undefined">
         <a ng-click="ctrl.generalService.logout()">Déconnexion</a>
       </li>
     </ul>

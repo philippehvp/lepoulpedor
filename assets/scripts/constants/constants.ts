@@ -4,7 +4,7 @@ module LPO {
   export interface IMatchName {
     type: number;
     name: string;
-  }
+  };
 
   export class MatchName {
     public static matchNames: Array<IMatchName> = [
@@ -12,7 +12,14 @@ module LPO {
       { type: 4, name: "FINALE" },
       { type: 5, name: "COMMUNITY SHIELD" }
     ];
-  }
+  };
+
+  export enum enumMatchState {
+    Over = 0,
+    Unforecastable = 1,
+    Unforecasted = 2,
+    Forecasted = 3
+  };
 
   export enum enumForecastFaceOffActionCode {
     SingleMatchScoreA = 0,

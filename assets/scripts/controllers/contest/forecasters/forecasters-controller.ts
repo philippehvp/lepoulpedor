@@ -17,6 +17,8 @@ module LPO {
       this.contestCentreService.readForecastersLight().then((data) => {
         this.contestCentreService.readForecasterId().then((data) => {
           this.$rootScope.$broadcast("content.changed");
+        }).catch((error: any) => {
+          console.error("contest-centre-service forecasters controller ctor error: Server error");
         });
       });
     }

@@ -73,12 +73,14 @@ module LPO {
     }
 
     private preselectForecasterLight(): IForecasterLight {
-      let ret: IForecasterLight = null;
-      // Présélection d'un joueur si celui-ci est connecté
-      for(let i: number = 0; i < this.forecastersLight.length; i++) {
-        if(this.forecastersLight[i].Pronostiqueur == this.generalService.getUser().Pronostiqueur) {
-          ret = this.forecastersLight[i];
-          break;
+      let ret: IForecasterLight = this.forecastersLight[0];
+      // Présélection d'un joueur si celui-ci est connecté (s'il y a un joueur connecté)
+      if (this.generalService.getUser()) {
+        for(let i: number = 0; i < this.forecastersLight.length; i++) {
+          if(this.forecastersLight[i].Pronostiqueur == this.generalService.getUser().Pronostiqueur) {
+            ret = this.forecastersLight[i];
+            break;
+          }
         }
       }
 
@@ -320,9 +322,8 @@ module LPO {
 
     public readForecastersLight(): ng.IPromise<Array<IForecasterLight>> {
       // Lecture de tous les pronostiqueurs
+      let d: ng.IDeferred<Array<IForecasterLight>> = this.$q.defer<Array<IForecasterLight>>();
       let url = "./dist/forecasters.php";
-
-      let def: ng.IDeferred<Array<IForecasterLight>> = this.$q.defer<Array<IForecasterLight>>();
 
       this.$http({
         method: "POST",
@@ -340,21 +341,21 @@ module LPO {
 
         this.$rootScope.$broadcast("content.changed");
 
-        def.resolve(response.data);
+        d.resolve(response.data);
 
       }, (error) => {
         let errMsg = (error.message) ? error.message :
           error.status ? `${error.status} - ${error.statusText}` : "contest-centre-service readForecastersLight: Server error";
         console.error(errMsg);
-        def.reject(errMsg);
+        d.reject(errMsg);
       });
 
-      return def.promise;
+      return d.promise;
     }
 
     // Lecture des informations détaillées d'un pronostiqueur
     public readForecasterId(): ng.IPromise<IForecaster> {
-      let def: ng.IDeferred<IForecaster> = this.$q.defer<IForecaster>();
+      let d: ng.IDeferred<IForecaster> = this.$q.defer<IForecaster>();
 
       if (this.currentForecasterLight) {
         let url = "./dist/forecaster-id.php";
@@ -365,17 +366,17 @@ module LPO {
           data: JSON.stringify({ "pronostiqueur": this.currentForecasterLight.Pronostiqueur })
         }).then((response: {data: IForecaster}) => {
           this.currentForecaster = response.data[0];
-          def.resolve(response.data);
+          d.resolve(response.data);
         }, function errorCallback(error) {
           let errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : "contest-centre-service readForecasterId: Server error";
           console.error(errMsg);
-          def.reject(errMsg);
+          d.reject(errMsg);
         });
-        return def.promise;
+        return d.promise;
       }
 
-      return null;
+      d.resolve(null);
     }
 
     // Lecture du palmarès d'un pronostiqueur

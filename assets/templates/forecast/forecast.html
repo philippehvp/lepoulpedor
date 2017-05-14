@@ -1,50 +1,12 @@
 <!--Barre des championnats en mode LG-->
-<div class="col-xs-12 visible-in-lg championship-and-week-lg">
-  <div class="btn-group" role="group">
-    <button type="button" ng-class="{'btn': true, 'btn-default': championshipAndWeek != ctrl.forecastService.currentChampionshipAndWeek, 'btn-primary': championshipAndWeek == ctrl.forecastService.currentChampionshipAndWeek}"
-      ng-repeat="championshipAndWeek in ctrl.forecastService.championshipsAndWeeks track by $index" ng-click="ctrl.selectChampionshipAndWeek(championshipAndWeek)">
-      {{championshipAndWeek.Championnats_Nom}} - {{championshipAndWeek.Journees_Nom}}
-      </button>
-  </div>
+<div ng-if="!ctrl.generalService.isSmallScreen()">
+  <forecast-header-lg></forecast-header-lg>
 </div>
 
-<div class="col-xs-12 visible-in-lg matches-lg">
-  <div class="btn-group matches-light" role="group">
-    <button type="button" ng-class="{'btn': true, 'btn-default': matchLight.Match != ctrl.forecastService.currentMatchLight.Match, 'btn-warning': matchLight.Match == ctrl.forecastService.currentMatchLight.Match}"
-      ng-repeat="matchLight in ctrl.forecastService.matchesLight track by $index" ng-click="ctrl.selectMatchLight(matchLight)">
-      {{matchLight.EquipesDomicile_Sigle}} - {{matchLight.EquipesVisiteur_Sigle}}
-      </button>
-  </div>
-</div>
 
 <!--Barre des championnats, journées et matches en mode XS-->
-<div class="col-xs-12 visible-in-xs button-group">
-  <!--Liste des championnats et des journées en mode SM-->
-  <div class="btn-group" role="group">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      {{ctrl.forecastService.currentChampionshipAndWeek.Championnats_Nom}} - {{ctrl.forecastService.currentChampionshipAndWeek.Journees_Nom}}
-      <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu">
-      <li ng-class="{'active':championshipAndWeek == ctrl.forecastService.currentChampionshipAndWeek}"
-          ng-repeat="championshipAndWeek in ctrl.forecastService.championshipsAndWeeks track by $index">
-        <a ng-click="ctrl.selectChampionshipAndWeek(championshipAndWeek)">{{championshipAndWeek.Championnats_NomCourt}} - {{championshipAndWeek.Journees_Nom}}</a>
-      </li>
-    </ul>
-  </div>
-
-  <!--Liste des matches en mode XS-->
-  <div class="btn-group" role="group">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      {{ctrl.forecastService.currentMatchLight.EquipesDomicile_Sigle}} - {{ctrl.forecastService.currentMatchLight.EquipesVisiteur_Sigle}}
-      <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu">
-      <li ng-class="{'active':matchLight.Match == ctrl.forecastService.currentMatchLight.Match}" ng-repeat="matchLight in ctrl.forecastService.matchesLight track by $index">
-        <a ng-click="ctrl.selectMatchLight(matchLight)">{{matchLight.EquipesDomicile_Sigle}} - {{matchLight.EquipesVisiteur_Sigle}}</a>
-      </li>
-    </ul>
-  </div>
+<div ng-if="ctrl.generalService.isSmallScreen()">
+  <forecast-header-xs></forecast-header-xs>
 </div>
 
 <!--Mode LG-->

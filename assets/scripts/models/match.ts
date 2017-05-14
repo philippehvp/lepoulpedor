@@ -101,5 +101,6 @@ module LPO {
     EquipesDomicile_Fanion: string;
     EquipesVisiteur_Fanion: string;
     Matches_TypeMatch: number;
+    Matches_EtatPronostic: enumMatchState;
   }
 }
