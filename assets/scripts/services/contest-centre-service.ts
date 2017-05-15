@@ -975,62 +975,63 @@ module LPO {
 
       let svg = d3.select(".standings-svg svg");
 
-      // Effacement des objets graphiques du graphique (gauche ou droite)
-      let className = leftOrRightForecaster === EnumLeftRight.LEFT ? 'left' : 'right';
-      svg.selectAll("rect." + className).remove();
+      this.$timeout(() => {
+        let totalHeight = Math.floor($("svg").parent().height() * 0.9);
 
-      // Calcul des tailles
-      let barGap: number = 1;        // Espace entre deux barres d'une journée
-      let weekGap: number = 3;       // Espace entre deux journées
-      let countForecasters = Number(standings.Nombre_Pronostiqueurs);
-      let weekCounts = standings.Nombre_Journees;
-      let totalWidth = $("svg").width();
-      let barWidth = Math.floor(
-        (
-          totalWidth
-          - ((weekCounts - 1) * weekGap)
-          - (weekCounts * barGap)
-        )
-        /
-        (standings.Nombre_Classements * weekCounts)
-      );
+        // Effacement des objets graphiques du graphique (gauche ou droite)
+        let className = leftOrRightForecaster === EnumLeftRight.LEFT ? 'left' : 'right';
+        svg.selectAll("rect." + className).remove();
 
-      if (barWidth <= 0) {
-        alert("Valeur de barWidth : " + barWidth);
-        barWidth = 1;
-      }
+        // Calcul des tailles
+        let barGap: number = 1;        // Espace entre deux barres d'une journée
+        let weekGap: number = 3;       // Espace entre deux journées
+        let countForecasters = Number(standings.Nombre_Pronostiqueurs);
+        let weekCounts = standings.Nombre_Journees;
+        let totalWidth = $("svg").width();
+        let barWidth = Math.floor(
+          (
+            totalWidth
+            - ((weekCounts - 1) * weekGap)
+            - (weekCounts * barGap)
+          )
+          /
+          (standings.Nombre_Classements * weekCounts)
+        );
 
+        if (barWidth <= 0) {
+          //alert("Valeur de barWidth : " + barWidth);
+          barWidth = 1;
+        }
 
+        let weekWidth = barWidth * (standings.Nombre_Classements - 1) + (barGap * (standings.Nombre_Classements - 2)) + weekGap;
+        let usedWidth = (barWidth * standings.Nombre_Classements * weekCounts) + (barGap * weekCounts) + ((weekCounts - 1) * weekGap);
+        let leftMargin = Math.floor((totalWidth - usedWidth) / 2);
+        let topMargin = Math.floor((totalHeight / countForecasters) / 2);
 
-      let weekWidth = barWidth * (standings.Nombre_Classements - 1) + (barGap * (standings.Nombre_Classements - 2)) + weekGap;
-      let usedWidth = (barWidth * standings.Nombre_Classements * weekCounts) + (barGap * weekCounts) + ((weekCounts - 1) * weekGap);
-      let leftMargin = Math.floor((totalWidth - usedWidth) / 2);
-      let totalHeight = Math.floor($("svg").parent().height() * 0.9);
-      let topMargin = Math.floor((totalHeight / countForecasters) / 2);
+        // Fonction d'échelle pour la proportion entre les valeurs et la correspondance en x et y
+        let scale = d3.scaleLinear()
+          .domain([1, countForecasters + 1])
+          .range([0, totalHeight - 1]);
 
-      // Fonction d'échelle pour la proportion entre les valeurs et la correspondance en x et y
-      let scale = d3.scaleLinear()
-        .domain([1, countForecasters + 1])
-        .range([0, totalHeight - 1]);
+        // Données du classement général et général buteur
+        let data = standings.Classements.filter((data) => { return data.Type_Classement == 1; });
+        let barX: number = leftOrRightForecaster === EnumLeftRight.LEFT ? 0 - (barWidth + barGap + barWidth + weekGap) : 0 - (barWidth + weekGap);
 
-      // Données du classement général et général buteur
-      let data = standings.Classements.filter((data) => { return data.Type_Classement == 1; });
-      let barX: number = leftOrRightForecaster === EnumLeftRight.LEFT ? 0 - (barWidth + barGap + barWidth + weekGap) : 0 - (barWidth + weekGap);
+        let bars = svg.selectAll('rect.' + className).data(data).enter().append('rect').attr('class', className);
 
-      let bars = svg.selectAll('rect.' + className).data(data).enter().append('rect').attr('class', className);
-      
-      let barsAttributes = bars
-        .attr('x', function (d, i) {
-          barX += barWidth + barGap + barWidth + weekGap;
-          return leftMargin + Math.floor(barX);
-        })
-        .attr('y', function (d) {
-          return totalHeight - (((countForecasters - d.Classements_Classement) + 1) * (totalHeight / countForecasters)) + topMargin;
-        })
-        .attr('height', function (d) {
-          return ((countForecasters - d.Classements_Classement) + 1) * (totalHeight / countForecasters);
-        })
-        .attr('width', barWidth);
+        let barsAttributes = bars
+          .attr('x', function (d, i) {
+            barX += barWidth + barGap + barWidth + weekGap;
+            return leftMargin + Math.floor(barX);
+          })
+          .attr('y', function (d) {
+            return totalHeight - (((countForecasters - d.Classements_Classement) + 1) * (totalHeight / countForecasters)) + topMargin;
+          })
+          .attr('height', function (d) {
+            return ((countForecasters - d.Classements_Classement) + 1) * (totalHeight / countForecasters);
+          })
+          .attr('width', barWidth);
+      }, 150);
     }
 
 

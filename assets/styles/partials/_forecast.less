@@ -1,18 +1,19 @@
 @import "_variables.less";
 
 .coefficient-container {
-  position: relative;
+  /*position: relative;*/
+  display: flex;
   width: 100%;
   height: 100%;
+  justify-content: center;
 }
 
 .coefficient-canal, .coefficient-2, .coefficient-3 {
-  position: absolute;
+  /*position: absolute;*/
+  display: block;
   top: 50%;
   left: 50%;
   transform: translate(-50%, 0);
-  width: 200px;
-  height: 50px;
   background: @coefficient-background-color;
   color: @coefficient-color;
   font-size: @coefficient-font-size;

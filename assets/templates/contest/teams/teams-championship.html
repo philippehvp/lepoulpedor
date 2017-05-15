@@ -1,4 +1,4 @@
-<div class="col-xs-offset-1 col-xs-10 row" ng-scrollable>
+<div class="col-xs-offset-1 col-xs-10">
   <div class="row">
     <div class="col-xs-6 col-md-2" ng-repeat="teamLight in ctrl.contestCentreService.teamsLight track by $index"
       ng-click="ctrl.selectTeam(teamLight)" ng-class="{'active': teamLight == ctrl.contestCentreService.currentTeamLight}">
@@ -10,9 +10,14 @@
       </span>
     </div>
   </div>
-</div>
 
-<div class="col-xs-offset-1 col-xs-10 row full-height">
   <hr>
-  <team-players></team-players>
+
+  <div class="row">
+    <div class="col-xs-offset-1 col-xs-10 full-height" ng-scrollable>
+      <div class="row">
+        <team-players></team-players>
+      </div>
+    </div>
+  </div>
 </div>
