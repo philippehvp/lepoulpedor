@@ -112,8 +112,11 @@ module LPO {
 
     .component("standings", { controller: "StandingsController as ctrl", templateUrl: "./dist/standings.html" })
     .component("standingsGeneral", { controller: "StandingsGeneralController as ctrl", templateUrl: "./dist/standings-general.html" })
+    .component("standingsGeneralContent", { controller: "StandingsGeneralController as ctrl", templateUrl: "./dist/standings-general-content.html" })
     .component("standingsWeek", { controller: "StandingsWeekController as ctrl", templateUrl: "./dist/standings-week.html" })
+    .component("standingsWeekContent", { controller: "StandingsWeekController as ctrl", templateUrl: "./dist/standings-week-content.html" })
     .component("standingsScorer", { controller: "StandingsScorerController as ctrl", templateUrl: "./dist/standings-scorer.html" })
+    .component("standingsScorerContent", { controller: "StandingsScorerController as ctrl", templateUrl: "./dist/standings-scorer-content.html" })
 
     .component("forecast", { controller: "ForecastController as ctrl", templateUrl: "./dist/forecast.html" })
     .component("forecastHeaderLg", { controller: "ForecastHeaderController as ctrl", templateUrl: "./dist/forecast-header-lg.html" })

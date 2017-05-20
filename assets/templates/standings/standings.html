@@ -9,7 +9,7 @@
 </div>
 
 <!--Barre des journées en mode LG-->
-<div class="col-xs-12 visible-in-lg">
+<div class="col-xs-12 visible-in-lg button-group">
   <div class="btn-group" role="group">
     <button type="button" ng-class="{'btn': true, 'btn-default': week.Journee != ctrl.standingsService.currentWeek.Journee || week.Classements_DateReference != ctrl.standingsService.currentWeek.Classements_DateReference, 'btn-warning': week.Journee == ctrl.standingsService.currentWeek.Journee && week.Classements_DateReference == ctrl.standingsService.currentWeek.Classements_DateReference}"
       ng-repeat="week in ctrl.standingsService.weeks track by $index" ng-click="ctrl.selectWeek(week, week.Classements_DateReference)">
@@ -61,11 +61,14 @@
 </div>
 
 <!--Classements-->
-<div ng-if="ctrl.standingsService.standings.length" class="content-all-standings">
-
-  <standings-general></standings-general>
-
-  <standings-week></standings-week>
-
-  <standings-scorer></standings-scorer>
+<div ng-if="ctrl.standingsService.standings.length" class="col-xs-12 full-height-row">
+  <div ng-if="!ctrl.generalService.isSmallScreen() ||ctrl.standingsService.currentStandings.value == 0" class="col-xs-12 col-md-4">
+    <standings-general></standings-general>
+  </div>
+  <div ng-if="!ctrl.generalService.isSmallScreen() ||ctrl.standingsService.currentStandings.value == 1" class="col-xs-12 col-md-4">
+    <standings-week></standings-week>
+  </div>
+  <div ng-if="!ctrl.generalService.isSmallScreen() ||ctrl.standingsService.currentStandings.value == 2" class="col-xs-12 col-md-4">
+    <standings-scorer></standings-scorer>
+  </div>
 </div>
