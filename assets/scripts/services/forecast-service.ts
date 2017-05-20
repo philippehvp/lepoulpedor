@@ -604,8 +604,8 @@ module LPO {
           "Matches_Date": this.currentSingleMatch.Matches_Date,
           "Pronostics_ScoreEquipeDomicile": this.currentSingleMatch.Pronostics_ScoreEquipeDomicile,
           "Pronostics_ScoreEquipeVisiteur": this.currentSingleMatch.Pronostics_ScoreEquipeVisiteur,
-          "Pronostics_ScoreAPEquipeDomicile": this.currentSingleMatch.Pronostics_ScoreEquipeDomicile,
-          "Pronostics_ScoreAPEquipeVisiteur": this.currentSingleMatch.Pronostics_ScoreEquipeVisiteur,
+          "Pronostics_ScoreAPEquipeDomicile": this.currentSingleMatch.Pronostics_ScoreAPEquipeDomicile,
+          "Pronostics_ScoreAPEquipeVisiteur": this.currentSingleMatch.Pronostics_ScoreAPEquipeVisiteur,
           "Pronostics_Vainqueur": this.currentSingleMatch.Pronostics_Vainqueur
         }
       }

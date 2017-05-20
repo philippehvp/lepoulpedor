@@ -1,0 +1,49 @@
+<div class="table-responsive col-xs-12 col-md-4 content-standing"
+     ng-if="!ctrl.generalService.isSmallScreen() || ctrl.standingsService.currentStandings.value == 2"
+     ng-attr-ng-scrollable="!ctrl.generalService.isSmallScreen()">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th class="col-xs-12" colspan="{{ ctrl.isFirstWeekSelected ? 3 : 4}}">BUTEUR</th>
+      </tr>
+      <tr ng-show="!ctrl.isFirstWeekSelected">
+        <th class="col-xs-1">CLT</th>
+        <th class="col-xs-2">+/-</th>
+        <th class="col-xs-5">PRONOSTIQUEURS</th>
+        <th class="col-xs-4">GENERAL BUTEUR</th>
+      </tr>
+      <tr ng-show="ctrl.isFirstWeekSelected">
+        <th class="col-xs-1">CLT</th>
+        <th class="col-xs-7">PRONOSTIQUEURS</th>
+        <th class="col-xs-4">GENERAL BUTEUR</th>
+      </tr>
+    </thead>
+    <tbody ng-show="!ctrl.isFirstWeekSelected">
+      <tr ng-repeat="standingGoal in ctrl.standingsService.standingsGoal track by $index">
+        <td class="col-xs-1">{{ standingGoal.Classements_ClassementGeneralButeur }}</td>
+        <td class="col-xs-2">
+          <i ng-class="standingGoal.Classement_Evolution > 0 ? 'text-success' : (standingGoal.Classement_Evolution < 0 ? 'text-danger' : 'text-warning')"
+            class="fa {{ standingGoal.Classement_Evolution > 0 ? 'fa-arrow-up' : (standingGoal.Classement_Evolution < 0 ? 'fa-arrow-down' : 'fa-arrow-right') }}"
+            aria-hidden="true"></i>&nbsp; {{ standingGoal.Classement_Evolution > 0 ? ("+" + standingGoal.Classement_Evolution) : (standingGoal.Classement_Evolution
+            < 0 ? standingGoal.Classement_Evolution : "&nbsp;") }} </td>
+              <td class="col-xs-5">
+                <img ng-if="standingGoal.Pronostiqueurs_Photo" class="standing-photo" ng-src="dist/images/pronostiqueurs/{{standingGoal.Pronostiqueurs_Photo}}"
+                  alt="Photo du pronostiqueur">
+                  <img ng-if="!standingGoal.Pronostiqueurs_Photo" class="standing-photo" ng-src="dist/images/pronostiqueurs/_inconnu.png" alt="Photo du pronostiqueur">                    &nbsp;{{ standingGoal.Pronostiqueurs_NomUtilisateur }}
+              </td>
+              <td class="col-xs-4">{{ standingGoal.Classements_PointsGeneralButeur }}</td>
+      </tr>
+    </tbody>
+    <tbody ng-show="ctrl.isFirstWeekSelected">
+      <tr ng-repeat="standingGoal in ctrl.standingsService.standingsGoal track by $index">
+        <td class="col-xs-1">{{ standingGoal.Classements_ClassementGeneralButeur }}</td>
+        <td class="col-xs-7">
+          <img ng-if="standingGoal.Pronostiqueurs_Photo" class="standing-photo" ng-src="dist/images/pronostiqueurs/{{standingGoal.Pronostiqueurs_Photo}}"
+            alt="Photo du pronostiqueur">
+            <img ng-if="!standingGoal.Pronostiqueurs_Photo" class="standing-photo" ng-src="dist/images/pronostiqueurs/_inconnu.png" alt="Photo du pronostiqueur">              &nbsp;{{ standingGoal.Pronostiqueurs_NomUtilisateur }}
+        </td>
+        <td class="col-xs-4">{{ standingGoal.Classements_PointsGeneralButeur }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

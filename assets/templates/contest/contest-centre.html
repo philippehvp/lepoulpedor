@@ -1,0 +1,52 @@
+<!-- Barre des thèmes en mode MD et LG -->
+<div class="col-xs-10 visible-in-lg button-group">
+  <div class="btn-group" role="group">
+    <button type="button" ng-class="{'btn': true, 'btn-default': theme != ctrl.contestCentreService.currentTheme, 'btn-primary': theme == ctrl.contestCentreService.currentTheme}"
+      ng-repeat="theme in ctrl.contestCentreService.themes track by $index" ng-click="ctrl.contestCentreService.setTheme(theme)">
+      {{ theme.label }}
+    </button>
+  </div>
+</div>
+
+<!-- Barre des sous-thèmes en mode MD et LG -->
+<div class="col-xs-10 button-group visible-in-lg" ng-if="ctrl.contestCentreService.currentTheme.subThemes.length">
+  <div class="btn-group" role="group">
+    <button type="button" ng-class="{'btn': true, 'btn-default': subTheme != ctrl.contestCentreService.currentSubTheme, 'btn-warning': subTheme == ctrl.contestCentreService.currentSubTheme}"
+      ng-repeat="subTheme in ctrl.contestCentreService.currentTheme.subThemes track by $index" ng-click="ctrl.contestCentreService.setSubTheme(subTheme)">
+      {{ subTheme.label }}
+      </button>
+  </div>
+</div>
+
+<!-- Barre des thèmes et des sous-thèmes en mode SM -->
+<div class="col-xs-12 visible-in-xs button-group">
+  <!-- Liste des thèmes en mode SM -->
+  <div class="btn-group" role="group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      {{ctrl.contestCentreService.currentTheme.label}}
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <li ng-class="{'active': theme == ctrl.contestCentreService.currentTheme}" ng-repeat="theme in ctrl.contestCentreService.themes track by $index">
+        <a ng-click="ctrl.contestCentreService.setTheme(theme)">{{ theme.label }}</a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Liste des sous-thèmes en mode SM -->
+  <div class="btn-group" role="group" ng-if="ctrl.contestCentreService.currentTheme.subThemes.length">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      {{ctrl.contestCentreService.currentSubTheme.shortLabel}}
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <li ng-class="{'active': subTheme == ctrl.contestCentreService.currentSubTheme}" ng-repeat="subTheme in ctrl.contestCentreService.currentTheme.subThemes track by $index">
+        <a ng-click="ctrl.contestCentreService.setSubTheme(subTheme)">{{ subTheme.label }}</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+
+<ui-view class="col-xs-12"></ui-view>

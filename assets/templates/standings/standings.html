@@ -1,0 +1,71 @@
+<!--Barre des championnats en mode LG-->
+<div class="col-xs-10 visible-in-lg button-group">
+  <div class="btn-group" role="group">
+    <button type="button" ng-class="{'btn': true, 'btn-default': championship != ctrl.standingsService.currentChampionship, 'btn-primary': championship == ctrl.standingsService.currentChampionship}"
+      ng-repeat="championship in ctrl.standingsService.championships track by $index" ng-click="ctrl.selectChampionship(championship)">
+      {{ championship.Championnats_Nom }}
+    </button>
+  </div>
+</div>
+
+<!--Barre des journées en mode LG-->
+<div class="col-xs-12 visible-in-lg">
+  <div class="btn-group" role="group">
+    <button type="button" ng-class="{'btn': true, 'btn-default': week.Journee != ctrl.standingsService.currentWeek.Journee || week.Classements_DateReference != ctrl.standingsService.currentWeek.Classements_DateReference, 'btn-warning': week.Journee == ctrl.standingsService.currentWeek.Journee && week.Classements_DateReference == ctrl.standingsService.currentWeek.Classements_DateReference}"
+      ng-repeat="week in ctrl.standingsService.weeks track by $index" ng-click="ctrl.selectWeek(week, week.Classements_DateReference)">
+      {{ week.Journees_NomCourt }}
+    </button>
+  </div>
+</div>
+
+<!--Barre des championnats, des journées et du type de classement à afficher en mode XS-->
+<div class="col-xs-12 visible-in-xs button-group">
+  <!--Liste des championnats en mode SM-->
+  <div class="btn-group" role="group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Champ. {{ctrl.standingsService.currentChampionship.Championnats_NomCourt}}
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <li ng-class="{'active': championship == ctrl.standingsService.currentChampionship}" ng-repeat="championship in ctrl.standingsService.championships track by $index">
+        <a ng-click="ctrl.selectChampionship(championship)">{{ championship.Championnats_NomCourt }}</a>
+      </li>
+    </ul>
+  </div>
+
+  <!--Liste des journées en mode XS-->
+  <div class="btn-group" role="group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      J. {{ctrl.standingsService.currentWeek.Journees_NomCourt}}
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <li ng-class="{'active': week == ctrl.standingsService.currentWeek}" ng-repeat="week in ctrl.standingsService.weeks track by $index">
+        <a ng-click="ctrl.selectWeek(week, week.Classements_DateReference)">{{ week.Journees_NomCourt }}</a>
+      </li>
+    </ul>
+  </div>
+
+  <!--Liste des types de classement en mode XS-->
+  <div class="btn-group" role="group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      {{ctrl.standingsService.currentStandings.label}}
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <li ng-class="{'active': standings == ctrl.standingsService.currentStandings}" ng-repeat="standings in ctrl.standingsService.standingsType track by $index">
+        <a ng-click="ctrl.selectStandings(standings)">{{ standings.label }}</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!--Classements-->
+<div ng-if="ctrl.standingsService.standings.length" class="content-all-standings">
+
+  <standings-general></standings-general>
+
+  <standings-week></standings-week>
+
+  <standings-scorer></standings-scorer>
+</div>

@@ -1,4 +1,4 @@
-/// <reference path="../angular.d.ts" />
+/// <reference path="../../angular.d.ts" />
 
 module LPO {
   "use strict";

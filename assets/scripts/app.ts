@@ -12,14 +12,18 @@
 /// <reference path="controllers/navbar-controller.ts" />
 /// <reference path="controllers/home-controller.ts" />
 /// <reference path="controllers/login-controller.ts" />
-/// <reference path="controllers/standings-controller.ts" />
+
+/// <reference path="controllers/standings/standings-controller.ts" />
+/// <reference path="controllers/standings/standings-general-controller.ts" />
+/// <reference path="controllers/standings/standings-week-controller.ts" />
+/// <reference path="controllers/standings/standings-scorer-controller.ts" />
+
 /// <reference path="controllers/forecast/forecast-controller.ts" />
 /// <reference path="controllers/forecast/forecast-header-controller.ts" />
 /// <reference path="controllers/forecast/forecast-match-single-controller.ts" />
 /// <reference path="controllers/forecast/forecast-match-face-off-controller.ts" />
 /// <reference path="controllers/forecast/forecast-players-controller.ts" />
 /// <reference path="controllers/forecast/forecast-scorers-controller.ts" />
-
 
 /// <reference path="controllers/contest-centre-controller.ts" />
 /// <reference path="controllers/contest/forecasters/forecasters-controller.ts" />
@@ -64,6 +68,9 @@ module LPO {
     .controller("HomeController", ["navbarService", "generalService", (navbarService, generalService) => new HomeController(navbarService, generalService)])
     .controller("LoginController", ["navbarService", "generalService", "$cookies", "moment", (navbarService, generalService, $cookies, moment) => new LoginController(navbarService, generalService, $cookies, moment)])
     .controller("StandingsController", ["navbarService", "generalService", "standingsService", (navbarService, generalService, standingsService) => new StandingsController(navbarService, generalService, standingsService)])
+    .controller("StandingsGeneralController", ["navbarService", "generalService", "standingsService", (navbarService, generalService, standingsService) => new StandingsGeneralController(navbarService, generalService, standingsService)])
+    .controller("StandingsWeekController", ["navbarService", "generalService", "standingsService", (navbarService, generalService, standingsService) => new StandingsWeekController(navbarService, generalService, standingsService)])
+    .controller("StandingsScorerController", ["navbarService", "generalService", "standingsService", (navbarService, generalService, standingsService) => new StandingsScorerController(navbarService, generalService, standingsService)])
     .controller("ForecastController", ["navbarService", "generalService", "forecastService", (navbarService, generalService, forecastService) => new ForecastController(navbarService, generalService, forecastService)])
     .controller("ForecastHeaderController", ["navbarService", "generalService", "forecastService", (navbarService, generalService, forecastService) => new ForecastHeaderController(navbarService, generalService, forecastService)])
     .controller("ForecastMatchSingleController", ["generalService", "forecastService", "$rootScope", (generalService, forecastService, $rootScope) => new ForecastMatchSingleController(generalService, forecastService, $rootScope)])
@@ -102,7 +109,12 @@ module LPO {
     .component("navbarMobile", { controller: "NavbarController as ctrl", templateUrl: "./dist/navbar-mobile.php" })
     .component("home", { controller: "HomeController as ctrl", templateUrl: "./dist/home.html" })
     .component("login", { controller: "LoginController as ctrl", templateUrl: "./dist/login.html" })
+
     .component("standings", { controller: "StandingsController as ctrl", templateUrl: "./dist/standings.html" })
+    .component("standingsGeneral", { controller: "StandingsGeneralController as ctrl", templateUrl: "./dist/standings-general.html" })
+    .component("standingsWeek", { controller: "StandingsWeekController as ctrl", templateUrl: "./dist/standings-week.html" })
+    .component("standingsScorer", { controller: "StandingsScorerController as ctrl", templateUrl: "./dist/standings-scorer.html" })
+
     .component("forecast", { controller: "ForecastController as ctrl", templateUrl: "./dist/forecast.html" })
     .component("forecastHeaderLg", { controller: "ForecastHeaderController as ctrl", templateUrl: "./dist/forecast-header-lg.html" })
     .component("forecastHeaderXs", { controller: "ForecastHeaderController as ctrl", templateUrl: "./dist/forecast-header-xs.html" })
@@ -116,6 +128,7 @@ module LPO {
     .component("forecastPlayersXs", { controller: "ForecastPlayersController as ctrl", templateUrl: "./dist/forecast-players-xs.html", bindings: { "players": "<", "addScorer": "&", "teamAOrB": "<" } })
 
     .component("contest", { controller: "ContestCentreController as ctrl", templateUrl: "./dist/contest-centre.html" })
+
     .component("forecasters", { controller: "ForecastersController as ctrl", templateUrl: "./dist/forecasters.html" })
     .component("forecasterId", { controller: "ForecasterIdController as ctrl", templateUrl: "./dist/forecaster-id.html" })
     .component("forecasterAwards", { controller: "ForecasterAwardsController as ctrl", templateUrl: "./dist/forecaster-awards.html" })
@@ -140,7 +153,6 @@ module LPO {
     .component("teams", { controller: "TeamsController as ctrl", templateUrl: "./dist/teams.html" })
     .component("teamsChampionship", { controller: "TeamsChampionshipController as ctrl", templateUrl: "./dist/teams-championship.html", bindings: { championship: "<", europe: "<" } })
     .component("teamPlayers", { controller: "TeamPlayersController as ctrl", templateUrl: "./dist/team-players.html" });
-
 
   appModule.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $urlRouterProvider) {
 

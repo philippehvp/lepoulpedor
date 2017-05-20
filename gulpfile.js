@@ -19,6 +19,7 @@ var jsSource =	[
 					,'./assets/scripts/controllers/contest/standings/*.ts'
 					,'./assets/scripts/controllers/contest/teams/*.ts'
 					, './assets/scripts/controllers/forecast/*.ts'
+					, './assets/scripts/controllers/standings/*.ts'
 					,'./assets/scripts/services/*.ts'
 					,'./assets/scripts/models/*.ts'
 				];
@@ -36,6 +37,7 @@ var htmlSource = [
 					,'./assets/templates/contest/standings/*.html'
 					,'./assets/templates/contest/teams/*.html'
 					,'./assets/templates/forecast/*.html'
+					,'./assets/templates/standings/*.html'
 					,'./assets/templates/*.php'
 				 ];
 
@@ -140,4 +142,15 @@ gulp.task('watch', function() {
 	gulp.watch('index.html', function() {
 		livereload.reload('./index.html');
 	});
+});
+
+
+/* all */
+gulp.task('all', function() {
+	gulp.start('cssVendors');
+	gulp.start('jsVendors');
+	gulp.start('less');
+	gulp.start('html');
+	gulp.start('php');
+	gulp.start('js');
 });

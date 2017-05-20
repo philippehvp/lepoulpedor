@@ -1,31 +1,38 @@
-<div class="full-height" ng-scrollable>
-  <div class="row">
+<div class="full-height">
+  <div class="row" style="display: flex; height: 100%;" ng-scrollable>
     <div class="table-responsive col-xs-12 col-md-6" ng-repeat="standings in ctrl.contestCentreService.getForecasterStandings() track by $index">
-    <table class="table table-striped table-hover">
-      <thead>
-        <tr>
-          <th class="col-xs-12">{{standings.Championnats_Nom}} ({{standings.Nombre_Pronostiqueurs}} joueurs)</th>
-        </tr>
-        <tr>
-          <th class="col-xs-12">Classement général : places {{standings.Classement_Min}} à {{standings.Classement_Max}}</th>
-        </tr>
-        <tr>
-          <th class="col-xs-12">Classement buteur : places {{standings.ClassementButeur_Min}} à {{standings.ClassementButeur_Max}}</th>
-        </tr>
-        <tr>
-          <th class="col-xs-12">Classement journée : places {{standings.ClassementJournee_Min}} à {{standings.ClassementJournee_Max}}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="col-xs-12">
-            <span id="svg{{$index}}">
-              <forecaster-standings-svg standings="standings" max-count="2"></forecaster-standings-svg>
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th class="col-xs-12">{{standings.Championnats_Nom}} ({{standings.Nombre_Pronostiqueurs}} joueurs)</th>
+          </tr>
+          <tr>
+            <th class="col-xs-12">Classement général : places {{standings.Classement_Min}} à {{standings.Classement_Max}}</th>
+          </tr>
+          <tr>
+            <th class="col-xs-12">Classement buteur : places {{standings.ClassementButeur_Min}} à {{standings.ClassementButeur_Max}}</th>
+          </tr>
+          <tr>
+            <th class="col-xs-12">Classement journée : places {{standings.ClassementJournee_Min}} à {{standings.ClassementJournee_Max}}</th>
+          </tr>
+        </thead>
+        <!-- <tbody>
+          <tr>
+            <td class="col-xs-12">
+              <div class="row full-height">
+                <span id="svg{{$index}}">
+                  <forecaster-standings-svg standings="standings" max-count="2"></forecaster-standings-svg>
+                </span>
+              </div>
+            </td>
+          </tr>
+        </tbody> -->
+      </table>
+      <div class="row full-height">
+        <span id="svg{{$index}}">
+          <forecaster-standings-svg standings="standings" max-count="2"></forecaster-standings-svg>
+        </span>
+      </div>
+    </div>
   </div>
 </div>
